@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">EasyDep</string>
+    <string name="bienvenue">Bienvenu sur EasyDep</string>
+    <string name="connecter_vous">Connectez vous d\'abord</string>
+    <string name="pas_de_compte">vous n\'avez pas de compte ?</string>
+    <string name="inscrivez_vous">inscrivez vous !</string>
+</resources>

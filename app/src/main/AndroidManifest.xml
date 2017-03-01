@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.nouno.easydep">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+        <activity
+            android:name=".Login_Activity"
+            android:theme="@style/LoginTheme">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        
+        <activity
+            android:name=".Signup1_Activity"
+            android:parentActivityName=".Login_Activity"
+            android:label="Inscription"
+            android:theme="@style/SignupTheme">
+            
+        </activity>
+        <activity
+            android:name=".Signup2_Activity"
+            android:parentActivityName=".Signup1_Activity"
+            android:label="Inscription"
+            android:theme="@style/SignupTheme" />
+        <activity android:name=".Signup3_Activity"
+            android:parentActivityName=".Signup2_Activity"
+            android:label="Inscription"
+            android:theme="@style/SignupTheme">
+        </activity>
+        <activity android:name=".Signup4_Activity"
+            android:parentActivityName=".Signup1_Activity"
+            android:label="Inscription"
+            android:theme="@style/SignupTheme"></activity>
+    </application>
+
+</manifest>
