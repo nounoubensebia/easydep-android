@@ -6,10 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -24,31 +22,27 @@ public class Login_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_);
-        //emailWrapper= (TextInputLayout) findViewById(R.id.emailWrapper3);
-        //passwordWrapper=(TextInputLayout) findViewById(R.id.passwordWrapper);
         root = (LinearLayout)findViewById(R.id.root);
-        Button btn = (Button)findViewById(R.id.signinButton);
-        Button inscriver = (Button)findViewById(R.id.signUp);
-        btn.setOnClickListener(new View.OnClickListener() {
+        Button signinButton = (Button)findViewById(R.id.signin_button);
+        Button signupButton = (Button)findViewById(R.id.signup_button);
+        // l'utilisateur se connecte
+        signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                passwordWrapper= (TextInputLayout)root.findViewById(R.id.passwordWrapper);
-                emailWrapper= (TextInputLayout)root.findViewById(R.id.emailWrapper3);
+                passwordWrapper= (TextInputLayout)root.findViewById(R.id.password_signin_wrapper);
+                emailWrapper= (TextInputLayout)root.findViewById(R.id.email_signin_wrapper);
                 String password = passwordWrapper.getEditText().getText().toString();
                 String email = emailWrapper.getEditText().getText().toString();
-                LinkedHashMap<String,String> map=new LinkedHashMap<String, String>();
+                LinkedHashMap<String,String> map=new LinkedHashMap<String, String>(); // liste des parametres du post
                 map.put("email",email);
                 map.put("password",password);
-                //String parametres=QueryUtils.buildPostParametersString(map);
-                //Toast.makeText(v.getContext(),parametres,Toast.LENGTH_LONG).show();
                 LoginTask task = new LoginTask();
-                task.execute(map);
-                //Log.i("tag",emailText);
+                task.execute(map);// envoi requete de connexion
 
             }
         });
-        inscriver.setOnClickListener(new View.OnClickListener() {
+        // l'utilisateur crée un compte
+        signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(),Signup1_Activity.class);

@@ -19,24 +19,24 @@ public class Signup4_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup4);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar4);
-        passwordWrapper= (TextInputLayout)findViewById(R.id.passwordWrapper4);
+        passwordWrapper= (TextInputLayout)findViewById(R.id.password_signup_wrapper);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        View upimage = findViewById(R.id.upImage4);
+        View upimage = findViewById(R.id.go_button4);
         upimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(),Login_Activity.class);
                 startActivity(i);
-                Bundle extras = getIntent().getExtras();
+                Bundle extras = getIntent().getExtras(); // recuperation des info envoyees par l'activite precedente
                 String email = extras.getString("email");
                 String password = passwordWrapper.getEditText().getText().toString();
                 LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
                 map.put("email",email);
                 map.put("password",password);
                 SignupTask task = new SignupTask();
-                task.execute(map);
+                task.execute(map);//envoi requete d'inscription
             }
         });
     }

@@ -32,7 +32,7 @@
             android:layout_height="wrap_content" />
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/emailWrapper3"
+            android:id="@+id/email_signin_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -40,7 +40,6 @@
             >
 
             <EditText
-                android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
@@ -49,14 +48,13 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/passwordWrapper"
+            android:id="@+id/password_signin_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp">
 
             <EditText
-                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Mot de passe"
@@ -78,11 +76,11 @@
 
             <Button
                 android:layout_width="wrap_content"
-                android:id="@+id/signinButton"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/white"
                 android:text="Connexion"
-                android:textColor="@color/backgroundColor" />
+                android:textColor="@color/backgroundColor"
+                android:id="@+id/signin_button" />
 
         </LinearLayout>
 
@@ -100,7 +98,7 @@
                 android:textSize="12sp" />
 
             <Button
-                android:id="@+id/signUp"
+                android:id="@+id/signup_button"
                 style="?borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

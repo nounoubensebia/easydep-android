@@ -11,11 +11,13 @@ public class Signup1_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //configuration de la toolbar (ou se trouve le text inscription)
         setContentView(R.layout.activity_signup1);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        View upimage = findViewById(R.id.upImage1);
+        //fin config
+        View upimage = findViewById(R.id.go_button1);
         upimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

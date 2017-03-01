@@ -15,7 +15,7 @@ public class Signup2_Activity extends AppCompatActivity {
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        View upimage = findViewById(R.id.upImage2);
+        View upimage = findViewById(R.id.go_button2);
         upimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

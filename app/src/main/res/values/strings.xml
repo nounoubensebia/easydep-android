@@ -4,4 +4,7 @@
     <string name="connecter_vous">Connectez vous d\'abord</string>
     <string name="pas_de_compte">vous n\'avez pas de compte ?</string>
     <string name="inscrivez_vous">inscrivez vous !</string>
+    <string name="vous_etes">Vous êtes ?</string>
+    <string name="comment_vous_appelez_vous">Comment vous appelez-vous ?</string>
+    <string name="cr_ez_un_mot_de_passe">Créez un mot de passe</string>
 </resources>

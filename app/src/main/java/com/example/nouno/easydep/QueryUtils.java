@@ -24,6 +24,12 @@ public class QueryUtils {
     public static final String PUBLIC_SIGNUP_URL = "https://easydep.000webhostapp.com/signup.php";
     public static final String PUBLIC_LOGIN_URL = "https://easydep.000webhostapp.com/login.php";
     public static final String PUBLIC_TEST_URL ="http://easydep.000webhostapp.com/test.php";
+
+
+
+
+    // méthode qui envoi une requete et enregistre le résultat dans un String
+
     public static String makeHttpPostRequest (String urlString,Map<String,String> parameters)
     {   String response = null;
         InputStream inputStream=null;
@@ -37,7 +43,7 @@ public class QueryUtils {
             urlConnection.setReadTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
-            String postParameters = buildPostParametersString(parameters);
+            String postParameters = buildParametersString(parameters);
             urlConnection.setFixedLengthStreamingMode(postParameters.getBytes().length);
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(postParameters);
@@ -70,7 +76,9 @@ public class QueryUtils {
         }
     }
 
-    public static String buildPostParametersString(Map<String,String> parameters)
+    //méthode pour construire les parametres a envoyer par POST ou GET
+
+    public static String buildParametersString(Map<String,String> parameters)
     {
         Set<Map.Entry<String,String>> entrySet = parameters.entrySet();
         Iterator<Map.Entry<String,String>> iterator = entrySet.iterator();
@@ -88,6 +96,9 @@ public class QueryUtils {
         }
         return builder.toString();
     }
+
+    //méthode pour lire un inputstream (zellal)
+
     public static String readFromStream (InputStream inputStream)
     {
         StringBuilder builder = new StringBuilder("");
