@@ -1,5 +1,7 @@
 package com.example.nouno.easydep;
 
+import com.example.nouno.easydep.exceptions.ConnectionProblemException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +32,7 @@ public class QueryUtils {
 
     // méthode qui envoi une requete et enregistre le résultat dans un String
 
-    public static String makeHttpPostRequest (String urlString,Map<String,String> parameters)
+    public static String makeHttpPostRequest (String urlString,Map<String,String> parameters) throws ConnectionProblemException
     {   String response = null;
         InputStream inputStream=null;
         HttpURLConnection urlConnection=null;
@@ -54,6 +56,10 @@ public class QueryUtils {
                 inputStream = urlConnection.getInputStream();
                 response=readFromStream(inputStream);
             }
+            else
+            {
+                throw new ConnectionProblemException("status code != 200");
+            }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -67,6 +73,12 @@ public class QueryUtils {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+
+            }
+            else
+            {
+                throw new ConnectionProblemException("connexion introuvable");
             }
             if (urlConnection!=null)
             {

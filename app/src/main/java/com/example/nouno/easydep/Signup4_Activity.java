@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.nouno.easydep.exceptions.ConnectionProblemException;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -45,7 +47,12 @@ public class Signup4_Activity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Map<String, String>... params) {
-            String response =  QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_SIGNUP_URL,params[0]);
+            String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_SIGNUP_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();response ="Probleme de connexion";
+            }
             return response;
         }
 
