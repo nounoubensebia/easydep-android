@@ -3,12 +3,17 @@ package com.example.nouno.easydep;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
@@ -19,28 +24,69 @@ import java.util.Map;
 public class Login_Activity extends AppCompatActivity {
     private TextInputLayout emailWrapper;
     private TextInputLayout passwordWrapper;
-    LinearLayout root;
-    @Override
+    private ProgressBar progressBar;
+    private Button signinButton;
+       @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_);
-        root = (LinearLayout)findViewById(R.id.root);
-        Button signinButton = (Button)findViewById(R.id.signin_button);
+
+
+
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+           progressBar.setVisibility(View.GONE);
+        signinButton = (Button)findViewById(R.id.signin_button);
         Button signupButton = (Button)findViewById(R.id.signup_button);
         Button passForgottenButton = (Button)findViewById(R.id.password_forgotten_button);
+        passwordWrapper= (TextInputLayout)findViewById(R.id.password_signin_wrapper);
+        emailWrapper= (TextInputLayout)findViewById(R.id.email_signin_wrapper);
+
+           Bundle extras = getIntent().getExtras();
+           if (extras!=null)
+           {
+               String email = extras.getString("email");
+               if (email!=null)
+               {
+                   emailWrapper.getEditText().setText(email);
+               }
+
+           }
+
+
         // l'utilisateur se connecte
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                passwordWrapper= (TextInputLayout)root.findViewById(R.id.password_signin_wrapper);
-                emailWrapper= (TextInputLayout)root.findViewById(R.id.email_signin_wrapper);
+
+                try  {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {}
+
                 String password = passwordWrapper.getEditText().getText().toString();
                 String email = emailWrapper.getEditText().getText().toString();
-                LinkedHashMap<String,String> map=new LinkedHashMap<String, String>(); // liste des parametres du post
-                map.put("email",email);
-                map.put("password",password);
-                LoginTask task = new LoginTask();
-                task.execute(map);// envoi requete de connexion
+                emailWrapper.setErrorEnabled(false);
+                passwordWrapper.setErrorEnabled(false);
+                if (!QueryUtils.validateEmail(email))
+                {
+                    emailWrapper.setErrorEnabled(true);
+                    emailWrapper.setError("L'adresse e-mail n'est pas valide");
+                }
+                if (!QueryUtils.validatePassword(password))
+                {
+                    passwordWrapper.setErrorEnabled(true);
+                    passwordWrapper.setError("Le mot de passe n'est pas valide");
+                }
+                if (QueryUtils.validateEmail(email)&&QueryUtils.validatePassword(password))
+                {
+                    LinkedHashMap<String,String> map=new LinkedHashMap<String, String>(); // liste des parametres du post
+                    map.put("email",email);
+                    map.put("password",password);
+                    LoginTask task = new LoginTask();
+                    task.execute(map);
+                }
+
+
 
             }
         });
@@ -70,6 +116,11 @@ public class Login_Activity extends AppCompatActivity {
 
     private class LoginTask extends AsyncTask<Map<String,String>,Void,String>
     {
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            signinButton.setVisibility(View.GONE);
+        }
 
         @Override
         protected String doInBackground(Map<String, String>... params) {
@@ -87,7 +138,23 @@ public class Login_Activity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-             Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-        }
+            signinButton.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            if (s.equals("Probleme de connexion"))
+            {
+                Snackbar snackbar = Snackbar.make(signinButton,"Erreur problème de connexion.",Snackbar.LENGTH_LONG);
+                View view = snackbar.getView();
+                progressBar.setVisibility(View.GONE);
+                signinButton.setVisibility(View.VISIBLE);
+                view.setBackgroundColor(getResources().getColor(R.color.white));
+                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                tv.setTextColor(getResources().getColor(R.color.backgroundColor));
+                tv.setMaxLines(10);
+                snackbar.show();
+            }
+            else
+            {
+             Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();}
+            }
     }
 }

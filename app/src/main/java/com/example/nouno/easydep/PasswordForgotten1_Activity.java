@@ -1,13 +1,15 @@
 package com.example.nouno.easydep;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 public class PasswordForgotten1_Activity extends AppCompatActivity {
-
+    TextInputLayout emailWrapper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -15,13 +17,27 @@ public class PasswordForgotten1_Activity extends AppCompatActivity {
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar5);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //fin config
-        View upimage = findViewById(R.id.go_button5);
+        emailWrapper = (TextInputLayout)findViewById(R.id.change_pass_email_wrapper);
+        View upimage = findViewById(R.id.go_button);
         upimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),PasswordForgotten2_Activity.class);
-                startActivity(i);
+                try  {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {}
+                String email = emailWrapper.getEditText().getText().toString();
+                if (!QueryUtils.validateEmail(email))
+                {
+                    emailWrapper.getEditText().setError("Veuillez entrer une adresse email valide");
+                }
+                else {
+                    Intent i = new Intent(getApplicationContext(),PasswordForgotten2_Activity.class);
+                    i.putExtra("email",email);
+                    startActivity(i);
+                }
             }
         });
     }

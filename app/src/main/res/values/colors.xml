@@ -8,4 +8,5 @@
     <color name="colorYellow">#AFB42B</color>
     <color name="colorBlue">#1da1f2</color>
     <color name="backgroundColor">@color/colorBlueGreen</color>
+    <color name="white">#FFF</color>
 </resources>

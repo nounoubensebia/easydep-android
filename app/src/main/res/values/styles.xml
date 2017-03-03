@@ -12,6 +12,7 @@
         <item name="colorPrimaryDark">@color/backgroundColor</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/backgroundColor</item>
         <item name="colorAccent">#FFF</item>
+
         <item name="android:colorControlActivated" tools:targetApi="lollipop">#FFFF</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:textColorHint">#FFF</item>
@@ -24,7 +25,7 @@
     <style name="SignupTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@android:color/transparent</item>
         <item name="colorPrimaryDark">@color/backgroundColor</item>
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/backgroundColor</item>
+        <!--<item name="android:navigationBarColor" tools:targetApi="lollipop">@color/backgroundColor</item>-->
         <item name="colorAccent">#FFF</item>
         <item name="android:colorControlActivated" tools:targetApi="lollipop">#FFFF</item>
         <item name="android:textColor">#FFF</item>
@@ -47,6 +48,9 @@
         <item name="android:textSize">21sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">italic</item>
+    </style>
+    <style name="ErrorTextApp" parent="TextAppearance.Design.Error">
+        <item name="android:textColor">@android:color/holo_red_light</item>
     </style>
 
 </resources>

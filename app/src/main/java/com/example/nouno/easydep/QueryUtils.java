@@ -14,6 +14,8 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by nouno on 28/02/2017.
@@ -22,10 +24,11 @@ import java.util.Set;
 public class QueryUtils {
     public static final String LOCAL_TEST_URL ="http://192.168.1.7/EasyDep/test.php";
     public static final String LOCAL_LOGIN_URL = "http://192.168.1.7/EasyDep/login.php";
-    public static final String LOCAL_SIGNUP_URL = "http://192.168.1.7/EasyDep/signup.php";
+    public static final String LOCAL_SIGNUP_URL = "http://192.168.1.10/easydep-serveur/signup.php";
     public static final String PUBLIC_SIGNUP_URL = "https://easydep.000webhostapp.com/signup.php";
     public static final String PUBLIC_LOGIN_URL = "https://easydep.000webhostapp.com/login.php";
     public static final String PUBLIC_TEST_URL ="http://easydep.000webhostapp.com/test.php";
+    public static final String LOCAL_PASSWORD_FORGOTTEN_URL ="http://192.168.1.10/easydep-serveur/forgotten_password.php";
 
 
 
@@ -130,4 +133,25 @@ public class QueryUtils {
             return builder.toString();
         }
     }
+    public static boolean validateEmail(String email)
+    {
+        String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher;
+        matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+    public static boolean validatePassword(String password)
+    {
+        return (password.length()>5);
+    }
+    public  static boolean validateName (String name)
+    {
+        String regx = "^[\\p{L} .'-]+$";
+        Pattern pattern = Pattern.compile(regx);
+        Matcher matcher;
+        matcher = pattern.matcher(name);
+        return (matcher.matches()&&(name.length()>1));
+    }
+
 }
