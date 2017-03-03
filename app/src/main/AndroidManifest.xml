@@ -12,33 +12,52 @@
         <activity
             android:name=".Login_Activity"
             android:theme="@style/LoginTheme">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        
         <activity
             android:name=".Signup1_Activity"
-            android:parentActivityName=".Login_Activity"
             android:label="Inscription"
-            android:theme="@style/SignupTheme">
-            
-        </activity>
+            android:parentActivityName=".Login_Activity"
+            android:theme="@style/SignupTheme" />
         <activity
             android:name=".Signup2_Activity"
-            android:parentActivityName=".Signup1_Activity"
             android:label="Inscription"
-            android:theme="@style/SignupTheme" />
-        <activity android:name=".Signup3_Activity"
+            android:parentActivityName=".Signup1_Activity"
+            android:theme="@style/SignupTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Signup3_Activity"
+            android:label="Inscription"
             android:parentActivityName=".Signup2_Activity"
+            android:theme="@style/SignupTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Signup4_Activity"
             android:label="Inscription"
-            android:theme="@style/SignupTheme">
-        </activity>
-        <activity android:name=".Signup4_Activity"
             android:parentActivityName=".Signup1_Activity"
-            android:label="Inscription"
-            android:theme="@style/SignupTheme"></activity>
+            android:theme="@style/SignupTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".PasswordForgotten1_Activity"
+            android:label="Mot de passe oublié"
+            android:parentActivityName=".Login_Activity"
+            android:theme="@style/SignupTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".PasswordForgotten2_Activity"
+            android:label="Mot de passe oublié"
+            android:parentActivityName=".PasswordForgotten1_Activity"
+            android:theme="@style/SignupTheme"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".PasswordForgotten3_Actitivity"
+            android:label="Mot de passe oublié"
+            android:parentActivityName=".PasswordForgotten2_Activity"
+            android:theme="@style/SignupTheme"
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>

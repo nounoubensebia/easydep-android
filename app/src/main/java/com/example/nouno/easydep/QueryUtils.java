@@ -30,14 +30,16 @@ public class QueryUtils {
 
 
 
+
     // méthode qui envoi une requete et enregistre le résultat dans un String
+    // param 1 est le string de l'url de la requete
+    // param 2 est la liste des parametres du post
 
     public static String makeHttpPostRequest (String urlString,Map<String,String> parameters) throws ConnectionProblemException
     {   String response = null;
         InputStream inputStream=null;
         HttpURLConnection urlConnection=null;
         try {
-
             URL url = new URL(urlString);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
@@ -73,8 +75,6 @@ public class QueryUtils {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
             }
             else
             {
@@ -89,7 +89,7 @@ public class QueryUtils {
     }
 
     //méthode pour construire les parametres a envoyer par POST ou GET
-
+    //param est la liste des parametres
     public static String buildParametersString(Map<String,String> parameters)
     {
         Set<Map.Entry<String,String>> entrySet = parameters.entrySet();

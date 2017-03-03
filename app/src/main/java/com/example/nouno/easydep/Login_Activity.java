@@ -27,6 +27,7 @@ public class Login_Activity extends AppCompatActivity {
         root = (LinearLayout)findViewById(R.id.root);
         Button signinButton = (Button)findViewById(R.id.signin_button);
         Button signupButton = (Button)findViewById(R.id.signup_button);
+        Button passForgottenButton = (Button)findViewById(R.id.password_forgotten_button);
         // l'utilisateur se connecte
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +50,13 @@ public class Login_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(),Signup1_Activity.class);
                 startActivity(i);
+            }
+        });
+        passForgottenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent i = new Intent(v.getContext(),PasswordForgotten1_Activity.class);
+                    startActivity(i);
             }
         });
 
