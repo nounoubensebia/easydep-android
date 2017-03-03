@@ -138,7 +138,7 @@ public class Signup3_Activity extends AppCompatActivity {
                }
                else
                {
-                   Snackbar snackbar = Snackbar.make(upimage,"Erreur problème de connexion.",Snackbar.LENGTH_LONG);
+                   Snackbar snackbar = Snackbar.make(upimage,"Erreur de connexion. Veuillez vérifier votre connexion internet et réessayer",Snackbar.LENGTH_LONG);
                    View view = snackbar.getView();
                    progressBar.setVisibility(View.GONE);
                    upimage.setVisibility(View.VISIBLE);

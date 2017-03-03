@@ -103,7 +103,7 @@ public class PasswordForgotten2_Activity extends AppCompatActivity {
                 }
                 else
                 {
-                    Snackbar snackbar = Snackbar.make(upimage,"Erreur de connexion",Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(upimage,"Erreur de connexion. Veuillez vérifier votre connexion internet et réessayer",Snackbar.LENGTH_LONG);
                     View view = snackbar.getView();
                     view.setBackgroundColor(getResources().getColor(R.color.white));
                     TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);

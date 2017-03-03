@@ -142,7 +142,7 @@ public class Login_Activity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
             if (s.equals("Probleme de connexion"))
             {
-                Snackbar snackbar = Snackbar.make(signinButton,"Erreur problème de connexion.",Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(signinButton,"Erreur de connexion. Veuillez vérifier votre connexion internet et réessayer",Snackbar.LENGTH_LONG);
                 View view = snackbar.getView();
                 progressBar.setVisibility(View.GONE);
                 signinButton.setVisibility(View.VISIBLE);
