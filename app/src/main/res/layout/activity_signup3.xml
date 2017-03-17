@@ -28,7 +28,7 @@
             android:layout_marginLeft="16dp"
             android:textSize="32sp"
             android:layout_marginBottom="16dp"
-            android:text="Et votre adresse Email ?"/>
+            android:text="@string/et_votre_adresse_email"/>
     </LinearLayout>
 
 

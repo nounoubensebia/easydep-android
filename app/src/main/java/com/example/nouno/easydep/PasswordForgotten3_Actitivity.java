@@ -47,11 +47,11 @@ public class PasswordForgotten3_Actitivity extends AppCompatActivity {
                 String newPassConfirm = newPasswordConfirmWrapper.getEditText().getText().toString();
                 if (!QueryUtils.validatePassword(newPass))
                 {
-                    newPasswordWrapper.getEditText().setError("Le mot de passe doit contenir au moins 6 caractères");
+                    newPasswordWrapper.getEditText().setError(getString(R.string.mot_de_passe_6_caracteres));
                 }
                 if (!newPass.equals(newPassConfirm))
                 {
-                    newPasswordConfirmWrapper.getEditText().setError("Les mot de passe ne sont pas identique");
+                    newPasswordConfirmWrapper.getEditText().setError(getString(R.string.mot_de_passe_pas_identique));
                 }
                 if (newPass.equals(newPassConfirm)&&QueryUtils.validatePassword(newPass))
                 {
@@ -83,7 +83,7 @@ public class PasswordForgotten3_Actitivity extends AppCompatActivity {
             try {
                 response=QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_PASSWORD_FORGOTTEN_URL,params[0]);
             } catch (ConnectionProblemException e) {
-                return ("Connexion problem");
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -92,9 +92,9 @@ public class PasswordForgotten3_Actitivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             progressBar.setVisibility(View.GONE);
             upimage.setVisibility(View.VISIBLE);
-           if (s.equals("Connexion problem"))
+           if (s.equals(QueryUtils.CONNECTION_PROBLEM))
            {
-               Snackbar snackbar = Snackbar.make(upimage,"Erreur de connexion",Snackbar.LENGTH_LONG);
+               Snackbar snackbar = Snackbar.make(upimage,R.string.erreur_Connexion_Snackbar,Snackbar.LENGTH_LONG);
                View view = snackbar.getView();
                view.setBackgroundColor(getResources().getColor(R.color.white));
                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
@@ -106,7 +106,7 @@ public class PasswordForgotten3_Actitivity extends AppCompatActivity {
            {
                if (s.equals("password changed"))
                {
-                   Snackbar snackbar = Snackbar.make(upimage,"Mot de passe changé. Veuillez vous connecter avec le nouveau mot de passe",Snackbar.LENGTH_INDEFINITE);
+                   Snackbar snackbar = Snackbar.make(upimage, R.string.mot_de_passe_change_avec_succes,Snackbar.LENGTH_INDEFINITE);
 
                    View view = snackbar.getView();
                    view.setBackgroundColor(getResources().getColor(R.color.white));

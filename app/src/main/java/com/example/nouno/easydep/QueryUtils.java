@@ -29,11 +29,7 @@ public class QueryUtils {
     public static final String PUBLIC_LOGIN_URL = "https://easydep.000webhostapp.com/login.php";
     public static final String PUBLIC_TEST_URL ="http://easydep.000webhostapp.com/test.php";
     public static final String LOCAL_PASSWORD_FORGOTTEN_URL ="http://192.168.1.10/easydep-serveur/forgotten_password.php";
-
-
-
-
-
+    public static final String CONNECTION_PROBLEM = "connection problem";
     // méthode qui envoi une requete et enregistre le résultat dans un String
     // param 1 est le string de l'url de la requete
     // param 2 est la liste des parametres du post
@@ -81,7 +77,9 @@ public class QueryUtils {
             }
             else
             {
+
                 throw new ConnectionProblemException("connexion introuvable");
+
             }
             if (urlConnection!=null)
             {

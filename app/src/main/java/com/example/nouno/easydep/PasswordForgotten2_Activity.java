@@ -41,7 +41,7 @@ public class PasswordForgotten2_Activity extends AppCompatActivity {
                 } catch (Exception e) {}
                 String code = codeWrapper.getEditText().getText().toString();
                 if (code.length() != 10) {
-                    codeWrapper.getEditText().setError("Le code doit contenir exactement 10 caractères");
+                    codeWrapper.getEditText().setError(getString(R.string.erreur_nombre_caracteres_code));
                 } else {
                     Bundle extras = getIntent().getExtras(); // recuperation des info envoyees par l'activite precedente
                     String email = extras.getString("email");
@@ -73,7 +73,7 @@ public class PasswordForgotten2_Activity extends AppCompatActivity {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_PASSWORD_FORGOTTEN_URL, params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
-                return "Connection problem";
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
 
@@ -93,7 +93,7 @@ public class PasswordForgotten2_Activity extends AppCompatActivity {
 
             } else {
                 if (s.equals("code incorrect")) {
-                    Snackbar snackbar = Snackbar.make(upimage, "Erreur le code saisi est incorrect", Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(upimage, R.string.code_saisi_incorrect, Snackbar.LENGTH_LONG);
                     View view = snackbar.getView();
                     view.setBackgroundColor(getResources().getColor(R.color.white));
                     TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
@@ -103,7 +103,7 @@ public class PasswordForgotten2_Activity extends AppCompatActivity {
                 }
                 else
                 {
-                    Snackbar snackbar = Snackbar.make(upimage,"Erreur de connexion. Veuillez vérifier votre connexion internet et réessayer",Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(upimage,R.string.erreur_Connexion_Snackbar,Snackbar.LENGTH_LONG);
                     View view = snackbar.getView();
                     view.setBackgroundColor(getResources().getColor(R.color.white));
                     TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);

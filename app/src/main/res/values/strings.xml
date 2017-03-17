@@ -8,4 +8,19 @@
     <string name="comment_vous_appelez_vous">Comment vous appelez-vous ?</string>
     <string name="cr_ez_un_mot_de_passe">Créez un mot de passe</string>
     <string name="verifaction_code_sent">Vérifiez votre adresse email nous vous avons envoyé un code de vérification</string>
+    <string name="erreur_Connexion_Snackbar">Erreur connexion au serveur impossible. Veuillez vérifiér votre connexion internet et réessayer</string>
+    <string name="automobiliste">Automobiliste</string>
+    <string name="d_panneur">Dépanneur</string>
+    <string name="choisir_type">Veuillez choisir le type de compte que vous voulez créer</string>
+    <string name="erreur_prenom">Veuillez entrer un prénom valide</string>
+    <string name="erreur_nom">Veuillez entrer un nom valide</string>
+    <string name="et_votre_adresse_email">Et votre adresse Email ?</string>
+    <string name="compte_existe_deja">Vous avez déjà un compte avec cette adresse email. Essayez plutôt de vous y connecter.</string>
+    <string name="mot_de_passe_6_caracteres">Le mot de passe doit contenir au moins 6 caractères</string>
+    <string name="adresse_email_incorrecte">Veuillez entrer une adresse email valide</string>
+    <string name="code_saisi_incorrect">Erreur le code saisi est incorrect</string>
+    <string name="erreur_nombre_caracteres_code">Le code doit contenir exactement 10 caractères</string>
+    <string name="mot_de_passe_pas_identique">Les mot de passe ne sont pas identique</string>
+    <string name="mot_de_passe_change_avec_succes">Mot de passe changé. Veuillez vous connecter avec le nouveau mot de passe</string>
+    <string name="cr_ez_un_nouveau_mot_de_passe">Créez un nouveau mot de passe</string>
 </resources>

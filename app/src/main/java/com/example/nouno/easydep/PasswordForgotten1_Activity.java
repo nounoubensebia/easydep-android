@@ -31,7 +31,7 @@ public class PasswordForgotten1_Activity extends AppCompatActivity {
                 String email = emailWrapper.getEditText().getText().toString();
                 if (!QueryUtils.validateEmail(email))
                 {
-                    emailWrapper.getEditText().setError("Veuillez entrer une adresse email valide");
+                    emailWrapper.getEditText().setError(getString(R.string.adresse_email_incorrecte));
                 }
                 else {
                     Intent i = new Intent(getApplicationContext(),PasswordForgotten2_Activity.class);

@@ -128,7 +128,7 @@ public class Login_Activity extends AppCompatActivity {
             try {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_LOGIN_URL,params[0]);
             } catch (ConnectionProblemException e) {
-                e.printStackTrace();response = "Probleme de connexion";
+                e.printStackTrace();response = QueryUtils.CONNECTION_PROBLEM;
             }
             finally {
                 return response;
@@ -140,9 +140,9 @@ public class Login_Activity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             signinButton.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
-            if (s.equals("Probleme de connexion"))
+            if (s.equals(QueryUtils.CONNECTION_PROBLEM))
             {
-                Snackbar snackbar = Snackbar.make(signinButton,"Erreur de connexion. Veuillez vérifier votre connexion internet et réessayer",Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(signinButton,R.string.erreur_Connexion_Snackbar,Snackbar.LENGTH_LONG);
                 View view = snackbar.getView();
                 progressBar.setVisibility(View.GONE);
                 signinButton.setVisibility(View.VISIBLE);

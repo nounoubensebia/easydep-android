@@ -53,7 +53,7 @@ public class Signup4_Activity extends AppCompatActivity {
                 }
                 else
                 {
-                    passwordWrapper.getEditText().setError("Le mot de passe doit contenir au moins 6 caractères");
+                    passwordWrapper.getEditText().setError(getString(R.string.mot_de_passe_6_caracteres));
                 }
             }
         });
@@ -72,16 +72,16 @@ public class Signup4_Activity extends AppCompatActivity {
             try {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_SIGNUP_URL,params[0]);
             } catch (ConnectionProblemException e) {
-                e.printStackTrace();response ="Probleme de connexion";
+                e.printStackTrace();response =QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            if (s.equals("Probleme de connexion"))
+            if (s.equals(QueryUtils.CONNECTION_PROBLEM))
             {
-                Snackbar snackbar = Snackbar.make(upimage,"Erreur problème de connexion.",Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(upimage,R.string.erreur_Connexion_Snackbar,Snackbar.LENGTH_LONG);
                 View view = snackbar.getView();
                 progressBar.setVisibility(View.GONE);
                 upimage.setVisibility(View.VISIBLE);

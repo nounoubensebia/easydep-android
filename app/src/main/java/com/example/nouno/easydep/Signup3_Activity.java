@@ -97,7 +97,7 @@ public class Signup3_Activity extends AppCompatActivity {
                }
            } catch (ConnectionProblemException e) {
                e.printStackTrace();
-               return "Internet Problem";
+               return QueryUtils.CONNECTION_PROBLEM;
            }
 
        }
@@ -118,7 +118,7 @@ public class Signup3_Activity extends AppCompatActivity {
                if (s.equals("Email found"))
                {
 
-                   Snackbar snackbar = Snackbar.make(upimage,"Vous avez déjà un compte avec cette adresse email. Essayez plutôt de vous y connecter.",Snackbar.LENGTH_INDEFINITE);
+                   Snackbar snackbar = Snackbar.make(upimage, R.string.compte_existe_deja,Snackbar.LENGTH_INDEFINITE);
                    View view = snackbar.getView();
                    view.setBackgroundColor(getResources().getColor(R.color.white));
                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
@@ -138,7 +138,7 @@ public class Signup3_Activity extends AppCompatActivity {
                }
                else
                {
-                   Snackbar snackbar = Snackbar.make(upimage,"Erreur de connexion. Veuillez vérifier votre connexion internet et réessayer",Snackbar.LENGTH_LONG);
+                   Snackbar snackbar = Snackbar.make(upimage,R.string.erreur_Connexion_Snackbar,Snackbar.LENGTH_LONG);
                    View view = snackbar.getView();
                    progressBar.setVisibility(View.GONE);
                    upimage.setVisibility(View.VISIBLE);

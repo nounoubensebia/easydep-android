@@ -28,7 +28,7 @@ public class Signup1_Activity extends AppCompatActivity {
                 int id = radioGroup.getCheckedRadioButtonId();
                 if (id == -1)
                 {
-                    Snackbar.make(v,"Veuillez choisir votre profession",Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v,R.string.choisir_type,Snackbar.LENGTH_LONG).show();
                 }
                 else
                 {

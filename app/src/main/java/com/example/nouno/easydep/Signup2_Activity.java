@@ -27,14 +27,14 @@ public class Signup2_Activity extends AppCompatActivity {
                 String lastName = lastNameWrapper.getEditText().getText().toString();
                 if (!QueryUtils.validateName(firstName))
                 {
-                    //firstNameWrapper.setErrorEnabled(true);
-                    firstNameWrapper.getEditText().setError("Veuillez entrer un nom valide");
-                    //firstNameWrapper.setError("Veuillez entrer un nom valide");
+
+                    firstNameWrapper.getEditText().setError(getString(R.string.erreur_nom));
+
                 }
 
                 if (!QueryUtils.validateName(lastName))
                 {
-                    lastNameWrapper.getEditText().setError("Veuillez entrer un prénom valide");
+                    lastNameWrapper.getEditText().setError(getString(R.string.erreur_prenom));
                 }
 
                 if (QueryUtils.validateName(firstName)&&QueryUtils.validateName(lastName))
