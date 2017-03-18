@@ -23,4 +23,5 @@
     <string name="mot_de_passe_pas_identique">Les mot de passe ne sont pas identique</string>
     <string name="mot_de_passe_change_avec_succes">Mot de passe changé. Veuillez vous connecter avec le nouveau mot de passe</string>
     <string name="cr_ez_un_nouveau_mot_de_passe">Créez un nouveau mot de passe</string>
+    <string name="recherche_depanneur">Recherche de dépanneur</string>
 </resources>

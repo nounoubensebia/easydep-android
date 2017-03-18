@@ -9,4 +9,8 @@
     <color name="colorBlue">#1da1f2</color>
     <color name="backgroundColor">@color/colorBlueGreen</color>
     <color name="white">#FFF</color>
+    <color name="refresh_progress_1">#1da1f2</color>
+    <color name="refresh_progress_2">#1da1f2</color>
+    <color name="refresh_progress_3">#1da1f2</color>
+    <color name="green">@android:color/holo_green_dark</color>
 </resources>
