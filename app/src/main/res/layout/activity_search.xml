@@ -42,9 +42,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right|bottom"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="128dp"
+        android:layout_marginBottom="136dp"
         android:fadingEdge="none"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorBlue"
         app:elevation="4dp"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_list"
@@ -85,7 +85,8 @@
                 android:layout_width="66dp"
                 android:layout_height="66dp"
                 android:layout_alignParentRight="true"
-                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="16dp"
@@ -135,11 +136,17 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:textSize="12sp"
                     android:id="@+id/durationTextInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:text="a 12 minutes de routes" />
+                <TextView
+                    android:id="@+id/priceTextInfo"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30da/Km"/>
                 <TextView
                     android:id="@+id/availableTextInfo"
                     android:layout_width="wrap_content"

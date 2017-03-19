@@ -58,6 +58,12 @@
                 android:textSize="12sp"
                 android:text="a 12 Minutes de route"/>
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/priceText"
+                android:textSize="12sp"
+                android:text="30Da/Km"/>
+            <TextView
                 android:id="@+id/availableText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

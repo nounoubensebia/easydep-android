@@ -1,5 +1,7 @@
 package com.example.nouno.easydep;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,8 +22,10 @@ public class RepairService {
     private  double latitude;
     private  double longitude;
     private float rating;
+    private int price;
+    public static final int NO_PRICE = 99999;
 
-    public RepairService(String firstName, String lastName, String location, boolean available, int duration, int distance,double latitude,double longitude,float rating) {
+    public RepairService(String firstName, String lastName, String location, boolean available, int duration, double distance,double latitude,double longitude,float rating,int price) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.location = location;
@@ -31,6 +35,7 @@ public class RepairService {
         this.latitude=latitude;
         this.longitude=longitude;
         this.rating = rating;
+        this.price = price;
     }
 
     public float getRating() {
@@ -53,8 +58,15 @@ public class RepairService {
         return lastName;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
     public String getLocation() {
         return location;
+    }
+    public String getPriceString () {
+        return price+"Da/KM";
     }
 
     public boolean isAvailable() {
@@ -112,7 +124,13 @@ public class RepairService {
                 int distance = jsonObject.getInt("distance");
                 float rating = (float)jsonObject.getDouble("rating");
                 boolean available = jsonObject.getBoolean("available");
-                RepairService repairService = new RepairService(firstname,lastname,location,available,duration,distance,latitude,longitude,rating);
+                int price = NO_PRICE;
+                if (!jsonObject.isNull("price"))
+                {
+                    price = jsonObject.getInt("price");
+                }
+
+                RepairService repairService = new RepairService(firstname,lastname,location,available,duration,distance,latitude,longitude,rating,price);
                 repairServices.add(repairService);
             }
         } catch (JSONException e) {
@@ -123,5 +141,110 @@ public class RepairService {
         return repairServices;
 
 
+    }
+
+    public static void sortByDistance (ArrayList<RepairService> repairServices)
+    {
+        for (int i=0;i<repairServices.size();i++)
+        {
+
+            for (int j=i+1;j<repairServices.size();j++)
+            {
+
+                if (repairServices.get(i).distance>repairServices.get(j).distance)
+                {
+                    RepairService repairService1 = repairServices.get(i);
+                    RepairService repairService2 = repairServices.get(j);
+                    repairServices.set(i,repairService2);
+                    repairServices.set(j,repairService1);
+                }
+            }
+        }
+    }
+    public static void sortByRating (ArrayList<RepairService> repairServices)
+    {
+        for (int i=0;i<repairServices.size();i++)
+        {
+
+            for (int j=i+1;j<repairServices.size();j++)
+            {
+
+                if (repairServices.get(i).rating<repairServices.get(j).rating)
+                {
+                    RepairService repairService1 = repairServices.get(i);
+                    RepairService repairService2 = repairServices.get(j);
+                    repairServices.set(i,repairService2);
+                    repairServices.set(j,repairService1);
+
+                }
+            }
+        }
+    }
+
+    public static void sortByPrice (ArrayList<RepairService> repairServices)
+    {
+        for (int i=0;i<repairServices.size();i++)
+        {
+
+            for (int j=i+1;j<repairServices.size();j++)
+            {
+
+                if (repairServices.get(i).price>repairServices.get(j).price)
+                {
+                    RepairService repairService1 = repairServices.get(i);
+                    RepairService repairService2 = repairServices.get(j);
+                    repairServices.set(i,repairService2);
+                    repairServices.set(j,repairService1);
+
+                }
+            }
+        }
+
+    }
+
+    public static ArrayList<RepairService> deleteNotAvailable (ArrayList<RepairService> repairServices)
+    {
+        ArrayList<RepairService> availableRepairServices = new ArrayList<>();
+        for (RepairService repairService : repairServices)
+        {
+            if (repairService.isAvailable())
+            {
+                availableRepairServices.add(repairService);
+            }
+        }
+        return availableRepairServices;
+    }
+
+    public static ArrayList<RepairService> filtrePrice (int price,ArrayList<RepairService> repairServices)
+    {
+        ArrayList<RepairService> availableRepairServices = new ArrayList<>();
+        for (RepairService repairService : repairServices)
+        {
+            if (price > repairService.price)
+            {
+                availableRepairServices.add(repairService);
+            }
+        }
+        return availableRepairServices;
+
+    }
+
+    public static ArrayList<RepairService> filtreRating (float rating,ArrayList<RepairService> repairServices)
+    {
+        ArrayList<RepairService> availableRepairServices = new ArrayList<>();
+        for (RepairService repairService : repairServices)
+        {
+            if (rating <= repairService.rating)
+            {
+                availableRepairServices.add(repairService);
+            }
+        }
+        return availableRepairServices;
+
+    }
+
+    @Override
+    public String toString() {
+        return firstName+" "+lastName;
     }
 }

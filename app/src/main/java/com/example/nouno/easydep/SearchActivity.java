@@ -1,5 +1,6 @@
 package com.example.nouno.easydep;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -44,8 +46,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private View infoBottomSheet;
     private BottomSheetBehavior infoBottomSheetBehaviour;
     private GoogleMap map;
+    private int bottomMargin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        bottomMargin = 416;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         repairServices = new ArrayList<>();
@@ -68,7 +72,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 CoordinatorLayout.LayoutParams layoutParams1 = (CoordinatorLayout.LayoutParams)listFab.getLayoutParams();
                 if (newState == BottomSheetBehavior.STATE_EXPANDED)
                 {
-                    layoutParams1.bottomMargin=400;
+                    layoutParams1.bottomMargin=bottomMargin;
                     enter(listFab);
                 }
             }
@@ -134,6 +138,19 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu,menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.filtres_menu:
+                Intent i = new Intent(getApplicationContext(),FiltresActivity.class);
+                startActivity(i);
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void searchForRepairServices (Map<String,String> map)
@@ -262,6 +279,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         TextView distanceText = (TextView)findViewById(R.id.distanceTextInfo);
         TextView nameText = (TextView)findViewById(R.id.nameTextInfo);
         TextView durationTextInfo = (TextView)findViewById(R.id.durationTextInfo);
+        TextView price = (TextView)findViewById(R.id.priceTextInfo);
         distanceText.setText(repairService.getDistanceString());
         nameText.setText(repairService.getFirstName()+" "+repairService.getLastName());
         durationTextInfo.setText(repairService.getDurationString());
@@ -269,6 +287,18 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         ratingBar.setRating(repairService.getRating());
 
         TextView availableTextView = (TextView)findViewById(R.id.availableTextInfo);
+        if (repairService.getPrice()==RepairService.NO_PRICE)
+        {
+            price.setText("Tarifs non disponible");
+            //price.setVisibility(View.GONE);
+            //bottomMargin = 400;
+        }
+        else
+        {
+            bottomMargin=416;
+            price.setVisibility(View.VISIBLE);
+            price.setText(repairService.getPriceString());
+        }
         if (repairService.isAvailable())
         {
             availableTextView.setText("Disponible");
@@ -391,6 +421,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         protected void onPostExecute(String s) {
             recyclerView = (RecyclerView)findViewById(R.id.repair_services_list);
             repairServices = RepairService.parseJson(s);
+            //repairServices = RepairService.filtreRating(3,repairServices);
+            //repairServices = RepairService.deleteNotAvailable(repairServices);
             RepairServiceAdapter adapter = new RepairServiceAdapter(repairServices, R.layout.repair_service_list_item);
             adapter.setOnItemClickListner(new OnItemClickListner() {
                 @Override

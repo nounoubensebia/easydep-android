@@ -62,6 +62,17 @@ public class RepairServiceAdapter extends RecyclerView.Adapter<RepairServiceAdap
             holder.availableTextView.setTextColor(Color.parseColor("#F44336"));
             holder.availableTextView.setText("Occupé");
         }
+
+        if (repairService.getPrice()==RepairService.NO_PRICE)
+        {
+            holder.priceText.setVisibility(View.GONE);
+
+        }
+        else
+        {
+            holder.priceText.setText(repairService.getPriceString());
+        }
+
         holder.locationTextView.setText(repairService.getLocation());
         holder.ratingBar.setRating(repairService.getRating());
 
@@ -81,6 +92,7 @@ public class RepairServiceAdapter extends RecyclerView.Adapter<RepairServiceAdap
         private TextView availableTextView;
         private TextView locationTextView;
         private TextView nameTextView;
+        private TextView priceText;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -90,6 +102,7 @@ public class RepairServiceAdapter extends RecyclerView.Adapter<RepairServiceAdap
             availableTextView= (TextView)itemView.findViewById(R.id.availableText);
             locationTextView = (TextView)itemView.findViewById(R.id.locationText);
             ratingBar = (RatingBar)itemView.findViewById(R.id.ratingbar);
+            priceText = (TextView)itemView.findViewById(R.id.priceText);
         }
 
     }

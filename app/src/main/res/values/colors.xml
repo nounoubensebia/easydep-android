@@ -6,11 +6,11 @@
     <color name="colorBlueGreen">#1976D2</color>
     <color name="colorGreen">#388E3C</color>
     <color name="colorYellow">#AFB42B</color>
-    <color name="colorBlue">#1da1f2</color>
-    <color name="backgroundColor">@color/colorBlueGreen</color>
+    <color name="colorBlue">#0078d7</color>
+    <color name="backgroundColor">@color/colorBlue</color>
     <color name="white">#FFF</color>
-    <color name="refresh_progress_1">#1da1f2</color>
-    <color name="refresh_progress_2">#1da1f2</color>
-    <color name="refresh_progress_3">#1da1f2</color>
+    <color name="refresh_progress_1">@color/colorBlue</color>
+    <color name="refresh_progress_2">@color/colorBlue</color>
+    <color name="refresh_progress_3">@color/colorBlue</color>
     <color name="green">@android:color/holo_green_dark</color>
 </resources>
