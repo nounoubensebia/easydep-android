@@ -6,6 +6,21 @@ package com.example.nouno.easydep;
 
 public class Position {
     private String locationName;
+    private double latitude;
+    private double longitude;
+
+    public Position(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
 
     public String getLocationName() {
         return locationName;

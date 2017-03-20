@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -31,6 +32,7 @@ public class QueryUtils {
     public static final String LOCAL_PASSWORD_FORGOTTEN_URL ="http://192.168.1.10/easydep-serveur/forgotten_password.php";
     public static final String LOCAL_GET_REPAIR_SERVICES_URL = "http://192.168.1.10/EasyDep/GetRepairServices.php";
     public static final String PUBLIC_GET_REPAIR_SERVICES_URL = "http://easydep.000webhostapp.com/GetRepairServices.php";
+    public static final String GET_PLACE_PREDICTIONS_URL ="https://maps.googleapis.com/maps/api/place/autocomplete/json?";
     public static final String CONNECTION_PROBLEM = "connection problem";
     // méthode qui envoi une requete et enregistre le résultat dans un String
     // param 1 est le string de l'url de la requete
@@ -90,6 +92,52 @@ public class QueryUtils {
             return response;
         }
     }
+
+    public static String makeHttpGetRequest(String urlString,Map<String,String> map)
+    {
+        urlString+=buildParametersString(map);
+        return makeHttpGetRequest(urlString);
+    }
+
+
+    public static String makeHttpGetRequest (String urlString)
+    {
+
+        String jsonResponse ="";
+        HttpURLConnection urlConnection = null;
+        InputStream inputStream = null;
+        try {
+            URL url = new URL(urlString);
+            urlConnection=(HttpURLConnection)url.openConnection();
+            urlConnection.setReadTimeout(15000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
+            if (urlConnection.getResponseCode()==200){
+                inputStream=urlConnection.getInputStream();
+                jsonResponse=readFromStream(inputStream);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (inputStream!=null)
+            {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (urlConnection!=null)
+            {
+                urlConnection.disconnect();
+            }
+
+            return jsonResponse;}
+    }
+
 
     //méthode pour construire les parametres a envoyer par POST ou GET
     //param est la liste des parametres
@@ -152,6 +200,16 @@ public class QueryUtils {
         Matcher matcher;
         matcher = pattern.matcher(name);
         return (matcher.matches()&&(name.length()>1));
+    }
+    public static LinkedHashMap<String,String> buildSearchSuggestionsParamsMap (String input)
+    {
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("input",input);
+        //map.put("types","geocode");
+        map.put("components","country:dz");
+        map.put("language","fr_FR");
+        map.put("key","AIzaSyAqQHxLWPTvFHDvz5WUwuNAjTa0UuSHbmk");
+        return map;
     }
 
 }

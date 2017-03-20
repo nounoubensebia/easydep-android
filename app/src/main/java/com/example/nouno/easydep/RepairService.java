@@ -94,10 +94,6 @@ public class RepairService {
             int dist = (int)distanceInKm;
             s=dist+"";
         }
-
-
-
-
         return (s+"KM");
     }
     public String getDurationString ()

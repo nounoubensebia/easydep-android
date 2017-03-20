@@ -52,6 +52,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private GoogleMap map;
     private int bottomMargin;
     private Filtre filtre;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -120,7 +121,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     mapBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     exit(listFab);
                     enter(mapFab);
-                    markCenter(36.708630, 3.212020);
+                    markCenter(new Position(36.708630, 3.212020));
                 }
             }
         });
@@ -157,6 +158,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             case R.id.filtres_menu:
                 Intent i = new Intent(getApplicationContext(),FiltresActivity.class);
                 startActivity(i);
+                return super.onOptionsItemSelected(item);
+
+            case R.id.app_bar_search:
+                Intent i2 = new Intent(getApplicationContext(),ManualSearchActivity.class);
+                startActivity(i2);
+                return super.onOptionsItemSelected(item);
+
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -258,11 +266,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 changeMargin(listFab,layoutParams.bottomMargin);
             }
         });
-        markCenter(36.708630, 3.212020);
+        markCenter(new Position(36.708630, 3.212020));
     }
 
-    public void markCenter (double centerLatitude,double centerLongitude)
+    public void markCenter (Position position)
     {
+        Double centerLatitude = position.getLatitude();
+        Double centerLongitude = position.getLongitude();
         LatLng centerauto=new LatLng(centerLatitude,centerLongitude);
         Marker marker = map.addMarker(new MarkerOptions().position(centerauto).title("Votre position").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
         marker.showInfoWindow();
@@ -277,7 +287,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             mapBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             exit(listFab);
             enter(mapFab);
-            markCenter(36.708630, 3.212020);
+            markCenter(new Position(36.708630, 3.212020));
         }
         else {
         super.onBackPressed();
