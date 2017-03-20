@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right|bottom"
         android:layout_margin="16dp"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorBlue"
         app:fabSize="normal"
         app:rippleColor="@android:color/white"
         app:srcCompat="@drawable/ic_map" />

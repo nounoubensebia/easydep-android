@@ -202,49 +202,71 @@ public class RepairService {
 
     }
 
-    public static ArrayList<RepairService> deleteNotAvailable (ArrayList<RepairService> repairServices)
+    public static void deleteNotAvailable (ArrayList<RepairService> repairServices)
     {
-        ArrayList<RepairService> availableRepairServices = new ArrayList<>();
-        for (RepairService repairService : repairServices)
+        for (int i=0;i<repairServices.size();i++)
         {
-            if (repairService.isAvailable())
+            RepairService repairService = repairServices.get(i);
+
+            if (!repairService.isAvailable())
             {
-                availableRepairServices.add(repairService);
+                repairServices.remove(repairService);
+                i--;
             }
         }
-        return availableRepairServices;
     }
 
-    public static ArrayList<RepairService> filtrePrice (int price,ArrayList<RepairService> repairServices)
+    public static void filtrePrice (int price,ArrayList<RepairService> repairServices)
     {
-        ArrayList<RepairService> availableRepairServices = new ArrayList<>();
-        for (RepairService repairService : repairServices)
+        for (int i=0;i<repairServices.size();i++)
         {
-            if (price > repairService.price)
+            RepairService repairService = repairServices.get(i);
+            Log.e("price",repairService.firstName+"   "+repairService.lastName+" "+repairService.price);
+            if (price < repairService.price)
             {
-                availableRepairServices.add(repairService);
+                repairServices.remove(repairService);
+                i--;
             }
         }
-        return availableRepairServices;
 
     }
 
-    public static ArrayList<RepairService> filtreRating (float rating,ArrayList<RepairService> repairServices)
+    public static void filtreRating (float rating,ArrayList<RepairService> repairServices)
     {
-        ArrayList<RepairService> availableRepairServices = new ArrayList<>();
-        for (RepairService repairService : repairServices)
+        //ArrayList<RepairService> availableRepairServices = new ArrayList<>();
+        for (int i=0;i<repairServices.size();i++)
         {
-            if (rating <= repairService.rating)
+            RepairService repairService = repairServices.get(i);
+            if (rating > repairService.rating)
             {
-                availableRepairServices.add(repairService);
+                repairServices.remove(repairService);
+                i--;
             }
         }
-        return availableRepairServices;
+        //repairServices = new ArrayList<>(availableRepairServices);
 
     }
 
     @Override
     public String toString() {
         return firstName+" "+lastName;
+    }
+
+    public static void applyFiltre (ArrayList<RepairService> repairServices,Filtre filtre)
+    {
+        switch (filtre.getSortingMethod())
+        {
+            case Filtre.SORT_BY_DISTANCE : sortByDistance(repairServices);
+                break;
+            case Filtre.SORT_BY_PRICE : sortByPrice(repairServices);
+                break;
+            case Filtre.SORT_BY_RATING : sortByRating(repairServices);
+        }
+        filtrePrice(filtre.getMaxPrice(),repairServices);
+        filtreRating(filtre.getMinRating(),repairServices);
+        if (!filtre.isShowNotAvailable())
+        {
+            deleteNotAvailable(repairServices);
+        }
     }
 }

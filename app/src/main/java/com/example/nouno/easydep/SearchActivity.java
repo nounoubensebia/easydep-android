@@ -1,8 +1,11 @@
 package com.example.nouno.easydep;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
@@ -30,6 +33,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -47,8 +51,14 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private BottomSheetBehavior infoBottomSheetBehaviour;
     private GoogleMap map;
     private int bottomMargin;
+    private Filtre filtre;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Gson gson = new Gson();
+        String defaultFiltreJson = gson.toJson(new Filtre());
+        String filtreJson = sharedPref.getString("filtre",defaultFiltreJson);
+        filtre = gson.fromJson(filtreJson,Filtre.class);
         bottomMargin = 416;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
@@ -120,7 +130,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         LinkedHashMap<String,String> linkedHashMap= new LinkedHashMap<String,String>();
         linkedHashMap.put("longitude","3.212020");
         linkedHashMap.put("latitude","36.708630");
-        linkedHashMap.put("radius","90000");
+        linkedHashMap.put("radius",filtre.getSearchRadius()*1000+"");
         searchForRepairServices(linkedHashMap);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -128,7 +138,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 LinkedHashMap<String,String> linkedHashMap= new LinkedHashMap<String,String>();
                 linkedHashMap.put("longitude","3.212020");
                 linkedHashMap.put("latitude","36.708630");
-                linkedHashMap.put("radius","90000");
+                linkedHashMap.put("radius",filtre.getSearchRadius()*1000+"");
                 searchForRepairServices(linkedHashMap);
             }
         });
@@ -421,8 +431,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         protected void onPostExecute(String s) {
             recyclerView = (RecyclerView)findViewById(R.id.repair_services_list);
             repairServices = RepairService.parseJson(s);
-            //repairServices = RepairService.filtreRating(3,repairServices);
-            //repairServices = RepairService.deleteNotAvailable(repairServices);
+            RepairService.applyFiltre(repairServices,filtre);
+           // RepairService.deleteNotAvailable(repairServices);
+
             RepairServiceAdapter adapter = new RepairServiceAdapter(repairServices, R.layout.repair_service_list_item);
             adapter.setOnItemClickListner(new OnItemClickListner() {
                 @Override

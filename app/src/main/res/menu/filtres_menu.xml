@@ -4,6 +4,6 @@
 
     <item
         android:title="Réinitialiser"
-
-        app:showAsAction="always" />
+        android:id="@+id/reset_filtres"
+        app:showAsAction= "always" />
 </menu>
