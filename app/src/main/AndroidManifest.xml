@@ -80,7 +80,7 @@
         <activity
             android:name=".FiltresActivity"
             android:label="Trier et filtrer"
-            android:parentActivityName=".SearchActivity"
+
             android:theme="@style/SignupTheme"></activity>
         <activity android:name=".ManualSearchActivity"
             android:label="Recherche"

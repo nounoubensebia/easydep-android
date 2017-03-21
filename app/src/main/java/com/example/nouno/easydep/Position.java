@@ -14,6 +14,12 @@ public class Position {
         this.longitude = longitude;
     }
 
+    public Position(String locationName, double latitude, double longitude) {
+        this.locationName = locationName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public double getLatitude() {
         return latitude;
     }
@@ -24,5 +30,9 @@ public class Position {
 
     public String getLocationName() {
         return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 }

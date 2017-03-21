@@ -18,6 +18,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <RelativeLayout
+        android:id="@+id/user_position_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
@@ -39,11 +40,12 @@
                 android:textSize="20sp" />
             <TextView
                 android:textSize="16sp"
+                android:id="@+id/user_position_text"
                 android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:layout_height="wrap_content"
-                android:text="Alger, Wilaya d'alger"/>
+                android:text="Localisation en cours"/>
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"

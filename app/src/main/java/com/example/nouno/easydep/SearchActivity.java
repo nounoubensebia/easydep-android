@@ -1,6 +1,5 @@
 package com.example.nouno.easydep;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -20,9 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,7 +38,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class SearchActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class SearchActivity extends AppCompatActivity implements OnMapReadyCallback{
     private RecyclerView recyclerView;
     private ArrayList<RepairService> repairServices;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -51,30 +50,32 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private BottomSheetBehavior infoBottomSheetBehaviour;
     private GoogleMap map;
     private int bottomMargin;
+    private Button searchButton;
     private Filtre filtre;
     private Position searchPosition;
+    private TextView noRepairServiceFoundTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+
         Gson gson = new Gson();
         String defaultFiltreJson = gson.toJson(new Filtre());
         String filtreJson = sharedPref.getString("filtre",defaultFiltreJson);
         filtre = gson.fromJson(filtreJson,Filtre.class);
-        Bundle extras = getIntent().getExtras();
-        if (extras!=null)
-        {
-            searchPosition = gson.fromJson(extras.getString("position"),Position.class);
-            Toast.makeText(getApplicationContext(),searchPosition.getLatitude()+" "+searchPosition.getLongitude(),Toast.LENGTH_LONG).show();
-        }
+
 
         bottomMargin = 416;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         repairServices = new ArrayList<>();
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refrech_layout);
-        swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.setRefreshing(false);
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,R.color.refresh_progress_2,R.color.refresh_progress_3);
+        noRepairServiceFoundTextView = (TextView)findViewById(R.id.no_repair_service_found);
+        noRepairServiceFoundTextView.setVisibility(View.GONE);
         mapBottomSheet = findViewById(R.id.map_bottom_sheet);
         mapBottomSheetBehavior = BottomSheetBehavior.from(mapBottomSheet);
         mapBottomSheetBehavior.setHideable(true);
@@ -84,7 +85,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         infoBottomSheetBehaviour = BottomSheetBehavior.from(infoBottomSheet);
         infoBottomSheetBehaviour.setHideable(true);
         infoBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
-
+        searchButton = (Button) findViewById(R.id.search_for_repair_services);
         infoBottomSheetBehaviour.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -129,7 +130,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     mapBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     exit(listFab);
                     enter(mapFab);
-                    markCenter(new Position(36.708630, 3.212020));
+                    //markCenter(new Position(36.708630, 3.212020));
                 }
             }
         });
@@ -137,13 +138,36 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        searchForRepairServices();
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                searchForRepairServices();
             }
         });
+        searchButton.setVisibility(View.GONE);
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null)
+        {
+
+            searchPosition = gson.fromJson(extras.getString("position"),Position.class);
+            //Toast.makeText(getApplicationContext(),searchPosition.getLatitude()+" "+searchPosition.getLongitude(),Toast.LENGTH_LONG).show();
+            searchForRepairServices();
+        }
+        else
+        {
+            searchButton.setVisibility(View.VISIBLE);
+            //googleApiClient.connect();
+        }
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i2 = new Intent(getApplicationContext(),ManualSearchActivity.class);
+                startActivity(i2);
+            }
+        });
+
     }
 
     @Override
@@ -158,11 +182,18 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         switch (item.getItemId()) {
             case R.id.filtres_menu:
                 Intent i = new Intent(getApplicationContext(),FiltresActivity.class);
+
+                Gson gson = new Gson();
+                if (searchPosition!=null){
+                String positionString = gson.toJson(searchPosition);
+                i.putExtra("position",positionString);}
                 startActivity(i);
                 return super.onOptionsItemSelected(item);
 
             case R.id.app_bar_search:
                 Intent i2 = new Intent(getApplicationContext(),ManualSearchActivity.class);
+
+
                 startActivity(i2);
                 return super.onOptionsItemSelected(item);
 
@@ -175,11 +206,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     public void searchForRepairServices ()
     {
         LinkedHashMap<String,String> map= new LinkedHashMap<String,String>();
-        map.put("longitude","3.212020");
-        map.put("latitude","36.708630");
+        map.put("longitude",Double.toString(searchPosition.getLongitude()));
+        map.put("latitude",Double.toString(searchPosition.getLatitude()));
         map.put("radius",filtre.getSearchRadius()*1000+"");
         SearchTask searchTask = new SearchTask();
         searchTask.execute(map);
+
     }
 
     public void enter (final View view)
@@ -271,7 +303,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 changeMargin(listFab,layoutParams.bottomMargin);
             }
         });
-        markCenter(new Position(36.708630, 3.212020));
+        //markCenter(new Position(36.708630, 3.212020));
     }
 
     public void markCenter (Position position)
@@ -292,7 +324,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             mapBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             exit(listFab);
             enter(mapFab);
-            markCenter(new Position(36.708630, 3.212020));
+            //markCenter(new Position(36.708630, 3.212020));
         }
         else {
         super.onBackPressed();
@@ -427,6 +459,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         protected void onPreExecute() {
             recyclerView = (RecyclerView)findViewById(R.id.repair_services_list);
             recyclerView.setVisibility(View.INVISIBLE);
+            swipeRefreshLayout.setRefreshing(true);
 
         }
 
@@ -456,6 +489,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     RepairService repairService = repairServices.get(position);
                     populateInfoBottomSheet(repairService);
                     markRepairServices(repairService,repairServices);
+                    LatLng latLng = new LatLng(repairService.getLatitude(),repairService.getLongitude());
+                    map.moveCamera((CameraUpdateFactory.newLatLngZoom(latLng,10)));
                     exitInfo(mapFab);
 
                 }
@@ -467,6 +502,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             recyclerView.setVisibility(View.VISIBLE);
             swipeRefreshLayout.setRefreshing(false);
             markRepairServices(repairServices);
+            markCenter(searchPosition);
+            if (repairServices.size()==0)
+            {
+                noRepairServiceFoundTextView.setVisibility(View.VISIBLE);
+            }
         }
     }
+
+
 }

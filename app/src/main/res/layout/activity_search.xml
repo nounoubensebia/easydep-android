@@ -6,11 +6,41 @@
     android:layout_height="match_parent"
 
     tools:context="com.example.nouno.easydep.SearchActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/backgroundColor"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:clickable="true"
+        android:drawableTop="@drawable/ic_sentiment_very_dissatisfied"
+        android:id="@+id/no_repair_service_found"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        android:text="@string/no_repair_services_found"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:layout_width="300dp"
+        android:textColor="@color/backgroundColor"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:clickable="true"
+        tools:visibility="gone"
+        android:drawableTop="@drawable/ic_blue_search"
+        android:id="@+id/search_for_repair_services"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        android:text="Rechercher des dépanneurs"
+        android:layout_height="wrap_content" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refrech_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -21,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical" />
+
 
         </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
@@ -57,7 +88,7 @@
         android:background="@android:color/white"
         android:clipToPadding="true"
         app:elevation="60dp"
-        tools:visibility="visible"
+        tools:visibility="gone"
         app:layout_behavior="com.example.nouno.easydep.WABottomSheetBehavior">
 
 
@@ -73,6 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
+        tools:visibility="gone"
         app:elevation="60dp"
         app:layout_behavior="com.example.nouno.easydep.WABottomSheetBehavior">
 

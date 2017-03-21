@@ -24,4 +24,5 @@
     <string name="mot_de_passe_change_avec_succes">Mot de passe changé. Veuillez vous connecter avec le nouveau mot de passe</string>
     <string name="cr_ez_un_nouveau_mot_de_passe">Créez un nouveau mot de passe</string>
     <string name="recherche_depanneur">Recherche de dépanneur</string>
+    <string name="no_repair_services_found">Aucun service de dépannage n\'a été trouvé veuillez modifier vos paramètres de recherche.</string>
 </resources>

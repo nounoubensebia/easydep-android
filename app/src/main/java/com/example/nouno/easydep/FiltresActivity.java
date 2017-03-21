@@ -137,8 +137,7 @@ public class FiltresActivity extends AppCompatActivity {
                 editor.putString("filtre",json);
                 editor.commit();
                 //editor.apply();
-                Intent i = new Intent(getApplicationContext(),SearchActivity.class);
-                startActivity(i);
+                startSearchActivity ();
             }
         });
         filtreUi(filtre);
@@ -158,6 +157,12 @@ public class FiltresActivity extends AppCompatActivity {
             case R.id.reset_filtres:
                 filtre = new Filtre();
                 filtreUi(filtre);
+                return super.onOptionsItemSelected(item);
+
+            case android.R.id.home :  onBackPressed();
+                return super.onOptionsItemSelected(item);
+
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -187,5 +192,16 @@ public class FiltresActivity extends AppCompatActivity {
             priceBar.setProgress(filtre.getMaxPrice()/100);
         }
         ratingBar.setRating(filtre.getMinRating());
+    }
+    public void startSearchActivity ()
+    {
+        Intent i = new Intent(getApplicationContext(),SearchActivity.class);
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null&&extras.containsKey("position"))
+        {
+
+            i.putExtra("position",extras.getString("position"));
+        }
+        startActivity(i);
     }
 }
