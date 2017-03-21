@@ -1,5 +1,6 @@
 package com.example.nouno.easydep;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -73,10 +79,34 @@ public class ManualSearchActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            ArrayList<SearchSuggestion> arrayList = SearchSuggestion.parseJson(s);
+            final ArrayList<SearchSuggestion> arrayList = SearchSuggestion.parseJson(s);
             SearchSuggestionAdapter searchSuggestionAdapter = new SearchSuggestionAdapter(manualSearchActivity,arrayList);
             listView.setDividerHeight(0);
             listView.setAdapter(searchSuggestionAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    GetPositionTask getPositionTask = new GetPositionTask();
+                    getPositionTask.execute(arrayList.get(position));
+                }
+            });
+        }
+    }
+
+    public class GetPositionTask extends AsyncTask<SearchSuggestion,Void,Position> {
+
+        @Override
+        protected Position doInBackground(SearchSuggestion... params) {
+            return (params[0].getPosition());
+        }
+
+        @Override
+        protected void onPostExecute(Position position) {
+            Gson gson = new Gson();
+            String positionJson = gson.toJson(position);
+            Intent i = new Intent(getApplicationContext(),SearchActivity.class);
+            i.putExtra("position",positionJson);
+            startActivity(i);
         }
     }
 

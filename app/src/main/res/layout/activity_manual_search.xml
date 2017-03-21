@@ -20,8 +20,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:layout_marginTop="16dp">
         <LinearLayout
+
             android:layout_marginLeft="16dp"
             android:orientation="vertical"
             android:layout_centerVertical="true"
@@ -66,6 +69,7 @@
     <ListView
         android:id="@+id/list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="true"></ListView>
 
 </LinearLayout>

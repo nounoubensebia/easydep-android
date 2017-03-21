@@ -33,6 +33,7 @@ public class QueryUtils {
     public static final String LOCAL_GET_REPAIR_SERVICES_URL = "http://192.168.1.10/EasyDep/GetRepairServices.php";
     public static final String PUBLIC_GET_REPAIR_SERVICES_URL = "http://easydep.000webhostapp.com/GetRepairServices.php";
     public static final String GET_PLACE_PREDICTIONS_URL ="https://maps.googleapis.com/maps/api/place/autocomplete/json?";
+    public static final String GET_PLACE_POSITION_URL = "https://maps.googleapis.com/maps/api/place/details/json?";
     public static final String CONNECTION_PROBLEM = "connection problem";
     // méthode qui envoi une requete et enregistre le résultat dans un String
     // param 1 est le string de l'url de la requete

@@ -52,6 +52,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private GoogleMap map;
     private int bottomMargin;
     private Filtre filtre;
+    private Position searchPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         String defaultFiltreJson = gson.toJson(new Filtre());
         String filtreJson = sharedPref.getString("filtre",defaultFiltreJson);
         filtre = gson.fromJson(filtreJson,Filtre.class);
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null)
+        {
+            searchPosition = gson.fromJson(extras.getString("position"),Position.class);
+            Toast.makeText(getApplicationContext(),searchPosition.getLatitude()+" "+searchPosition.getLongitude(),Toast.LENGTH_LONG).show();
+        }
+
         bottomMargin = 416;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
@@ -128,19 +136,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        LinkedHashMap<String,String> linkedHashMap= new LinkedHashMap<String,String>();
-        linkedHashMap.put("longitude","3.212020");
-        linkedHashMap.put("latitude","36.708630");
-        linkedHashMap.put("radius",filtre.getSearchRadius()*1000+"");
-        searchForRepairServices(linkedHashMap);
+
+        searchForRepairServices();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                LinkedHashMap<String,String> linkedHashMap= new LinkedHashMap<String,String>();
-                linkedHashMap.put("longitude","3.212020");
-                linkedHashMap.put("latitude","36.708630");
-                linkedHashMap.put("radius",filtre.getSearchRadius()*1000+"");
-                searchForRepairServices(linkedHashMap);
+               searchForRepairServices();
             }
         });
     }
@@ -171,8 +172,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    public void searchForRepairServices (Map<String,String> map)
+    public void searchForRepairServices ()
     {
+        LinkedHashMap<String,String> map= new LinkedHashMap<String,String>();
+        map.put("longitude","3.212020");
+        map.put("latitude","36.708630");
+        map.put("radius",filtre.getSearchRadius()*1000+"");
         SearchTask searchTask = new SearchTask();
         searchTask.execute(map);
     }
