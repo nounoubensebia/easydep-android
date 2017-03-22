@@ -54,8 +54,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private Filtre filtre;
     private Position searchPosition;
     private TextView noRepairServiceFoundTextView;
-
-
+    private Button mapRefrechButton;
+    private boolean mapMarked = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -70,6 +70,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         bottomMargin = 416;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        mapRefrechButton = (Button)findViewById(R.id.refrech_Button);
         repairServices = new ArrayList<>();
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refrech_layout);
         swipeRefreshLayout.setRefreshing(false);
@@ -116,6 +117,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     CoordinatorLayout.LayoutParams maplayoutParams = (CoordinatorLayout.LayoutParams) mapFab.getLayoutParams();
                     CoordinatorLayout.LayoutParams listlayoutParams = (CoordinatorLayout.LayoutParams) listFab.getLayoutParams();
                     listlayoutParams.bottomMargin=maplayoutParams.bottomMargin;
+                    markCenter(searchPosition,true);
+                    moveMapCamera(searchPosition);
                     exit(mapFab);
                     enter(listFab);
                 }
@@ -145,6 +148,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                searchForRepairServices();
             }
         });
+        mapRefrechButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchForRepairServices();
+            }
+        });
         searchButton.setVisibility(View.GONE);
         Bundle extras = getIntent().getExtras();
         if (extras!=null)
@@ -157,6 +166,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         else
         {
             searchButton.setVisibility(View.VISIBLE);
+            mapFab.setVisibility(View.GONE);
             //googleApiClient.connect();
         }
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -306,13 +316,23 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         //markCenter(new Position(36.708630, 3.212020));
     }
 
-    public void markCenter (Position position)
+    public void markCenter (Position position,boolean showInfoWindow)
     {
+        mapMarked = true;
         Double centerLatitude = position.getLatitude();
         Double centerLongitude = position.getLongitude();
         LatLng centerauto=new LatLng(centerLatitude,centerLongitude);
         Marker marker = map.addMarker(new MarkerOptions().position(centerauto).title("Votre position").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        if (showInfoWindow)
         marker.showInfoWindow();
+        //map.moveCamera((CameraUpdateFactory.newLatLngZoom(centerauto,10)));
+    }
+
+    public void moveMapCamera (Position position)
+    {
+        Double centerLatitude = position.getLatitude();
+        Double centerLongitude = position.getLongitude();
+        LatLng centerauto=new LatLng(centerLatitude,centerLongitude);
         map.moveCamera((CameraUpdateFactory.newLatLngZoom(centerauto,10)));
     }
 
@@ -370,6 +390,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     public void markRepairServices (ArrayList<RepairService> repairServices)
     {
+        mapMarked = true;
         for (int i=0;i<repairServices.size();i++)
         {
             RepairService repairService = repairServices.get(i);
@@ -377,26 +398,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             Marker marker=map.addMarker(new MarkerOptions().position(latLng).title(repairService.getFirstName()+" "+repairService.getLastName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             marker.setTag(repairService);
         }
-        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                if (marker.getTag()!=null)
-                {
-                    populateInfoBottomSheet((RepairService)marker.getTag());
-                    if (infoBottomSheetBehaviour.getState() == BottomSheetBehavior.STATE_HIDDEN)
-                    {
-                        exit(listFab);
-                        infoBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    }
-                }
-                return false;
-            }
-        });
-
+        setMapMarkersListeners();
 
     }
     public void markRepairServices (RepairService selectedRepairService,ArrayList<RepairService> repairServices)
     {
+        mapMarked = true;
         for (int i=0;i<repairServices.size();i++)
         {
             RepairService repairService = repairServices.get(i);
@@ -408,6 +415,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             }
             marker.setTag(repairService);
         }
+        setMapMarkersListeners();
+
+    }
+
+    public void setMapMarkersListeners()
+    {
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -457,6 +470,18 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     {
         @Override
         protected void onPreExecute() {
+            if (mapMarked)
+            {
+                map.clear();
+                mapMarked = false;
+                markCenter(searchPosition,false);
+                infoBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)mapFab.getLayoutParams();
+                CoordinatorLayout.LayoutParams layoutParams1 = (CoordinatorLayout.LayoutParams)listFab.getLayoutParams();
+                if (layoutParams1.bottomMargin!=layoutParams.bottomMargin)
+                changeMargin(listFab,layoutParams.bottomMargin);
+            }
+            mapRefrechButton.setVisibility(View.GONE);
             recyclerView = (RecyclerView)findViewById(R.id.repair_services_list);
             recyclerView.setVisibility(View.INVISIBLE);
             swipeRefreshLayout.setRefreshing(true);
@@ -465,6 +490,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
         @Override
         protected String doInBackground(Map<String, String>... params) {
+
+
+
             String answer=null;
             try {
                 answer = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_GET_REPAIR_SERVICES_URL,params[0]);
@@ -477,6 +505,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
         @Override
         protected void onPostExecute(String s) {
+            mapRefrechButton.setVisibility(View.VISIBLE);
             recyclerView = (RecyclerView)findViewById(R.id.repair_services_list);
             repairServices = RepairService.parseJson(s);
             RepairService.applyFiltre(repairServices,filtre);
@@ -502,7 +531,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             recyclerView.setVisibility(View.VISIBLE);
             swipeRefreshLayout.setRefreshing(false);
             markRepairServices(repairServices);
-            markCenter(searchPosition);
+            //moveMapCamera(searchPosition);
             if (repairServices.size()==0)
             {
                 noRepairServiceFoundTextView.setVisibility(View.VISIBLE);

@@ -9,6 +9,6 @@
         android:icon="@drawable/ic_search_black_24dp"
         android:title="Search"
         app:showAsAction="ifRoom" />
-    <item android:title="Filter et trier"
+    <item android:title="Trier et filtrer"
         android:id="@+id/filtres_menu"/>
 </menu>

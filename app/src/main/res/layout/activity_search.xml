@@ -88,7 +88,7 @@
         android:background="@android:color/white"
         android:clipToPadding="true"
         app:elevation="60dp"
-        tools:visibility="gone"
+        tools:visibility="visible"
         app:layout_behavior="com.example.nouno.easydep.WABottomSheetBehavior">
 
 
@@ -97,6 +97,23 @@
             android:name="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        <Button
+            android:id="@+id/refrech_Button"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textSize="12sp"
+            android:textColor="@color/backgroundColor"
+            android:background="@drawable/rounded_button"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal|top"
+            android:drawableLeft="@drawable/ic_refresh_blue"
+            android:text="Actualiser"/>
+        <ProgressBar
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_height="30dp" />
 
     </android.support.design.widget.CoordinatorLayout>
     <android.support.design.widget.CoordinatorLayout

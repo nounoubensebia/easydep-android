@@ -4,8 +4,8 @@
       <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.2.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/1e6d4927534d044f0d10974536437476195db0d2/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/1e6d4927534d044f0d10974536437476195db0d2/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/56ff63f2068439d84994c7795c8ea5b3833f1628/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/56ff63f2068439d84994c7795c8ea5b3833f1628/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
