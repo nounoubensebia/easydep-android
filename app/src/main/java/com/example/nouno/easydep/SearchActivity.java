@@ -507,6 +507,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             {
                 noRepairServiceFoundTextView.setVisibility(View.VISIBLE);
             }
+            else
+            {
+                noRepairServiceFoundTextView.setVisibility(View.GONE);
+            }
         }
     }
 
