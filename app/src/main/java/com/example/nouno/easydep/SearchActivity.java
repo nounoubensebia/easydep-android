@@ -22,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -83,6 +84,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         mapBottomSheetBehavior.setSkipCollapsed(true);
         mapBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         infoBottomSheet = findViewById(R.id.bottomInfo);
+        infoBottomSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(),"haha",Toast.LENGTH_LONG).show();
+            }
+        });
         infoBottomSheetBehaviour = BottomSheetBehavior.from(infoBottomSheet);
         infoBottomSheetBehaviour.setHideable(true);
         infoBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
