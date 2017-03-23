@@ -1,6 +1,7 @@
 package com.example.nouno.easydep;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -16,7 +17,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -29,11 +32,14 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class RepairServiceInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
     private RepairService repairService;
     private TextView toolBarDurationText;
     private GoogleMap map;
+    private ArrayList<UserComment> userComments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +56,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        ArrayList<UserComment> userComments = new ArrayList<>();
+        /*userComments = new ArrayList<>();
         CarOwner carOwner = new CarOwner(1,"Noureddine","Bensebia");
         CarOwner carOwner1 = new CarOwner(2,"Meriem","Bensebia");
         CarOwner carOwner2 = new CarOwner(3,"Thomas","Muller");
@@ -58,7 +64,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         userComments.add(new UserComment(carOwner,4,"tres bon dépanneur",date,false));
         userComments.add(new UserComment(carOwner1,1,"Y3ayi bezzaf bezzaf -_-",date,false));
         userComments.add(new UserComment(carOwner2,5,"Service excellent rien a dire",date,false));
-        populateCommentList(userComments);
+        populateCommentList(userComments);*/
 
 
     }
@@ -126,6 +132,11 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
             availableText.setText("Occupé");
             availableText.setTextColor(Color.parseColor("#F44336"));
         }
+        LinkedHashMap<String,String> map = new LinkedHashMap();
+        map.put("repairServiceId",repairService.getId()+"");
+        map.put("carOwnerId","1");
+        GetCommentsTask getCommentsTask = new GetCommentsTask();
+        getCommentsTask.execute(map);
     }
 
     public void populateCommentList (ArrayList<UserComment> comments)
@@ -169,4 +180,29 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         listView.setLayoutParams(par);
         listView.requestLayout();
     }
+
+    private class GetCommentsTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            userComments = UserComment.parseJson(s);
+            populateCommentList(userComments);
+            Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+        }
+    }
+
+
 }

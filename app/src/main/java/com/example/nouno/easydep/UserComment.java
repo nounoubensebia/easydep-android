@@ -1,5 +1,10 @@
 package com.example.nouno.easydep;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -44,5 +49,32 @@ public class UserComment {
 
     public boolean isFromConnectedUser() {
         return fromConnectedUser;
+    }
+
+    public static ArrayList<UserComment> parseJson (String json)
+    {
+        ArrayList<UserComment> userComments = new ArrayList<>();
+        try {
+            JSONArray jsonArray = new JSONArray(json);
+            for (int i=0;i<jsonArray.length();i++)
+            {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                JSONObject carOwnerJson = jsonObject.getJSONObject("car_owner");
+                String firstName = carOwnerJson.getString("first_name");
+                String lastName = carOwnerJson.getString("last_name");
+                long id = carOwnerJson.getLong("id");
+                CarOwner carOwner = new CarOwner(id,firstName,lastName);
+                String commentText = jsonObject.getString("comment_text");
+                long time = jsonObject.getLong("time");
+                Date date = new Date(time*1000);
+                boolean fromConnectedUser = jsonObject.getBoolean("from_connected_user");
+                int rating = jsonObject.getInt("rating");
+                userComments.add(new UserComment(carOwner,rating,commentText,date,fromConnectedUser));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return userComments;
     }
 }
