@@ -1,16 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="SearchTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#0078d7</item>
+        <item name="colorPrimaryDark">#0063ad</item>
+        <item name="colorAccent">#FFF</item>
+    </style>
+
+    <style name="InfoTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#0078d7</item>
         <item name="colorPrimaryDark">#0063ad</item>
         <item name="colorAccent">@color/colorBlue</item>
     </style>
+
     <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@android:color/transparent</item>
         <item name="colorPrimaryDark">@color/backgroundColor</item>
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/backgroundColor</item>
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/backgroundColor
+        </item>
         <item name="colorAccent">#FFF</item>
 
         <item name="android:colorControlActivated" tools:targetApi="lollipop">#FFFF</item>
@@ -22,6 +31,7 @@
         <item name="android:textColorPrimaryDisableOnly">#FFF</item>
         <item name="android:colorButtonNormal" tools:targetApi="lollipop">#FFF</item>
     </style>
+
     <style name="SignupTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@android:color/transparent</item>
         <item name="colorPrimaryDark">@color/backgroundColor</item>
@@ -33,7 +43,6 @@
         <item name="android:colorControlHighlight" tools:targetApi="lollipop">#FFF</item>
         <item name="android:colorControlNormal" tools:targetApi="lollipop">#FFF</item>
     </style>
-
 
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -49,10 +58,19 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">italic</item>
     </style>
+
     <style name="ErrorTextApp" parent="TextAppearance.Design.Error">
         <item name="android:textColor">@android:color/holo_red_light</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

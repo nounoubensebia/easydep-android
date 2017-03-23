@@ -70,19 +70,15 @@
         <activity
             android:name=".SearchActivity"
             android:label="@string/recherche_depanneur"
-            android:theme="@style/SearchTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:theme="@style/InfoTheme">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".FiltresActivity"
             android:label="Trier et filtrer"
-
-            android:theme="@style/SignupTheme"></activity>
-        <activity android:name=".ManualSearchActivity"
+            android:theme="@style/SignupTheme" />
+        <activity
+            android:name=".ManualSearchActivity"
             android:label="Recherche"
             android:theme="@style/SignupTheme">
             <meta-data
@@ -91,6 +87,16 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".RepairServiceInfoActivity"
+            android:label="@string/title_activity_repair_service_info"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

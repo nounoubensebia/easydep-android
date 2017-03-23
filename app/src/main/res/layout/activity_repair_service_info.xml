@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.example.nouno.easydep.RepairServiceInfoActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="372dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_collapseMode="parallax">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/map"
+                        android:name="com.google.android.gms.maps.MapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="232dp" />
+
+                    <LinearLayout
+                        android:id="@+id/layo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/map"
+                        android:background="@color/backgroundColor"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/nameText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Test El Harach"
+                            android:textColor="@color/white"
+                            android:textSize="32sp" />
+                        <RatingBar
+                            android:id="@+id/toolbar_ratingbar"
+                            style="?ratingBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp" />
+                        <TextView
+                            android:id="@+id/toolbar_duration_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:text="a 12 minutes de route"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/distance_circle"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:layout_margin="16dp"
+                    app:layout_anchor="@id/layo"
+                    app:layout_anchorGravity="top|right">
+
+                    <ImageView
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:background="@drawable/white_circle" />
+
+                    <TextView
+                        android:id="@+id/toolbar_distanceText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="12KM"
+                        android:textAlignment="center"
+                        android:textColor="@color/backgroundColor"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+
+            </android.support.design.widget.CoordinatorLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_repair_service_info" />
+
+
+</android.support.design.widget.CoordinatorLayout>
