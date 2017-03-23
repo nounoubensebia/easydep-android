@@ -71,6 +71,11 @@
             android:name=".SearchActivity"
             android:label="@string/recherche_depanneur"
             android:theme="@style/InfoTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
         <activity
@@ -93,11 +98,7 @@
             android:name=".RepairServiceInfoActivity"
             android:label="@string/title_activity_repair_service_info"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

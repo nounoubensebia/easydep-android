@@ -84,12 +84,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         mapBottomSheetBehavior.setSkipCollapsed(true);
         mapBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         infoBottomSheet = findViewById(R.id.bottomInfo);
-        infoBottomSheet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(),"haha",Toast.LENGTH_LONG).show();
-            }
-        });
+
         infoBottomSheetBehaviour = BottomSheetBehavior.from(infoBottomSheet);
         infoBottomSheetBehaviour.setHideable(true);
         infoBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -358,7 +353,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    public void populateInfoBottomSheet (RepairService repairService)
+    public void populateInfoBottomSheet (final RepairService repairService)
     {
         TextView distanceText = (TextView)findViewById(R.id.distanceTextInfo);
         TextView nameText = (TextView)findViewById(R.id.nameTextInfo);
@@ -393,6 +388,16 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             availableTextView.setTextColor(Color.parseColor("#F44336"));
             availableTextView.setText("Occupé");
         }
+        infoBottomSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Gson gson = new Gson();
+                String json = gson.toJson(repairService);
+                Intent i = new Intent(getApplicationContext(),RepairServiceInfoActivity.class);
+                i.putExtra("repairService",json);
+                startActivity(i);
+            }
+        });
     }
 
     public void markRepairServices (ArrayList<RepairService> repairServices)

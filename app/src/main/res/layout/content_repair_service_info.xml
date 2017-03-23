@@ -9,207 +9,238 @@
     <!--tools:showIn="@layout/activity_repair_service_info">-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-
-
-
-    <LinearLayout
-        tools:visibility="gone"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
 
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_local_phone_32_8p"
-            android:gravity="center"
-            android:text="APPELER"
-            android:textColor="@color/backgroundColor" />
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            tools:visibility="gone">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_add_32_8p"
-            android:gravity="center"
-            android:text="ENREGISTRER"
-            android:textColor="@color/backgroundColor" />
+            <TextView
+                android:id="@+id/call_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_local_phone_32_8p"
+                android:gravity="center"
+                android:text="APPELER"
+                android:textColor="@color/backgroundColor" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_empty_mail_32_8p"
-            android:gravity="center"
-            android:text="DEPANNAGE"
-            android:textColor="@color/backgroundColor" />
-    </LinearLayout>
-    <View
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#F1F1F1"/>
-        <TextView
-            tools:visibility="gone"
-            android:gravity="center"
-            android:drawablePadding="8dp"
-            android:layout_marginLeft="16dp"
-            android:drawableLeft="@drawable/ic_location_32_8p"
-            android:textColor="@android:color/background_dark"
-            android:layout_width="wrap_content"
-            android:text="El Mohamadia, Alger"
-            android:layout_height="wrap_content" />
-        <TextView
-        android:gravity="center"
-        android:drawablePadding="8dp"
-            tools:visibility="gone"
-        android:layout_marginLeft="16dp"
-        android:drawableLeft="@drawable/ic_local_phone_32_8p"
-        android:textColor="@android:color/background_dark"
-        android:layout_width="wrap_content"
-        android:text="021 21 26 20"
-        android:layout_height="wrap_content"/>
-        <TextView
-            tools:visibility="gone"
-            android:gravity="center"
-            android:drawablePadding="8dp"
-            android:layout_marginLeft="16dp"
-            android:drawableLeft="@drawable/ic_time_32_8p"
-            android:textColor="@android:color/background_dark"
-            android:layout_width="wrap_content"
-            android:text="a 12 minutes de route"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:gravity="center"
-            android:drawablePadding="8dp"
-            android:layout_marginLeft="16dp"
-            android:drawableLeft="@drawable/ic_busy_32_8p"
-            android:layout_width="wrap_content"
-            android:text="Occupé"
-            android:textColor="#F44336"
-            android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/save_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_add_32_8p"
+                android:gravity="center"
+                android:text="ENREGISTRER"
+                android:textColor="@color/backgroundColor" />
+
+            <TextView
+                android:id="@+id/ask_for_repair_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_empty_mail_32_8p"
+                android:gravity="center"
+                android:text="DEPANNAGE"
+                android:textColor="@color/backgroundColor" />
+        </LinearLayout>
+
         <View
-            tools:visibility="visible"
-            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#F1F1F1"/>
-        <TextView
+            android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
-            android:textColor="@android:color/background_dark"
+            android:background="#F1F1F1" />
+
+        <TextView
+            android:id="@+id/locationText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:layout_marginLeft="16dp"
-            android:text="Résumé des avis"/>
-        <LinearLayout
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="32dp"
+            android:drawableLeft="@drawable/ic_location_32_8p"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="El Mohamadia, Alger"
+            android:textColor="@android:color/background_dark"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/phone_number_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:drawableLeft="@drawable/ic_local_phone_32_8p"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="021 21 26 20"
+            android:textColor="@android:color/background_dark"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/durationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:drawableLeft="@drawable/ic_time_32_8p"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="a 12 minutes de route"
+            android:textColor="@android:color/background_dark"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/availableText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:drawableLeft="@drawable/ic_busy_32_8p"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="Occupé"
+            android:textColor="@android:color/holo_green_dark" />
+
+        <View
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="#F1F1F1"
+            tools:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Résumé des avis"
+            android:textColor="@android:color/background_dark"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
+
                 <TextView
-                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/rating_text"
                     android:layout_width="wrap_content"
-                    android:textColor="@android:color/holo_orange_dark"
-                    android:textSize="56sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:text="3,5"
-                    android:layout_height="wrap_content" />
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:textSize="56sp" />
+
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:text="Note"
                     android:textColor="@android:color/holo_orange_dark"
-                    android:textSize="16sp"
-                    android:text="Note"/>
+                    android:textSize="16sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
+
                 <TextView
-                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/rating_number"
                     android:layout_width="wrap_content"
-                    android:textColor="@android:color/holo_orange_dark"
-                    android:textSize="56sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:text="32"
-                    android:layout_height="wrap_content" />
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:textSize="56sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:text="Avis"
                     android:textColor="@android:color/holo_orange_dark"
-                    android:textSize="16sp"
-                    android:text="Avis"/>
+                    android:textSize="16sp" />
             </LinearLayout>
 
 
         </LinearLayout>
+
         <View
-            tools:visibility="visible"
-            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#F1F1F1"/>
+            android:layout_marginTop="4dp"
+            android:background="#F1F1F1"
+            tools:visibility="visible" />
+
         <ImageView
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_person_48_8p"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_person_48_8p" />
+
         <TextView
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/background_dark"
-            android:text="Donner une note et un avis"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="Donner une note et un avis"
+            android:textColor="@android:color/background_dark" />
+
         <TextView
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Racontez votre experience avec ce dépanneur"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="Racontez votre experience avec ce dépanneur" />
+
         <RatingBar
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:id="@+id/user_rating_bar"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_height="wrap_content" />
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp" />
+
         <View
-            tools:visibility="visible"
-            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#F1F1F1"/>
+            android:layout_marginTop="4dp"
+            android:background="#F1F1F1"
+            tools:visibility="visible" />
+
         <TextView
-            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
-            android:textSize="16sp"
-            android:textColor="@android:color/background_dark"
-            android:layout_width="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Avis des utilisateurs"
-            android:layout_height="wrap_content" />
+            android:textColor="@android:color/background_dark"
+            android:textSize="16sp" />
 
         <ListView
             android:id="@+id/comments_list"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

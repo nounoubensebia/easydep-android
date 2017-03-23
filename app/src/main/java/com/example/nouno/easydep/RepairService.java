@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 public class RepairService extends Person {
     private String location;
+    private String phoneNumber;
+
     private boolean available;
     private int duration;
     private double distance;
@@ -25,8 +27,9 @@ public class RepairService extends Person {
     private int price;
     public static final int NO_PRICE = 99999;
 
-    public RepairService(String firstName, String lastName, String location, boolean available, int duration, double distance,double latitude,double longitude,float rating,int price) {
-        super(firstName,lastName);
+    public RepairService(long id,String firstName, String lastName, String location, boolean available, int duration, double distance,double latitude,double longitude,float rating,int price,String phoneNumber) {
+        super(id,firstName,lastName);
+        this.phoneNumber = phoneNumber;
         this.location = location;
         this.available = available;
         this.duration = duration;
@@ -74,6 +77,10 @@ public class RepairService extends Person {
         return distance;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     public String getDistanceString ()
     {
         double distanceInKm = distance/1000;
@@ -113,13 +120,15 @@ public class RepairService extends Person {
                 int distance = jsonObject.getInt("distance");
                 float rating = (float)jsonObject.getDouble("rating");
                 boolean available = jsonObject.getBoolean("available");
+                long id = jsonObject.getLong("id");
+                String phoneNumber = jsonObject.getString("phone_number");
                 int price = NO_PRICE;
                 if (!jsonObject.isNull("price"))
                 {
                     price = jsonObject.getInt("price");
                 }
 
-                RepairService repairService = new RepairService(firstname,lastname,location,available,duration,distance,latitude,longitude,rating,price);
+                RepairService repairService = new RepairService(id,firstname,lastname,location,available,duration,distance,latitude,longitude,rating,price,phoneNumber);
                 repairServices.add(repairService);
             }
         } catch (JSONException e) {

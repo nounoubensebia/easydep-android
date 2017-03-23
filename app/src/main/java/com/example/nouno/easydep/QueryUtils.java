@@ -30,7 +30,7 @@ public class QueryUtils {
     public static final String PUBLIC_LOGIN_URL = "https://easydep.000webhostapp.com/login.php";
     public static final String PUBLIC_TEST_URL ="http://easydep.000webhostapp.com/test.php";
     public static final String LOCAL_PASSWORD_FORGOTTEN_URL ="http://192.168.1.10/easydep-serveur/forgotten_password.php";
-    public static final String LOCAL_GET_REPAIR_SERVICES_URL = "https://easydep.000webhostapp.com/GetRepairServices.php";
+    public static final String LOCAL_GET_REPAIR_SERVICES_URL = "http://192.168.1.3/EasyDep/GetRepairServices.php";
     public static final String PUBLIC_GET_REPAIR_SERVICES_URL = "http://easydep.000webhostapp.com/GetRepairServices.php";
     public static final String GET_PLACE_PREDICTIONS_URL ="https://maps.googleapis.com/maps/api/place/autocomplete/json?";
     public static final String GET_PLACE_POSITION_URL = "https://maps.googleapis.com/maps/api/place/details/json?";

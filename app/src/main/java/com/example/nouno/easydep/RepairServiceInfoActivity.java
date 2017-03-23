@@ -1,5 +1,6 @@
 package com.example.nouno.easydep;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,8 +37,10 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        repairService = new RepairService("Test","EL harach","EL mohamadia, Alger",true,
-        1000,10000,36.675442,3.077989,3,100);
+        repairService = new RepairService(23,"Test","EL harach","EL mohamadia, Alger",true,
+        1000,10000,36.675442,3.077989,3,100,"1291873");
+        Gson gson = new Gson();
+        repairService = gson.fromJson(getIntent().getExtras().getString("repairService"),RepairService.class);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repair_service_info);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -45,16 +49,11 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         hideTitleText();
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        /*ArrayList<String> comments = new ArrayList<>();
-        comments.add("hahaha");
-        comments.add("bababa");
-        comments.add("sasasa");
-        comments.add("dadada");
-        populateCommentList(comments);*/
+
         ArrayList<UserComment> userComments = new ArrayList<>();
-        CarOwner carOwner = new CarOwner("Noureddine","Bensebia");
-        CarOwner carOwner1 = new CarOwner("Meriem","Bensebia");
-        CarOwner carOwner2 = new CarOwner("Thomas","Muller");
+        CarOwner carOwner = new CarOwner(1,"Noureddine","Bensebia");
+        CarOwner carOwner1 = new CarOwner(2,"Meriem","Bensebia");
+        CarOwner carOwner2 = new CarOwner(3,"Thomas","Muller");
         Date date = new Date(1490238425);
         userComments.add(new UserComment(carOwner,4,"tres bon dépanneur",date,false));
         userComments.add(new UserComment(carOwner1,1,"Y3ayi bezzaf bezzaf -_-",date,false));
@@ -94,15 +93,39 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
     private void displayRepairServiceData ()
     {
+
         TextView toolBarDistanceText;
         TextView toolBarNameText;
+        TextView toolbarTimeText;
         RatingBar ratingBar;
+        TextView locationText;
+        TextView phoneText;
+        TextView timeText;
+        TextView availableText;
         toolBarDistanceText = (TextView)findViewById(R.id.toolbar_distanceText);
         toolBarNameText = (TextView)findViewById(R.id.nameText);
+        toolbarTimeText = (TextView)findViewById(R.id.toolbar_duration_text);
+        locationText = (TextView)findViewById(R.id.locationText);
+        phoneText = (TextView)findViewById(R.id.phone_number_text);
+        timeText = (TextView)findViewById(R.id.durationText);
         ratingBar = (RatingBar)findViewById(R.id.toolbar_ratingbar);
+        availableText = (TextView)findViewById(R.id.availableText);
         toolBarDistanceText.setText(repairService.getDistanceString());
         toolBarNameText.setText(repairService.getFirstName()+" "+repairService.getLastName());
         ratingBar.setRating(repairService.getRating());
+        toolbarTimeText.setText(repairService.getDurationString());
+        locationText.setText(repairService.getLocation());
+        phoneText.setText(repairService.getPhoneNumber());
+        timeText.setText(repairService.getDurationString());
+        if (repairService.isAvailable())
+        {
+            availableText.setText("Disponible");
+        }
+        else
+        {
+            availableText.setText("Occupé");
+            availableText.setTextColor(Color.parseColor("#F44336"));
+        }
     }
 
     public void populateCommentList (ArrayList<UserComment> comments)
