@@ -6,8 +6,13 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -19,6 +24,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class RepairServiceInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
     private RepairService repairService;
@@ -37,6 +45,23 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         hideTitleText();
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        /*ArrayList<String> comments = new ArrayList<>();
+        comments.add("hahaha");
+        comments.add("bababa");
+        comments.add("sasasa");
+        comments.add("dadada");
+        populateCommentList(comments);*/
+        ArrayList<UserComment> userComments = new ArrayList<>();
+        CarOwner carOwner = new CarOwner("Noureddine","Bensebia");
+        CarOwner carOwner1 = new CarOwner("Meriem","Bensebia");
+        CarOwner carOwner2 = new CarOwner("Thomas","Muller");
+        Date date = new Date(1490238425);
+        userComments.add(new UserComment(carOwner,4,"tres bon dépanneur",date,false));
+        userComments.add(new UserComment(carOwner1,1,"Y3ayi bezzaf bezzaf -_-",date,false));
+        userComments.add(new UserComment(carOwner2,5,"Service excellent rien a dire",date,false));
+        populateCommentList(userComments);
+
+
     }
 
     public void hideTitleText()
@@ -80,6 +105,14 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         ratingBar.setRating(repairService.getRating());
     }
 
+    public void populateCommentList (ArrayList<UserComment> comments)
+    {
+        ListView listView = (ListView)findViewById(R.id.comments_list);
+        UserCommentAdapter userCommentAdapter = new UserCommentAdapter(this,comments);
+        listView.setAdapter(userCommentAdapter);
+        justifyListViewHeightBasedOnChildren(listView);
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map=googleMap;
@@ -92,5 +125,25 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         Marker marker1 = map.addMarker(new MarkerOptions().position(centerauto).title("Votre position").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
         map.moveCamera((CameraUpdateFactory.newLatLngZoom(centerauto,12)));
 
+    }
+    public void justifyListViewHeightBasedOnChildren (ListView listView) {
+
+        ListAdapter adapter = listView.getAdapter();
+
+        if (adapter == null) {
+            return;
+        }
+        ViewGroup vg = listView;
+        int totalHeight = 0;
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View listItem = adapter.getView(i, null, vg);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams par = listView.getLayoutParams();
+        par.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
+        listView.setLayoutParams(par);
+        listView.requestLayout();
     }
 }

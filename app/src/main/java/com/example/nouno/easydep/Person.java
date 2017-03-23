@@ -5,10 +5,14 @@ package com.example.nouno.easydep;
  */
 
 public class Person {
-    private String lastName,firstName;
+    private String firstName,lastName;
     private String email;
     private Position position;
 
+    public Person(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     public String getLastName() {
         return lastName;

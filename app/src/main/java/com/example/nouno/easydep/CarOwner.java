@@ -6,4 +6,7 @@ package com.example.nouno.easydep;
 
 public class CarOwner extends Person {
 
+    public CarOwner(String firstName, String lastName) {
+        super(firstName,lastName);
+    }
 }

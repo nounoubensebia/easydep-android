@@ -14,8 +14,8 @@ import java.util.ArrayList;
  * Created by nouno on 02/03/2017.
  */
 
-public class RepairService {
-    private String firstName,lastName,location;
+public class RepairService extends Person {
+    private String location;
     private boolean available;
     private int duration;
     private double distance;
@@ -26,8 +26,7 @@ public class RepairService {
     public static final int NO_PRICE = 99999;
 
     public RepairService(String firstName, String lastName, String location, boolean available, int duration, double distance,double latitude,double longitude,float rating,int price) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        super(firstName,lastName);
         this.location = location;
         this.available = available;
         this.duration = duration;
@@ -50,13 +49,7 @@ public class RepairService {
         return longitude;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
 
-    public String getLastName() {
-        return lastName;
-    }
 
     public int getPrice() {
         return price;
@@ -217,7 +210,7 @@ public class RepairService {
         for (int i=0;i<repairServices.size();i++)
         {
             RepairService repairService = repairServices.get(i);
-            Log.e("price",repairService.firstName+"   "+repairService.lastName+" "+repairService.price);
+            Log.e("price",repairService.getFirstName()+"   "+repairService.getLastName()+" "+repairService.price);
             if (price < repairService.price)
             {
                 repairServices.remove(repairService);
@@ -245,7 +238,7 @@ public class RepairService {
 
     @Override
     public String toString() {
-        return firstName+" "+lastName;
+        return getFirstName()+" "+getLastName();
     }
 
     public static void applyFiltre (ArrayList<RepairService> repairServices,Filtre filtre)
