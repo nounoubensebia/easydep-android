@@ -97,7 +97,13 @@
         <activity
             android:name=".RepairServiceInfoActivity"
             android:label="@string/title_activity_repair_service_info"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".AddCommentActivity"
+            android:theme="@style/CommentTheme"
+            android:parentActivityName=".RepairServiceInfoActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:label="Donnez votre avis ">
+
 
         </activity>
     </application>

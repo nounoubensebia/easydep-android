@@ -35,6 +35,7 @@
     <style name="SignupTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@android:color/transparent</item>
         <item name="colorPrimaryDark">@color/backgroundColor</item>
+
         <!--<item name="android:navigationBarColor" tools:targetApi="lollipop">@color/backgroundColor</item>-->
         <item name="colorAccent">#FFF</item>
         <item name="android:colorControlActivated" tools:targetApi="lollipop">#FFFF</item>
@@ -42,6 +43,10 @@
         <item name="android:textColorHint">#FFF</item>
         <item name="android:colorControlHighlight" tools:targetApi="lollipop">#FFF</item>
         <item name="android:colorControlNormal" tools:targetApi="lollipop">#FFF</item>
+    </style>
+
+    <style name="CommentTheme" parent="@style/SignupTheme">
+        <item name="homeAsUpIndicator">@drawable/quantum_ic_clear_white_24</item>
     </style>
 
 

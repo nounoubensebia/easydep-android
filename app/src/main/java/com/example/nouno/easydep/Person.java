@@ -28,6 +28,8 @@ public class Person {
         return email;
     }
 
+    public String getFullName() {return firstName+" "+lastName;}
+
     public Position getPosition() {
         return position;
     }

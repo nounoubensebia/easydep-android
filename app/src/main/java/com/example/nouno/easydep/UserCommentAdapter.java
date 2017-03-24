@@ -41,7 +41,7 @@ public class UserCommentAdapter extends ArrayAdapter<UserComment>  {
         TextView dateText = (TextView)item.findViewById(R.id.date_text);
         TextView signalDeleteText = (TextView)item.findViewById(R.id.signal_delete);
         UserComment userComment = getItem(position);
-        userNameText.setText(userComment.getCarOwner().getFirstName()+" "+userComment.getCarOwner().getLastName());
+        userNameText.setText(userComment.getCarOwner().getFullName());
         commentText.setText(userComment.getComment());
         ratingBar.setRating(userComment.getRating());
         DateFormat dateFormat = new SimpleDateFormat();

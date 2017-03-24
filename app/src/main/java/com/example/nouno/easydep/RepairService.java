@@ -26,6 +26,7 @@ public class RepairService extends Person {
     private float rating;
     private int price;
     public static final int NO_PRICE = 99999;
+    public static final String NO_PRICE_STRING = "Tarifs non communiqués";
 
     public RepairService(long id,String firstName, String lastName, String location, boolean available, int duration, double distance,double latitude,double longitude,float rating,int price,String phoneNumber) {
         super(id,firstName,lastName);
@@ -62,7 +63,14 @@ public class RepairService extends Person {
         return location;
     }
     public String getPriceString () {
+        if (price!=NO_PRICE)
+        {
         return price+"Da/KM";
+        }
+        else
+        {
+            return NO_PRICE_STRING;
+        }
     }
 
     public boolean isAvailable() {
@@ -219,7 +227,7 @@ public class RepairService extends Person {
         for (int i=0;i<repairServices.size();i++)
         {
             RepairService repairService = repairServices.get(i);
-            Log.e("price",repairService.getFirstName()+"   "+repairService.getLastName()+" "+repairService.price);
+
             if (price < repairService.price)
             {
                 repairServices.remove(repairService);
@@ -245,10 +253,8 @@ public class RepairService extends Person {
 
     }
 
-    @Override
-    public String toString() {
-        return getFirstName()+" "+getLastName();
-    }
+
+
 
     public static void applyFiltre (ArrayList<RepairService> repairServices,Filtre filtre)
     {

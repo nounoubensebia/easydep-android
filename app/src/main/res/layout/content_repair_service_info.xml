@@ -68,7 +68,7 @@
             android:gravity="center"
             android:text="El Mohamadia, Alger"
             android:textColor="@android:color/background_dark"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/phone_number_text"
@@ -80,7 +80,18 @@
             android:gravity="center"
             android:text="021 21 26 20"
             android:textColor="@android:color/background_dark"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
+        <TextView
+            android:id="@+id/price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:drawableLeft="@drawable/ic_attach_money_32_8p"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="20da/km"
+            android:textColor="@android:color/background_dark"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/durationText"
@@ -92,7 +103,7 @@
             android:gravity="center"
             android:text="a 12 minutes de route"
             android:textColor="@android:color/background_dark"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/availableText"
@@ -106,14 +117,29 @@
             android:text="Occupé"
             android:textColor="@android:color/holo_green_dark" />
 
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="4dp"
             android:background="#F1F1F1"
             tools:visibility="visible" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/comments_layout"
+            android:orientation="vertical"
+            tools:visibility="visible"
+            android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/resume_avis"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -123,6 +149,7 @@
             android:textSize="16sp" />
 
         <LinearLayout
+            android:id="@+id/resume_avis_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -182,6 +209,16 @@
 
 
         </LinearLayout>
+            <TextView
+                tools:visibility="gone"
+                android:id="@+id/no_ratings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@android:color/background_dark"
+                android:text="Aucun Avis sur ce dépanneur pour le moment"/>
 
         <View
             android:layout_width="match_parent"
@@ -228,6 +265,7 @@
             tools:visibility="visible" />
 
         <TextView
+            android:id="@+id/resume_avis_avis_utilisateur"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -241,6 +279,7 @@
             android:id="@+id/comments_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        </LinearLayout>
 
     </LinearLayout>
 

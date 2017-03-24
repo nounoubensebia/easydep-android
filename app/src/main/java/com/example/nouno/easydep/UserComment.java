@@ -19,12 +19,19 @@ public class UserComment {
     private Date date;
     private boolean fromConnectedUser;
 
+
     public UserComment(CarOwner carOwner,int rating, String comment, Date date, boolean fromConnectedUser) {
         this.carOwner = carOwner;
         this.rating = rating;
         this.comment = comment;
         this.date = date;
         this.fromConnectedUser = fromConnectedUser;
+    }
+
+    public UserComment(CarOwner carOwner, RepairService repairService, int rating) {
+        this.carOwner = carOwner;
+        this.repairService = repairService;
+        this.rating = rating;
     }
 
     public CarOwner getCarOwner() {
@@ -75,6 +82,27 @@ public class UserComment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        sortByTime(userComments);
         return userComments;
+    }
+
+    public static void sortByTime(ArrayList<UserComment> comments)
+    {
+        for (int i=0;i<comments.size();i++)
+        {
+
+            for (int j=i+1;j<comments.size();j++)
+            {
+
+                if (comments.get(i).date.getTime()<comments.get(j).date.getTime())
+                {
+                    UserComment comment1 = comments.get(i);
+                    UserComment comment2 = comments.get(j);
+                    comments.set(i,comment2);
+                    comments.set(j,comment1);
+                }
+            }
+        }
+
     }
 }

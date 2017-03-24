@@ -1,5 +1,6 @@
 package com.example.nouno.easydep;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,32 +42,32 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
     private TextView toolBarDurationText;
     private GoogleMap map;
     private ArrayList<UserComment> userComments;
+    private TextView noRating;
+    private CarOwner carOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        repairService = new RepairService(23,"Test","EL harach","EL mohamadia, Alger",true,
-        1000,10000,36.675442,3.077989,3,100,"1291873");
+        carOwner = new CarOwner(1,"Noureddine","Bensebia");
         Gson gson = new Gson();
+        Bundle bundle = getIntent().getExtras();
         repairService = gson.fromJson(getIntent().getExtras().getString("repairService"),RepairService.class);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repair_service_info);
+        noRating = (TextView)findViewById(R.id.no_ratings);
+        noRating.setVisibility(View.GONE);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         displayRepairServiceData();
         setSupportActionBar(toolbar);
         hideTitleText();
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
 
-        /*userComments = new ArrayList<>();
-        CarOwner carOwner = new CarOwner(1,"Noureddine","Bensebia");
-        CarOwner carOwner1 = new CarOwner(2,"Meriem","Bensebia");
-        CarOwner carOwner2 = new CarOwner(3,"Thomas","Muller");
-        Date date = new Date(1490238425);
-        userComments.add(new UserComment(carOwner,4,"tres bon dépanneur",date,false));
-        userComments.add(new UserComment(carOwner1,1,"Y3ayi bezzaf bezzaf -_-",date,false));
-        userComments.add(new UserComment(carOwner2,5,"Service excellent rien a dire",date,false));
-        populateCommentList(userComments);*/
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        RatingBar ratingBar = (RatingBar)findViewById(R.id.user_rating_bar);
+        ratingBar.setRating(0);
 
     }
 
@@ -85,44 +87,47 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle(repairService.getFirstName()+" "+repairService.getLastName());
+                    collapsingToolbarLayout.setTitle(repairService.getFullName());
                     isShow = true;
                 } else if(isShow) {
                     collapsingToolbarLayout.setTitle(" ");
-                    //carefull there should a space between double quote otherwise it wont work
                     isShow = false;
                 }
             }
         });
-
     }
 
     private void displayRepairServiceData ()
     {
-
         TextView toolBarDistanceText;
         TextView toolBarNameText;
         TextView toolbarTimeText;
-        RatingBar ratingBar;
+        final RatingBar ratingBar;
         TextView locationText;
         TextView phoneText;
         TextView timeText;
         TextView availableText;
+        TextView priceText;
+        final RatingBar userRatingBar;
         toolBarDistanceText = (TextView)findViewById(R.id.toolbar_distanceText);
         toolBarNameText = (TextView)findViewById(R.id.nameText);
         toolbarTimeText = (TextView)findViewById(R.id.toolbar_duration_text);
+        userRatingBar = (RatingBar)findViewById(R.id.user_rating_bar);
         locationText = (TextView)findViewById(R.id.locationText);
         phoneText = (TextView)findViewById(R.id.phone_number_text);
         timeText = (TextView)findViewById(R.id.durationText);
         ratingBar = (RatingBar)findViewById(R.id.toolbar_ratingbar);
         availableText = (TextView)findViewById(R.id.availableText);
+        priceText = (TextView)findViewById(R.id.price_text);
         toolBarDistanceText.setText(repairService.getDistanceString());
-        toolBarNameText.setText(repairService.getFirstName()+" "+repairService.getLastName());
+        toolBarNameText.setText(repairService.getFullName());
         ratingBar.setRating(repairService.getRating());
         toolbarTimeText.setText(repairService.getDurationString());
         locationText.setText(repairService.getLocation());
         phoneText.setText(repairService.getPhoneNumber());
         timeText.setText(repairService.getDurationString());
+        priceText.setText(repairService.getPriceString());
+
         if (repairService.isAvailable())
         {
             availableText.setText("Disponible");
@@ -132,9 +137,31 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
             availableText.setText("Occupé");
             availableText.setTextColor(Color.parseColor("#F44336"));
         }
+        userRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if (fromUser)
+                {
+                userRatingBar.setRating((int)rating);
+                Intent i = new Intent(getApplicationContext(),AddCommentActivity.class);
+                Gson gson = new Gson();
+                UserComment userComment = new UserComment(carOwner,repairService,(int)userRatingBar.getRating());
+                String json = gson.toJson(userComment);
+                i.putExtra("userComment",json);
+                startActivity(i);
+                }
+            }
+        });
+
+
+        getComments();
+    }
+
+    public void getComments()
+    {
         LinkedHashMap<String,String> map = new LinkedHashMap();
         map.put("repairServiceId",repairService.getId()+"");
-        map.put("carOwnerId","1");
+        map.put("carOwnerId",carOwner.getId()+"");
         GetCommentsTask getCommentsTask = new GetCommentsTask();
         getCommentsTask.execute(map);
     }
@@ -145,6 +172,26 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         UserCommentAdapter userCommentAdapter = new UserCommentAdapter(this,comments);
         listView.setAdapter(userCommentAdapter);
         justifyListViewHeightBasedOnChildren(listView);
+        TextView ratingText = (TextView)findViewById(R.id.rating_text);
+        TextView ratingNumber = (TextView)findViewById(R.id.rating_number);
+        if (comments.size()>0)
+        {
+        ratingText.setText(repairService.getRating()+"");
+        ratingNumber.setText(comments.size()+"");
+        }
+        else
+        {
+            noRating = (TextView)findViewById(R.id.no_ratings);
+            noRating.setVisibility(View.VISIBLE);
+            TextView resumeAvis = (TextView)findViewById(R.id.resume_avis);
+            TextView resumeUtilisateur = (TextView)findViewById(R.id.resume_avis_avis_utilisateur);
+            View layout = findViewById(R.id.resume_avis_layout);
+            resumeAvis.setVisibility(View.GONE);
+            resumeUtilisateur.setVisibility(View.GONE);
+            layout.setVisibility(View.GONE);
+            listView.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -183,7 +230,13 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
     private class GetCommentsTask extends AsyncTask<Map<String,String>,Void,String>
     {
-
+        @Override
+        protected void onPreExecute() {
+            ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
+            ListView listView = (ListView)findViewById(R.id.comments_list);
+            listView.setVisibility(View.GONE);
+        }
 
         @Override
         protected String doInBackground(Map<String, String>... params) {
@@ -200,7 +253,10 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         protected void onPostExecute(String s) {
             userComments = UserComment.parseJson(s);
             populateCommentList(userComments);
-            Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+            ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.GONE);
+            ListView listView = (ListView)findViewById(R.id.comments_list);
+            listView.setVisibility(View.VISIBLE);
         }
     }
 

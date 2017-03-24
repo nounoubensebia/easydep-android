@@ -52,7 +52,7 @@ public class RepairServiceAdapter extends RecyclerView.Adapter<RepairServiceAdap
         RepairService repairService = repairServices.get(position);
         holder.distanceTextView.setText(repairService.getDistanceString());
         holder.durationTextView.setText(repairService.getDurationString());
-        holder.nameTextView.setText(repairService.getLastName()+" "+repairService.getFirstName());
+        holder.nameTextView.setText(repairService.getFullName());
         if (repairService.isAvailable())
         {
             holder.availableTextView.setText("Disponible");

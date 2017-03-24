@@ -360,7 +360,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         TextView durationTextInfo = (TextView)findViewById(R.id.durationTextInfo);
         TextView price = (TextView)findViewById(R.id.priceTextInfo);
         distanceText.setText(repairService.getDistanceString());
-        nameText.setText(repairService.getFirstName()+" "+repairService.getLastName());
+        nameText.setText(repairService.getFullName());
         durationTextInfo.setText(repairService.getDurationString());
         RatingBar ratingBar = (RatingBar)findViewById(R.id.infoRatingBar);
         ratingBar.setRating(repairService.getRating());
@@ -368,7 +368,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         TextView availableTextView = (TextView)findViewById(R.id.availableTextInfo);
         if (repairService.getPrice()==RepairService.NO_PRICE)
         {
-            price.setText("Tarifs non disponible");
+            //price.setText("Tarifs non disponible");
+            price.setText(repairService.NO_PRICE_STRING);
             //price.setVisibility(View.GONE);
             //bottomMargin = 400;
         }
@@ -407,7 +408,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         {
             RepairService repairService = repairServices.get(i);
             LatLng latLng=new LatLng(repairService.getLatitude(),repairService.getLongitude());
-            Marker marker=map.addMarker(new MarkerOptions().position(latLng).title(repairService.getFirstName()+" "+repairService.getLastName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            Marker marker=map.addMarker(new MarkerOptions().position(latLng).title(repairService.getFullName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             marker.setTag(repairService);
         }
         setMapMarkersListeners();
@@ -420,7 +421,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         {
             RepairService repairService = repairServices.get(i);
             LatLng latLng=new LatLng(repairService.getLatitude(),repairService.getLongitude());
-            Marker marker=map.addMarker(new MarkerOptions().position(latLng).title(repairService.getFirstName()+" "+repairService.getLastName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            Marker marker=map.addMarker(new MarkerOptions().position(latLng).title(repairService.getFullName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             if (selectedRepairService.equals(repairService))
             {
                 marker.showInfoWindow();
