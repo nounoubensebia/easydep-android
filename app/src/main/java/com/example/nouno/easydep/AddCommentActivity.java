@@ -1,5 +1,6 @@
 package com.example.nouno.easydep;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.TextInputLayout;
@@ -29,9 +30,10 @@ public class AddCommentActivity extends AppCompatActivity {
     private View upImage;
     private RatingBar ratingBar;
     private ProgressBar progressBar;
-
+    private AddCommentActivity addCommentActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        addCommentActivity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_comment);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar1);
@@ -50,6 +52,7 @@ public class AddCommentActivity extends AppCompatActivity {
                 ratingBar.setRating((int)rating);
             }
         });
+
         ratingBar.setRating(userComment.getRating());
         nameText.setText(userComment.getCarOwner().getFullName());
         upImage = findViewById(R.id.go_button);
@@ -91,12 +94,19 @@ public class AddCommentActivity extends AppCompatActivity {
         String json = gson.toJson(userComment.getRepairService());
         i.putExtra("repairService",json);
         startActivity(i);
+        finish();
     }
 
     private void restartInfoActivity(float rating)
     {
         userComment.getRepairService().setRating(rating);
-        restartInfoActivity();
+        Intent i = new Intent(getApplicationContext(),RepairServiceInfoActivity.class);
+        Gson gson = new Gson();
+        String json = gson.toJson(userComment.getRepairService());
+        i.putExtra("repairService",json);
+        i.putExtra("commentAdded",true);
+        startActivity(i);
+        finish();
     }
 
     private class CommentTask extends AsyncTask<Map<String,String>,Void,String>
@@ -124,8 +134,6 @@ public class AddCommentActivity extends AppCompatActivity {
             /*need error handling*/
             String[] strings = s.split("success");
             float rating = Float.parseFloat(strings[1]);
-            upImage.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
             restartInfoActivity(rating);
         }
     }

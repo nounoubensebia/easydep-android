@@ -14,8 +14,9 @@ public class OfflineSearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_offline_search);
         ArrayList<OfflineRepairService> repairServices = new ArrayList<>();
         repairServices.add(new OfflineRepairService(1,"Test","El Harrache","Alger","0549958428",1,RepairService.NO_PRICE));
-        repairServices.add(new OfflineRepairService(1,"Hind","Birkhadem","Alger","0549958428",3,50));
-        repairServices.add(new OfflineRepairService(1,"Bensaber","Kouba","Alger","0549958428",4,RepairService.NO_PRICE));
+        repairServices.add(new OfflineRepairService(2,"Hind","Birkhadem","Mostaganem","0549958428",3,50));
+        repairServices.add(new OfflineRepairService(3,"Bensaber","Kouba","Chlef","0549958428",4,RepairService.NO_PRICE));
+        OfflineRepairService.sortByLocation(repairServices);
         populateRepairServicesList(repairServices);
     }
 

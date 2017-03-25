@@ -11,4 +11,6 @@
         app:showAsAction="ifRoom" />
     <item android:title="Trier et filtrer"
         android:id="@+id/filtres_menu"/>
+    <item android:title="Liste hors connexion"
+        android:id="@+id/offline_list"/>
 </menu>

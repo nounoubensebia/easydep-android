@@ -1,8 +1,12 @@
 package com.example.nouno.easydep;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -20,6 +24,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,10 +57,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private GoogleMap map;
     private int bottomMargin;
     private Button searchButton;
+    private ProgressBar searchProgressBar;
     private Filtre filtre;
     private Position searchPosition;
     private TextView noRepairServiceFoundTextView;
     private Button mapRefrechButton;
+    private Button noNetworkButton;
     private boolean mapMarked = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +73,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         String defaultFiltreJson = gson.toJson(new Filtre());
         String filtreJson = sharedPref.getString("filtre",defaultFiltreJson);
         filtre = gson.fromJson(filtreJson,Filtre.class);
-
-
         bottomMargin = 416;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        noNetworkButton = (Button)findViewById(R.id.no_network);
+        noNetworkButton.setVisibility(View.GONE);
+        searchProgressBar = (ProgressBar)findViewById(R.id.progressBar);
+        searchProgressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.backgroundColor), PorterDuff.Mode.MULTIPLY);
         mapRefrechButton = (Button)findViewById(R.id.refrech_Button);
         repairServices = new ArrayList<>();
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refrech_layout);
@@ -84,7 +93,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         mapBottomSheetBehavior.setSkipCollapsed(true);
         mapBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         infoBottomSheet = findViewById(R.id.bottomInfo);
-
         infoBottomSheetBehaviour = BottomSheetBehavior.from(infoBottomSheet);
         infoBottomSheetBehaviour.setHideable(true);
         infoBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -160,7 +168,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         Bundle extras = getIntent().getExtras();
         if (extras!=null)
         {
-
             searchPosition = gson.fromJson(extras.getString("position"),Position.class);
             swipeRefreshLayout.setEnabled(true);
             //Toast.makeText(getApplicationContext(),searchPosition.getLatitude()+" "+searchPosition.getLongitude(),Toast.LENGTH_LONG).show();
@@ -168,9 +175,24 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
         else
         {
-            searchButton.setVisibility(View.VISIBLE);
             mapFab.setVisibility(View.GONE);
             swipeRefreshLayout.setEnabled(false);
+            if (isNetworkAvailable())
+            {
+            searchButton.setVisibility(View.VISIBLE);
+
+            }
+            else
+            {
+                noNetworkButton.setVisibility(View.VISIBLE);
+                noNetworkButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i3 = new Intent(getApplicationContext(),OfflineSearchActivity.class);
+                        startActivity(i3);
+                    }
+                });
+            }
             //googleApiClient.connect();
         }
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -205,13 +227,16 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 return super.onOptionsItemSelected(item);
 
             case R.id.app_bar_search:
+                if (isNetworkAvailable())
+                {
                 Intent i2 = new Intent(getApplicationContext(),ManualSearchActivity.class);
-
-
-                startActivity(i2);
+                startActivity(i2);}
                 return super.onOptionsItemSelected(item);
+            case R.id.offline_list :
 
-
+                Intent i3 = new Intent(getApplicationContext(),OfflineSearchActivity.class);
+                startActivity(i3);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -396,8 +421,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             public void onClick(View v) {
                 Gson gson = new Gson();
                 String json = gson.toJson(repairService);
+                String json2 = gson.toJson(searchPosition);
                 Intent i = new Intent(getApplicationContext(),RepairServiceInfoActivity.class);
                 i.putExtra("repairService",json);
+
                 startActivity(i);
             }
         });
@@ -556,6 +583,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 noRepairServiceFoundTextView.setVisibility(View.GONE);
             }
         }
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 

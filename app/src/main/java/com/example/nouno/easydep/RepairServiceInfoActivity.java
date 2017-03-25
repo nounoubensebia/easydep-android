@@ -51,13 +51,19 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
     private TextView noRating;
     private CarOwner carOwner;
     private ProgressDialog progressDialog;
+    RepairServiceInfoActivity repairServiceInfoActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        repairServiceInfoActivity = this;
         carOwner = new CarOwner(1,"Noureddine","Bensebia");
         Gson gson = new Gson();
         Bundle bundle = getIntent().getExtras();
         repairService = gson.fromJson(getIntent().getExtras().getString("repairService"),RepairService.class);
+        if (bundle.containsKey("commentAdded"))
+        {
+            DialogUtils.buildInfoDialog("Commentaire ajouté","Votre commentaire a été ajouté merci de votre coopération",this).show();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repair_service_info);
         noRating = (TextView)findViewById(R.id.no_ratings);
@@ -69,21 +75,9 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-    }
-
-    private Dialog buildInfoDialog (String title,String msg)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(msg).setTitle(title);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-            }
-        });
-
-        return builder.create();
 
     }
+
 
     private Dialog buildDeleteDialog(final UserComment userComment)
     {
@@ -382,6 +376,8 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
+            Dialog dialog = DialogUtils.buildInfoDialog("Commentaire supprimé","Votre commentaire a été supprimé",repairServiceInfoActivity);
+            dialog.show();
             getComments();
             displayRepairServiceData();
 
@@ -413,11 +409,11 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
             Dialog infoDialog;
             if (s.equals("success"))
             {
-                infoDialog = buildInfoDialog("Commentaire signalé","Merci de votre coopération");
+                infoDialog = DialogUtils.buildInfoDialog("Commentaire signalé","Merci de votre coopération",repairServiceInfoActivity);
             }
             else
             {
-                infoDialog = buildInfoDialog("Erreur","Vous avez deja signaler ce commentaire");
+                infoDialog = DialogUtils.buildInfoDialog("Erreur","Vous avez deja signaler ce commentaire",repairServiceInfoActivity);
             }
              infoDialog.show();
         }

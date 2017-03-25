@@ -41,6 +41,9 @@ public class QueryUtils {
     // param 1 est le string de l'url de la requete
     // param 2 est la liste des parametres du post
 
+
+
+
     public static String makeHttpPostRequest (String urlString,Map<String,String> parameters) throws ConnectionProblemException
     {   String response = null;
         InputStream inputStream=null;
