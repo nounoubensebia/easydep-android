@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:drawableLeft="@drawable/ic_devis_48_8p"
+            android:drawableLeft="@drawable/ic_devis_40_8p"
             android:drawablePadding="16dp"
             android:gravity="center"
             android:text="Demander devis"
@@ -83,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:drawableLeft="@drawable/ic_call_48_8p"
+            android:drawableLeft="@drawable/ic_local_phone_40_8p"
             android:drawablePadding="16dp"
 
             android:gravity="center"
@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:drawableLeft="@drawable/ic_add_48_8p"
+            android:drawableLeft="@drawable/ic_add_40_8p"
             android:drawablePadding="16dp"
             android:gravity="center"
             android:text="Enregister numéro"
@@ -118,7 +118,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="16dp"
             android:background="#F1F1F1"
             tools:visibility="visible" />
         <ProgressBar
