@@ -36,22 +36,31 @@
         style = "?android:attr/ratingBarStyleSmall"/>
     <TextView
         android:id="@+id/comment_text"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:text="Trés bon dépanneur service extra."/>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:background="?selectableItemBackground"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content">
         <TextView
             android:id="@+id/signal_delete"
             android:layout_width="wrap_content"
             android:text="Signaler"
-            android:layout_marginLeft="16dp"
-            android:layout_marginBottom="16dp"
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:paddingBottom="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:textSize="16sp"
             android:textColor="@android:color/holo_orange_dark"
-            android:layout_alignParentRight="true"
+
             android:layout_height="wrap_content" />
+        </FrameLayout>
     </LinearLayout>
 
 

@@ -22,14 +22,18 @@ import java.util.ArrayList;
 
 public class UserCommentAdapter extends ArrayAdapter<UserComment>  {
 
-
+    private OnButtonClickListener onButtonClickListener;
     public UserCommentAdapter(Context context,ArrayList<UserComment> list) {
         super(context,0,list);
     }
 
+    public void setOnButtonClickListener(OnButtonClickListener onButtonClickListener) {
+        this.onButtonClickListener = onButtonClickListener;
+    }
+
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View item = convertView;
         if (item ==null)
         {
@@ -56,7 +60,7 @@ public class UserCommentAdapter extends ArrayAdapter<UserComment>  {
         signalDeleteText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                onButtonClickListener.onButtonClick(getItem(position));
             }
         });
         return item;

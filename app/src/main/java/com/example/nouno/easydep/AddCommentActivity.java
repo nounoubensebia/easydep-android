@@ -93,6 +93,12 @@ public class AddCommentActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    private void restartInfoActivity(float rating)
+    {
+        userComment.getRepairService().setRating(rating);
+        restartInfoActivity();
+    }
+
     private class CommentTask extends AsyncTask<Map<String,String>,Void,String>
 
     {
@@ -116,10 +122,11 @@ public class AddCommentActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             /*need error handling*/
-            Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+            String[] strings = s.split("success");
+            float rating = Float.parseFloat(strings[1]);
             upImage.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.VISIBLE);
-            restartInfoActivity();
+            restartInfoActivity(rating);
         }
     }
 

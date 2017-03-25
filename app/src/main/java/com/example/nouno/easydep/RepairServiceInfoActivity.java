@@ -1,5 +1,7 @@
 package com.example.nouno.easydep;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -8,6 +10,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +35,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -61,6 +66,29 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         hideTitleText();
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+    }
+
+    private Dialog buildDeleteDialog(UserComment userComment)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Voulez vous vraiment supprimer ce commentaire ?").setTitle("Confirmation");
+        builder.setPositiveButton("non", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+              LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
+                map.put("carOwnerId",carOwner.getId()+"");
+                map.put("repairServiceId",repairService.getId()+"");
+
+
+            }
+        });
+        builder.setNegativeButton("oui", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        return builder.create();
+
     }
 
     @Override
@@ -170,13 +198,24 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
     {
         ListView listView = (ListView)findViewById(R.id.comments_list);
         UserCommentAdapter userCommentAdapter = new UserCommentAdapter(this,comments);
+        userCommentAdapter.setOnButtonClickListener(new OnButtonClickListener() {
+            @Override
+            public void onButtonClick(UserComment userComment) {
+                Dialog dialog = buildDeleteDialog(userComment);
+                dialog.show();
+            }
+        });
         listView.setAdapter(userCommentAdapter);
         justifyListViewHeightBasedOnChildren(listView);
         TextView ratingText = (TextView)findViewById(R.id.rating_text);
         TextView ratingNumber = (TextView)findViewById(R.id.rating_number);
         if (comments.size()>0)
         {
-        ratingText.setText(repairService.getRating()+"");
+            NumberFormat nf;
+            String s;
+            nf = new DecimalFormat("0.#");
+            s = nf.format(repairService.getRating());
+        ratingText.setText(s);
         ratingNumber.setText(comments.size()+"");
         }
         else
@@ -257,6 +296,36 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
             progressBar.setVisibility(View.GONE);
             ListView listView = (ListView)findViewById(R.id.comments_list);
             listView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private class DeleteCommentTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
+            ListView listView = (ListView)findViewById(R.id.comments_list);
+            listView.setVisibility(View.GONE);
+
+        }
+
+
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String s) {
+           getComments();
         }
     }
 

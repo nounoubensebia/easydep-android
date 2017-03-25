@@ -89,6 +89,10 @@ public class RepairService extends Person {
         return phoneNumber;
     }
 
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
     public String getDistanceString ()
     {
         double distanceInKm = distance/1000;

@@ -162,6 +162,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         {
 
             searchPosition = gson.fromJson(extras.getString("position"),Position.class);
+            swipeRefreshLayout.setEnabled(true);
             //Toast.makeText(getApplicationContext(),searchPosition.getLatitude()+" "+searchPosition.getLongitude(),Toast.LENGTH_LONG).show();
             searchForRepairServices();
         }
@@ -169,6 +170,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         {
             searchButton.setVisibility(View.VISIBLE);
             mapFab.setVisibility(View.GONE);
+            swipeRefreshLayout.setEnabled(false);
             //googleApiClient.connect();
         }
         searchButton.setOnClickListener(new View.OnClickListener() {
