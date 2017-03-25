@@ -18,37 +18,43 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <TextView
-                android:id="@+id/call_button"
+                android:id="@+id/locationText"
+                android:layout_width="0dp"
+                android:layout_marginLeft="8dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_location_40_8p"
+                android:gravity="center"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/backgroundColor"
+                android:text="El Mohamadia, Alger"
+                 />
+
+            <TextView
+                android:id="@+id/availableText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/ic_local_phone_32_8p"
+                android:drawableTop="@drawable/ic_check_green_circle_40_8p"
                 android:gravity="center"
-                android:text="APPELER"
-                android:textColor="@color/backgroundColor" />
+                android:text="Disponible"
+                android:textColor="#4caf50" />
 
             <TextView
-                android:id="@+id/save_button"
+                android:id="@+id/price_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/ic_add_32_8p"
+                android:layout_marginRight="8dp"
+                android:drawableTop="@drawable/ic_money_40_8p"
+                android:textColor="@color/backgroundColor"
+                android:fontFamily="sans-serif-light"
                 android:gravity="center"
-                android:text="ENREGISTRER"
-                android:textColor="@color/backgroundColor" />
-
-            <TextView
-                android:id="@+id/ask_for_repair_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/ic_empty_mail_32_8p"
-                android:gravity="center"
-                android:text="DEPANNAGE"
-                android:textColor="@color/backgroundColor" />
+                android:text="20da/km"
+                />
         </LinearLayout>
 
         <View
@@ -57,65 +63,56 @@
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
             android:background="#F1F1F1" />
-
         <TextView
-            android:id="@+id/locationText"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:drawableLeft="@drawable/ic_location_32_8p"
-            android:drawablePadding="8dp"
+            android:drawableLeft="@drawable/ic_devis_48_8p"
+            android:drawablePadding="16dp"
             android:gravity="center"
-            android:text="El Mohamadia, Alger"
-            android:textColor="@android:color/background_dark"
+            android:text="Demander devis"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@android:color/black"
             tools:visibility="visible" />
+
 
         <TextView
             android:id="@+id/phone_number_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:drawableLeft="@drawable/ic_local_phone_32_8p"
-            android:drawablePadding="8dp"
+            android:drawableLeft="@drawable/ic_call_48_8p"
+            android:drawablePadding="16dp"
+
             android:gravity="center"
-            android:text="021 21 26 20"
-            android:textColor="@android:color/background_dark"
-            tools:visibility="visible" />
-        <TextView
-            android:id="@+id/price_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:drawableLeft="@drawable/ic_attach_money_32_8p"
-            android:drawablePadding="8dp"
-            android:gravity="center"
-            android:text="20da/km"
-            android:textColor="@android:color/background_dark"
+            android:text="Appeler"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
             tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/durationText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:drawableLeft="@drawable/ic_time_32_8p"
-            android:drawablePadding="8dp"
-            android:gravity="center"
-            android:text="a 12 minutes de route"
-            android:textColor="@android:color/background_dark"
-            tools:visibility="visible" />
+
+
 
         <TextView
-            android:id="@+id/availableText"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:drawableLeft="@drawable/ic_busy_32_8p"
-            android:drawablePadding="8dp"
+            android:drawableLeft="@drawable/ic_add_48_8p"
+            android:drawablePadding="16dp"
             android:gravity="center"
-            android:textStyle="bold"
-            android:text="Occupé"
-            android:textColor="@android:color/holo_green_dark" />
+            android:text="Enregister numéro"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@android:color/black"
+            tools:visibility="visible" />
+
+
+
+
 
 
         <View

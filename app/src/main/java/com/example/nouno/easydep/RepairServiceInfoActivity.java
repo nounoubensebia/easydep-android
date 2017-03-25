@@ -174,8 +174,8 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         TextView toolbarTimeText;
         final RatingBar ratingBar;
         TextView locationText;
-        TextView phoneText;
-        TextView timeText;
+        //TextView phoneText;
+        //TextView timeText;
         TextView availableText;
         TextView priceText;
         final RatingBar userRatingBar;
@@ -184,8 +184,8 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         toolbarTimeText = (TextView)findViewById(R.id.toolbar_duration_text);
         userRatingBar = (RatingBar)findViewById(R.id.user_rating_bar);
         locationText = (TextView)findViewById(R.id.locationText);
-        phoneText = (TextView)findViewById(R.id.phone_number_text);
-        timeText = (TextView)findViewById(R.id.durationText);
+        //phoneText = (TextView)findViewById(R.id.phone_number_text);
+        //timeText = (TextView)findViewById(R.id.durationText);
         ratingBar = (RatingBar)findViewById(R.id.toolbar_ratingbar);
         availableText = (TextView)findViewById(R.id.availableText);
         priceText = (TextView)findViewById(R.id.price_text);
@@ -194,8 +194,8 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         ratingBar.setRating(repairService.getRating());
         toolbarTimeText.setText(repairService.getDurationString());
         locationText.setText(repairService.getLocation());
-        phoneText.setText(repairService.getPhoneNumber());
-        timeText.setText(repairService.getDurationString());
+        //phoneText.setText(repairService.getPhoneNumber());
+        //timeText.setText(repairService.getDurationString());
         priceText.setText(repairService.getPriceString());
 
         if (repairService.isAvailable())
