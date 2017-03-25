@@ -1,6 +1,7 @@
 package com.example.nouno.easydep;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -49,6 +50,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
     private ArrayList<UserComment> userComments;
     private TextView noRating;
     private CarOwner carOwner;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,26 +71,36 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
     }
 
-    private Dialog buildDeleteDialog(UserComment userComment)
+    private Dialog buildDeleteDialog(final UserComment userComment)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Voulez vous vraiment supprimer ce commentaire ?").setTitle("Confirmation");
-        builder.setPositiveButton("non", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("confirmer", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
-                map.put("carOwnerId",carOwner.getId()+"");
-                map.put("repairServiceId",repairService.getId()+"");
-
-
+                map.put("deleteCommentId",userComment.getId()+"");
+                DeleteCommentTask deleteCommentTask = new DeleteCommentTask();
+                deleteCommentTask.execute(map);
+                //ProgressDialog progressDialog = buildProgressDialog();
+                //progressDialog.show();
+                //progressDialog.dismiss();
             }
         });
-        builder.setNegativeButton("oui", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("annuler", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
             }
         });
         return builder.create();
 
+    }
+
+    private ProgressDialog buildProgressDialog()
+    {
+
+        ProgressDialog dialog = new ProgressDialog(RepairServiceInfoActivity.this);
+        dialog.setMessage("Suppression du commentaire");
+        return dialog;
     }
 
     @Override
@@ -275,6 +287,8 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
             progressBar.setVisibility(View.VISIBLE);
             ListView listView = (ListView)findViewById(R.id.comments_list);
             listView.setVisibility(View.GONE);
+            View commentsLayout = findViewById(R.id.comments_layout);
+            commentsLayout.setVisibility(View.GONE);
         }
 
         @Override
@@ -296,6 +310,8 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
             progressBar.setVisibility(View.GONE);
             ListView listView = (ListView)findViewById(R.id.comments_list);
             listView.setVisibility(View.VISIBLE);
+            View commentsLayout = findViewById(R.id.comments_layout);
+            commentsLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -304,10 +320,9 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
         @Override
         protected void onPreExecute() {
-            ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.VISIBLE);
-            ListView listView = (ListView)findViewById(R.id.comments_list);
-            listView.setVisibility(View.GONE);
+            progressDialog = buildProgressDialog();
+            progressDialog.show();
+           
 
         }
 
@@ -325,7 +340,9 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         }
         @Override
         protected void onPostExecute(String s) {
+            progressDialog.dismiss();
            getComments();
+
         }
     }
 

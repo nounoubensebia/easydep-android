@@ -18,9 +18,11 @@ public class UserComment {
     private String comment;
     private Date date;
     private boolean fromConnectedUser;
+    private long id;
 
 
-    public UserComment(CarOwner carOwner,int rating, String comment, Date date, boolean fromConnectedUser) {
+    public UserComment(long id,CarOwner carOwner,int rating, String comment, Date date, boolean fromConnectedUser) {
+        this.id=id;
         this.carOwner = carOwner;
         this.rating = rating;
         this.comment = comment;
@@ -32,6 +34,14 @@ public class UserComment {
         this.carOwner = carOwner;
         this.repairService = repairService;
         this.rating = rating;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public CarOwner getCarOwner() {
@@ -70,13 +80,14 @@ public class UserComment {
                 String firstName = carOwnerJson.getString("first_name");
                 String lastName = carOwnerJson.getString("last_name");
                 long id = carOwnerJson.getLong("id");
+                long commentId = jsonObject.getLong("id");
                 CarOwner carOwner = new CarOwner(id,firstName,lastName);
                 String commentText = jsonObject.getString("comment_text");
                 long time = jsonObject.getLong("time");
                 Date date = new Date(time*1000);
                 boolean fromConnectedUser = jsonObject.getBoolean("from_connected_user");
                 int rating = jsonObject.getInt("rating");
-                userComments.add(new UserComment(carOwner,rating,commentText,date,fromConnectedUser));
+                userComments.add(new UserComment(commentId,carOwner,rating,commentText,date,fromConnectedUser));
             }
 
         } catch (JSONException e) {
