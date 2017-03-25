@@ -41,6 +41,14 @@ public class RepairService extends Person {
         this.price = price;
     }
 
+    public RepairService(long id, String firstName, String lastName, String location, String phoneNumber, float rating, int price) {
+        super(id, firstName, lastName);
+        this.location = location;
+        this.phoneNumber = phoneNumber;
+        this.rating = rating;
+        this.price = price;
+    }
+
     public float getRating() {
         return rating;
     }

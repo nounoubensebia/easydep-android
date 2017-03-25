@@ -57,8 +57,8 @@ public class AddCommentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try  {
-                    //InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                    //imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {}
                 LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
                 map.put("carOwnerId",userComment.getCarOwner().getId()+"");

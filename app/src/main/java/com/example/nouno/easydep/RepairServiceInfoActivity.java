@@ -71,6 +71,20 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
     }
 
+    private Dialog buildInfoDialog (String title,String msg)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg).setTitle(title);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+
+        return builder.create();
+
+    }
+
     private Dialog buildDeleteDialog(final UserComment userComment)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -95,11 +109,33 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
     }
 
-    private ProgressDialog buildProgressDialog()
+    private Dialog buildReportDialog (final UserComment userComment)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Voulez vous vraiment signaler ce commentaire ?").setTitle("Confirmation");
+        builder.setPositiveButton("confirmer", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
+                map.put("reportCommentId",userComment.getId()+"");
+                map.put("carOwnerId",carOwner.getId()+"");
+                ReportCommentTask reportCommentTask = new ReportCommentTask();
+                reportCommentTask.execute(map);
+
+            }
+        });
+        builder.setNegativeButton("annuler", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        return builder.create();
+    }
+
+    private ProgressDialog buildProgressDialog(String msg)
     {
 
         ProgressDialog dialog = new ProgressDialog(RepairServiceInfoActivity.this);
-        dialog.setMessage("Suppression du commentaire");
+        dialog.setMessage(msg);
         return dialog;
     }
 
@@ -210,11 +246,19 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
     {
         ListView listView = (ListView)findViewById(R.id.comments_list);
         UserCommentAdapter userCommentAdapter = new UserCommentAdapter(this,comments);
-        userCommentAdapter.setOnButtonClickListener(new OnButtonClickListener() {
+        userCommentAdapter.setOnButtonClickListener(new OnButtonClickListener<UserComment>() {
             @Override
             public void onButtonClick(UserComment userComment) {
-                Dialog dialog = buildDeleteDialog(userComment);
-                dialog.show();
+                if (userComment.getCarOwner().getId()==carOwner.getId())
+                {
+                    Dialog dialog = buildDeleteDialog(userComment);
+                    dialog.show();
+                }
+                else
+                {
+                    Dialog dialog = buildReportDialog(userComment);
+                    dialog.show();
+                }
             }
         });
         listView.setAdapter(userCommentAdapter);
@@ -320,12 +364,9 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
         @Override
         protected void onPreExecute() {
-            progressDialog = buildProgressDialog();
+            progressDialog = buildProgressDialog("Suppression du commentaire en cours...");
             progressDialog.show();
-           
-
         }
-
 
 
         @Override
@@ -341,8 +382,44 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
-           getComments();
+            getComments();
+            displayRepairServiceData();
 
+        }
+    }
+
+    private class ReportCommentTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+        @Override
+        protected void onPreExecute() {
+            progressDialog = buildProgressDialog("Singalisation du commentaire en cours...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String resonse = null;
+            try {
+                resonse = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return resonse;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            progressDialog.dismiss();
+            Dialog infoDialog;
+            if (s.equals("success"))
+            {
+                infoDialog = buildInfoDialog("Commentaire signalé","Merci de votre coopération");
+            }
+            else
+            {
+                infoDialog = buildInfoDialog("Erreur","Vous avez deja signaler ce commentaire");
+            }
+             infoDialog.show();
         }
     }
 

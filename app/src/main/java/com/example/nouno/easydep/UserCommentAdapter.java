@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class UserCommentAdapter extends ArrayAdapter<UserComment>  {
 
-    private OnButtonClickListener onButtonClickListener;
+    private OnButtonClickListener<UserComment> onButtonClickListener;
     public UserCommentAdapter(Context context,ArrayList<UserComment> list) {
         super(context,0,list);
     }

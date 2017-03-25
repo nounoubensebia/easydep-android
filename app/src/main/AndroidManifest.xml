@@ -12,13 +12,11 @@
         android:required="true" />
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="android.support.multidex.MultiDexApplication"
         android:supportsRtl="true">
-
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -74,11 +72,6 @@
             android:name=".SearchActivity"
             android:label="@string/recherche_depanneur"
             android:theme="@style/InfoTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity
@@ -100,14 +93,20 @@
         <activity
             android:name=".RepairServiceInfoActivity"
             android:label="@string/title_activity_repair_service_info"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".AddCommentActivity"
-            android:theme="@style/CommentTheme"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddCommentActivity"
+            android:label="Donnez votre avis "
             android:parentActivityName=".RepairServiceInfoActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:label="Donnez votre avis ">
+            android:theme="@style/CommentTheme"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".OfflineSearchActivity"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
