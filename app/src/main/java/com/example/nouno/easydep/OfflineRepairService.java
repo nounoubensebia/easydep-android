@@ -161,7 +161,18 @@ public class OfflineRepairService extends Person {
         if (offlineFilter.getMaxPrice()!=RepairService.NO_PRICE)
         filtrePrice(offlineFilter.getMaxPrice(),repairServices);
         filtreRating(offlineFilter.getMinRating(),repairServices);
+    }
 
-
+    public static ArrayList<OfflineRepairService> filterByInput (ArrayList<OfflineRepairService>repairServices,String input)
+    {
+        ArrayList<OfflineRepairService> filteredList = new ArrayList<OfflineRepairService>();
+        for (OfflineRepairService offlineRepairService : repairServices)
+        {
+            if (offlineRepairService.getLocation().contains(input)||offlineRepairService.getLocation().toLowerCase().contains(input)||input.toLowerCase().contains(offlineRepairService.getLocation()))
+            {
+                filteredList.add(offlineRepairService);
+            }
+        }
+        return filteredList;
     }
 }

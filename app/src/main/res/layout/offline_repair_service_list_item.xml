@@ -38,14 +38,17 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
     </LinearLayout>
+
     <ImageView
         android:id="@+id/call_button"
         android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
-        android:layout_centerVertical="true"
         android:src="@drawable/ic_local_phone_40_8p"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp" />
 
 
 </RelativeLayout>
