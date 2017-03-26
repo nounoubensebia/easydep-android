@@ -1,11 +1,15 @@
 package com.example.nouno.easydep;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -42,6 +46,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static java.security.AccessController.getContext;
 
 public class RepairServiceInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
     private RepairService repairService;
@@ -167,6 +173,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         });
     }
 
+    @SuppressLint("NewApi")
     private void displayRepairServiceData ()
     {
         TextView toolBarDistanceText;
@@ -206,6 +213,10 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         {
             availableText.setText("Occupé");
             availableText.setTextColor(Color.parseColor("#F44336"));
+            Drawable img = repairServiceInfoActivity.getDrawable(R.drawable.ic_do_not_disturb2_40_8p);
+            availableText.setCompoundDrawables(null,img,null,null);
+            availableText.setCompoundDrawablesWithIntrinsicBounds(null,img,null,null);
+
         }
         userRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
