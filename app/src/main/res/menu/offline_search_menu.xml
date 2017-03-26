@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Trier et filtrer"
+        android:id="@+id/filtres_menu"/>
+    <item android:title="Mode en ligne"
+        android:id="@+id/online_mode"/>
+
+</menu>

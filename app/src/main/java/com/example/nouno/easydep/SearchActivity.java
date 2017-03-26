@@ -27,7 +27,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -58,7 +57,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private int bottomMargin;
     private Button searchButton;
     private ProgressBar searchProgressBar;
-    private Filtre filtre;
+    private OnlineFiltre onlineFiltre;
     private Position searchPosition;
     private TextView noRepairServiceFoundTextView;
     private Button mapRefrechButton;
@@ -70,9 +69,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
 
         Gson gson = new Gson();
-        String defaultFiltreJson = gson.toJson(new Filtre());
-        String filtreJson = sharedPref.getString("filtre",defaultFiltreJson);
-        filtre = gson.fromJson(filtreJson,Filtre.class);
+        String defaultFiltreJson = gson.toJson(new OnlineFiltre());
+        String filtreJson = sharedPref.getString("onlineFiltre",defaultFiltreJson);
+        onlineFiltre = gson.fromJson(filtreJson,OnlineFiltre.class);
         bottomMargin = 416;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
@@ -247,7 +246,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         LinkedHashMap<String,String> map= new LinkedHashMap<String,String>();
         map.put("longitude",Double.toString(searchPosition.getLongitude()));
         map.put("latitude",Double.toString(searchPosition.getLatitude()));
-        map.put("radius",filtre.getSearchRadius()*1000+"");
+        map.put("radius", onlineFiltre.getSearchRadius()*1000+"");
         SearchTask searchTask = new SearchTask();
         searchTask.execute(map);
 
@@ -550,7 +549,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             mapRefrechButton.setVisibility(View.VISIBLE);
             recyclerView = (RecyclerView)findViewById(R.id.repair_services_list);
             repairServices = RepairService.parseJson(s);
-            RepairService.applyFiltre(repairServices,filtre);
+            RepairService.applyFiltre(repairServices, onlineFiltre);
            // RepairService.deleteNotAvailable(repairServices);
 
             RepairServiceAdapter adapter = new RepairServiceAdapter(repairServices, R.layout.repair_service_list_item);

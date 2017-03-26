@@ -8,9 +8,9 @@ public class OfflineFilter {
     private int sortingMethod;
     private int maxPrice;
     private int minRating;
-    public static int SORT_BY_PRICE = 0;
-    public static int SORT_BY_LOCATION = 1;
-    public static int SORT_BY_RATING = 2;
+    public static final int SORT_BY_PRICE = 0;
+    public static final int SORT_BY_LOCATION = 1;
+    public static final int SORT_BY_RATING = 2;
 
     public OfflineFilter(int sortingMethod, int maxPrice, int minRating) {
         this.sortingMethod = sortingMethod;
@@ -38,5 +38,13 @@ public class OfflineFilter {
 
     public void setMaxPrice(int maxPrice) {
         this.maxPrice = maxPrice;
+    }
+
+    public int getMinRating() {
+        return minRating;
+    }
+
+    public void setMinRating(int minRating) {
+        this.minRating = minRating;
     }
 }

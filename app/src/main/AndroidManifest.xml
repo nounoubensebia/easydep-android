@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -77,7 +78,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".FiltresActivity"
@@ -104,12 +104,15 @@
             android:label="Donnez votre avis "
             android:parentActivityName=".RepairServiceInfoActivity"
             android:theme="@style/CommentTheme"
-            android:windowSoftInputMode="adjustResize"></activity>
-        <activity android:name=".OfflineSearchActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".OfflineSearchActivity"
             android:label="Mode hors ligne"
-            android:theme="@style/AppTheme">
-
-        </activity>
+            android:theme="@style/AppTheme"></activity>
+        <activity android:name=".OfflineFiltreActivity"
+            android:label="Trier et filtrer"
+            android:parentActivityName=".OfflineSearchActivity"
+            android:theme="@style/SignupTheme"></activity>
     </application>
 
 </manifest>

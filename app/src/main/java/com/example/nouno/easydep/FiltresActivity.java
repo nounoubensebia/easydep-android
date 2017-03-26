@@ -1,6 +1,5 @@
 package com.example.nouno.easydep;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -8,7 +7,6 @@ import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.JsonWriter;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +17,6 @@ import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -32,15 +29,15 @@ public class FiltresActivity extends AppCompatActivity {
     TextView radiusText;
     TextView priceText;
     View upImage;
-    Filtre filtre;
+    OnlineFiltre onlineFiltre;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //filtre = new Filtre();
+        //onlineFiltre = new OnlineFiltre();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Gson gson = new Gson();
-        String defaultFiltreJson = gson.toJson(new Filtre());
-        String filtreJson = sharedPref.getString("filtre",defaultFiltreJson);
-        filtre = gson.fromJson(filtreJson,Filtre.class);
+        String defaultFiltreJson = gson.toJson(new OnlineFiltre());
+        String filtreJson = sharedPref.getString("onlineFiltre",defaultFiltreJson);
+        onlineFiltre = gson.fromJson(filtreJson,OnlineFiltre.class);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtres);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar1);
@@ -55,13 +52,36 @@ public class FiltresActivity extends AppCompatActivity {
         radiusText = (TextView)findViewById(R.id.radius_text);
         priceText = (TextView)findViewById(R.id.priceText);
         ratingBar = (RatingBar)findViewById(R.id.ratingbar);
-        radiusBar.setMax(Filtre.MAX_RADIUS-Filtre.MIN_RADIUS);
+        radiusBar.setMax(OnlineFiltre.MAX_RADIUS- OnlineFiltre.MIN_RADIUS);
+        listenFilter();
+
+        upImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = sharedPref.edit();
+                Gson gson = new Gson();
+                String json = gson.toJson(onlineFiltre);
+                //Toast.makeText(getApplicationContext(),json,Toast.LENGTH_LONG).show();
+                editor.putString("onlineFiltre",json);
+                editor.commit();
+                //editor.apply();
+                startSearchActivity ();
+            }
+        });
+        filtreUi(onlineFiltre);
+
+    }
+
+    private void listenFilter()
+    {
         radiusBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int radius = progress+Filtre.MIN_RADIUS;
+                int radius = progress+ OnlineFiltre.MIN_RADIUS;
                 radiusText.setText(radius+" KM");
-                filtre.setSearchRadius(radius);
+                onlineFiltre.setSearchRadius(radius);
             }
 
             @Override
@@ -79,9 +99,9 @@ public class FiltresActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (!(progress==0&&fromUser==false))
                 {
-                int price = progress*100+Filtre.MIN_PRICE;
-                priceText.setText(price+"Da/Km");
-                filtre.setMaxPrice(price);
+                    int price = progress*100+ OnlineFiltre.MIN_PRICE;
+                    priceText.setText(price+"Da/Km");
+                    onlineFiltre.setMaxPrice(price);
                 }
             }
 
@@ -101,18 +121,18 @@ public class FiltresActivity extends AppCompatActivity {
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 int rat = (int)rating;
                 ratingBar.setRating(rat);
-                filtre.setMinRating(rat);
+                onlineFiltre.setMinRating(rat);
             }
         });
         sortRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId){
-                    case R.id.sort_by_distance : filtre.setSortingMethod(Filtre.SORT_BY_DISTANCE);
+                    case R.id.sort_by_distance : onlineFiltre.setSortingMethod(OnlineFiltre.SORT_BY_DISTANCE);
                         break;
-                    case R.id.sort_by_price : filtre.setSortingMethod(Filtre.SORT_BY_PRICE);
+                    case R.id.sort_by_price : onlineFiltre.setSortingMethod(OnlineFiltre.SORT_BY_PRICE);
                         break;
-                    case R.id.sort_by_rating : filtre.setSortingMethod(Filtre.SORT_BY_RATING);
+                    case R.id.sort_by_rating : onlineFiltre.setSortingMethod(OnlineFiltre.SORT_BY_RATING);
                         break;
                 }
 
@@ -121,26 +141,9 @@ public class FiltresActivity extends AppCompatActivity {
         availableSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                filtre.setShowNotAvailable(isChecked);
+                onlineFiltre.setShowNotAvailable(isChecked);
             }
         });
-
-        upImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = sharedPref.edit();
-                Gson gson = new Gson();
-                String json = gson.toJson(filtre);
-                //Toast.makeText(getApplicationContext(),json,Toast.LENGTH_LONG).show();
-                editor.putString("filtre",json);
-                editor.commit();
-                //editor.apply();
-                startSearchActivity ();
-            }
-        });
-        filtreUi(filtre);
 
     }
 
@@ -155,8 +158,8 @@ public class FiltresActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.reset_filtres:
-                filtre = new Filtre();
-                filtreUi(filtre);
+                onlineFiltre = new OnlineFiltre();
+                filtreUi(onlineFiltre);
                 return super.onOptionsItemSelected(item);
 
             case android.R.id.home :  onBackPressed();
@@ -168,30 +171,30 @@ public class FiltresActivity extends AppCompatActivity {
         }
     }
 
-    public void filtreUi (Filtre filtre)
+    public void filtreUi (OnlineFiltre onlineFiltre)
     {
-        switch (filtre.getSortingMethod())
+        switch (onlineFiltre.getSortingMethod())
         {
-            case Filtre.SORT_BY_RATING : sortRadioGroup.check(R.id.sort_by_rating);
+            case OnlineFiltre.SORT_BY_RATING : sortRadioGroup.check(R.id.sort_by_rating);
                 break;
-            case Filtre.SORT_BY_PRICE : sortRadioGroup.check(R.id.sort_by_price);
+            case OnlineFiltre.SORT_BY_PRICE : sortRadioGroup.check(R.id.sort_by_price);
                 break;
-            case Filtre.SORT_BY_DISTANCE : sortRadioGroup.check(R.id.sort_by_distance);
+            case OnlineFiltre.SORT_BY_DISTANCE : sortRadioGroup.check(R.id.sort_by_distance);
                 break;
         }
-        availableSwitch.setChecked(filtre.isShowNotAvailable());
-        radiusBar.setProgress(filtre.getSearchRadius()-Filtre.MIN_RADIUS);
-        if (filtre.getMaxPrice()==RepairService.NO_PRICE)
+        availableSwitch.setChecked(onlineFiltre.isShowNotAvailable());
+        radiusBar.setProgress(onlineFiltre.getSearchRadius()- OnlineFiltre.MIN_RADIUS);
+        if (onlineFiltre.getMaxPrice()==RepairService.NO_PRICE)
         {
             priceText.setText("");
             priceBar.setProgress(0);
         }
         else
         {
-            priceText.setText(filtre.getMaxPrice()+"Da/Km");
-            priceBar.setProgress(filtre.getMaxPrice()/100);
+            priceText.setText(onlineFiltre.getMaxPrice()+"Da/Km");
+            priceBar.setProgress(onlineFiltre.getMaxPrice()/100);
         }
-        ratingBar.setRating(filtre.getMinRating());
+        ratingBar.setRating(onlineFiltre.getMinRating());
     }
     public void startSearchActivity ()
     {

@@ -4,7 +4,7 @@ package com.example.nouno.easydep;
  * Created by nouno on 19/03/2017.
  */
 
-public class Filtre {
+public class OnlineFiltre extends OfflineFilter {
     public static final int SORT_BY_RATING = 0;
     public static final int SORT_BY_PRICE = 1;
     public static final int SORT_BY_DISTANCE = 2;
@@ -14,32 +14,30 @@ public class Filtre {
     public static final int MAX_PRICE = 1000;
     public static final int MIN_PRICE = 100;
 
-    private int sortingMethod;
+
     private boolean showNotAvailable;
     private int searchRadius;
-    private int maxPrice;
-    private float minRating;
 
-    public Filtre(int sortingMethod, boolean showNotAvailable, int searchRadius, int maxPrice, float minRating) {
-        this.sortingMethod = sortingMethod;
+
+
+    public OnlineFiltre(int sortingMethod, boolean showNotAvailable, int searchRadius, int maxPrice, int minRating) {
+        super(sortingMethod,maxPrice,minRating);
         this.showNotAvailable = showNotAvailable;
         this.searchRadius = searchRadius;
-        this.maxPrice = maxPrice;
-        this.minRating = minRating;
+
     }
 
-    public Filtre ()
+    public OnlineFiltre()
     {
-        sortingMethod=SORT_BY_DISTANCE;
+        setSortingMethod(SORT_BY_DISTANCE);
         showNotAvailable = true;
         searchRadius = DEFAULT_RADIUS;
-        maxPrice = RepairService.NO_PRICE;
-        minRating = 0;
+        setMaxPrice(RepairService.NO_PRICE);
+        setMinRating(0);
+
     }
 
-    public int getSortingMethod() {
-        return sortingMethod;
-    }
+
 
     public boolean isShowNotAvailable() {
         return showNotAvailable;
@@ -49,17 +47,11 @@ public class Filtre {
         return searchRadius;
     }
 
-    public int getMaxPrice() {
-        return maxPrice;
-    }
 
-    public float getMinRating() {
-        return minRating;
-    }
 
-    public void setSortingMethod(int sortingMethod) {
-        this.sortingMethod = sortingMethod;
-    }
+
+
+
 
     public void setShowNotAvailable(boolean showNotAvailable) {
         this.showNotAvailable = showNotAvailable;
@@ -69,11 +61,7 @@ public class Filtre {
         this.searchRadius = searchRadius;
     }
 
-    public void setMaxPrice(int maxPrice) {
-        this.maxPrice = maxPrice;
-    }
 
-    public void setMinRating(float minRating) {
-        this.minRating = minRating;
-    }
+
+
 }

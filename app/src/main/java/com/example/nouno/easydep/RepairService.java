@@ -1,7 +1,5 @@
 package com.example.nouno.easydep;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -268,19 +266,19 @@ public class RepairService extends Person {
 
 
 
-    public static void applyFiltre (ArrayList<RepairService> repairServices,Filtre filtre)
+    public static void applyFiltre (ArrayList<RepairService> repairServices,OnlineFiltre onlineFiltre)
     {
-        switch (filtre.getSortingMethod())
+        switch (onlineFiltre.getSortingMethod())
         {
-            case Filtre.SORT_BY_DISTANCE : sortByDistance(repairServices);
+            case OnlineFiltre.SORT_BY_DISTANCE : sortByDistance(repairServices);
                 break;
-            case Filtre.SORT_BY_PRICE : sortByPrice(repairServices);
+            case OnlineFiltre.SORT_BY_PRICE : sortByPrice(repairServices);
                 break;
-            case Filtre.SORT_BY_RATING : sortByRating(repairServices);
+            case OnlineFiltre.SORT_BY_RATING : sortByRating(repairServices);
         }
-        filtrePrice(filtre.getMaxPrice(),repairServices);
-        filtreRating(filtre.getMinRating(),repairServices);
-        if (!filtre.isShowNotAvailable())
+        filtrePrice(onlineFiltre.getMaxPrice(),repairServices);
+        filtreRating(onlineFiltre.getMinRating(),repairServices);
+        if (!onlineFiltre.isShowNotAvailable())
         {
             deleteNotAvailable(repairServices);
         }

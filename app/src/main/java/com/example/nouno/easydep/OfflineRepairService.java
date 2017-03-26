@@ -2,6 +2,10 @@ package com.example.nouno.easydep;
 
 import java.util.ArrayList;
 
+import static com.example.nouno.easydep.OfflineFilter.SORT_BY_LOCATION;
+import static com.example.nouno.easydep.OfflineFilter.SORT_BY_PRICE;
+import static com.example.nouno.easydep.OfflineFilter.SORT_BY_RATING;
+
 /**
  * Created by nouno on 25/03/2017.
  */
@@ -105,18 +109,59 @@ public class OfflineRepairService extends Person {
 
     }
 
+    public static void sortByRating (ArrayList<OfflineRepairService> repairServices)
+    {
+        for (int i=0;i<repairServices.size();i++)
+        {
+
+            for (int j=i+1;j<repairServices.size();j++)
+            {
+
+                if (repairServices.get(i).rating<repairServices.get(j).rating)
+                {
+                    OfflineRepairService repairService1 = repairServices.get(i);
+                    OfflineRepairService repairService2 = repairServices.get(j);
+                    repairServices.set(i,repairService2);
+                    repairServices.set(j,repairService1);
+
+                }
+            }
+        }
+    }
+
+    public static void filtreRating (float rating,ArrayList<OfflineRepairService> repairServices)
+    {
+        //ArrayList<RepairService> availableRepairServices = new ArrayList<>();
+        for (int i=0;i<repairServices.size();i++)
+        {
+            OfflineRepairService repairService = repairServices.get(i);
+            if (rating > repairService.rating)
+            {
+                repairServices.remove(repairService);
+                i--;
+            }
+        }
+        //repairServices = new ArrayList<>(availableRepairServices);
+
+    }
+
+
     public static void applyFilter (ArrayList<OfflineRepairService> repairServices,OfflineFilter offlineFilter)
     {
-        if (offlineFilter.getSortingMethod()==offlineFilter.SORT_BY_LOCATION)
+        switch (offlineFilter.getSortingMethod())
         {
-            sortByLocation(repairServices);
+            case SORT_BY_PRICE : sortByPrice(repairServices);
+                break;
+            case SORT_BY_LOCATION : sortByLocation(repairServices);
+                break;
+            case SORT_BY_RATING : sortByRating(repairServices);
+                break;
         }
-        else
-        {
-            sortByPrice(repairServices);
-        }
+
         if (offlineFilter.getMaxPrice()!=RepairService.NO_PRICE)
         filtrePrice(offlineFilter.getMaxPrice(),repairServices);
+        filtreRating(offlineFilter.getMinRating(),repairServices);
+
 
     }
 }
