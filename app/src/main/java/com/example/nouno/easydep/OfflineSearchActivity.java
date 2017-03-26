@@ -16,8 +16,12 @@ public class OfflineSearchActivity extends AppCompatActivity {
         repairServices.add(new OfflineRepairService(1,"Test","El Harrache","Alger","0549958428",1,RepairService.NO_PRICE));
         repairServices.add(new OfflineRepairService(2,"Hind","Birkhadem","Mostaganem","0549958428",3,50));
         repairServices.add(new OfflineRepairService(3,"Bensaber","Kouba","Chlef","0549958428",4,RepairService.NO_PRICE));
-        OfflineRepairService.sortByLocation(repairServices);
+        DBConnection db=new DBConnection(this);
+        db.deleteFromDepanneur();
+        db.InsetToDB(repairServices);
+        repairServices = db.getAllrecords();
         populateRepairServicesList(repairServices);
+
     }
 
     private void populateRepairServicesList (ArrayList<OfflineRepairService> repairServices)
