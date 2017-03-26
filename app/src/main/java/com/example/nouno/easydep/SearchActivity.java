@@ -423,7 +423,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 String json2 = gson.toJson(searchPosition);
                 Intent i = new Intent(getApplicationContext(),RepairServiceInfoActivity.class);
                 i.putExtra("repairService",json);
-
+                i.putExtra("searchPosition",json2);
                 startActivity(i);
             }
         });

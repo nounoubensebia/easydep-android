@@ -19,6 +19,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -57,6 +58,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
     private TextView noRating;
     private CarOwner carOwner;
     private ProgressDialog progressDialog;
+    private String searchPositionJson;
     RepairServiceInfoActivity repairServiceInfoActivity;
 
     @Override
@@ -66,6 +68,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         Gson gson = new Gson();
         Bundle bundle = getIntent().getExtras();
         repairService = gson.fromJson(getIntent().getExtras().getString("repairService"),RepairService.class);
+        searchPositionJson = bundle.getString("searchPosition");
         if (bundle.containsKey("commentAdded"))
         {
             DialogUtils.buildInfoDialog("Commentaire ajouté","Votre commentaire a été ajouté merci de votre coopération",this).show();
@@ -77,6 +80,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         displayRepairServiceData();
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         hideTitleText();
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -84,6 +88,17 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==android.R.id.home)
+        {
+            Intent i = new Intent(this,SearchActivity.class);
+            i.putExtra("position",searchPositionJson);
+            startActivity(i);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private Dialog buildDeleteDialog(final UserComment userComment)
     {
@@ -228,6 +243,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
                 Gson gson = new Gson();
                 UserComment userComment = new UserComment(carOwner,repairService,(int)userRatingBar.getRating());
                 String json = gson.toJson(userComment);
+                i.putExtra("searchPosition",searchPositionJson);
                 i.putExtra("userComment",json);
                 startActivity(i);
                 }
@@ -429,6 +445,8 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
              infoDialog.show();
         }
     }
+
+
 
 
 }

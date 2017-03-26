@@ -30,6 +30,7 @@ public class AddCommentActivity extends AppCompatActivity {
     private View upImage;
     private RatingBar ratingBar;
     private ProgressBar progressBar;
+    private String searchPositionJson;
     private AddCommentActivity addCommentActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class AddCommentActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         Gson gson = new Gson();
         userComment = gson.fromJson(extras.getString("userComment"),UserComment.class);
+        searchPositionJson = extras.getString("searchPosition");
         nameText = (TextView)findViewById(R.id.nameText);
         commentWrapper = (TextInputLayout)findViewById(R.id.comment_wrapper);
         ratingBar = (RatingBar)findViewById(R.id.ratingbar);
@@ -93,6 +95,7 @@ public class AddCommentActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = gson.toJson(userComment.getRepairService());
         i.putExtra("repairService",json);
+        i.putExtra("searchPosition",searchPositionJson);
         startActivity(i);
         finish();
     }
@@ -105,6 +108,7 @@ public class AddCommentActivity extends AppCompatActivity {
         String json = gson.toJson(userComment.getRepairService());
         i.putExtra("repairService",json);
         i.putExtra("commentAdded",true);
+        i.putExtra("searchPosition",searchPositionJson);
         startActivity(i);
         finish();
     }

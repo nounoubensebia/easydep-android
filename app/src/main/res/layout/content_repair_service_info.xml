@@ -229,7 +229,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:src="@drawable/ic_person_48_8p" />
+            android:src="@drawable/ic_comment_blue_48_8p" />
 
         <TextView
             android:layout_width="wrap_content"

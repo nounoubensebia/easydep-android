@@ -97,6 +97,7 @@
         </activity>
         <activity
             android:name=".RepairServiceInfoActivity"
+            android:parentActivityName=".SearchActivity"
             android:label="@string/title_activity_repair_service_info"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
