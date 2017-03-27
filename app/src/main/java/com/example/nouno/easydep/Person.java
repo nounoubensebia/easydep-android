@@ -1,5 +1,8 @@
 package com.example.nouno.easydep;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by nouno on 02/03/2017.
  */
@@ -36,5 +39,20 @@ public class Person {
 
     public long getId() {
         return id;
+    }
+
+    public static Person fromJson(String json)
+    {
+        Person person = null;
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            long id = jsonObject.getLong("id");
+            String firstname = jsonObject.getString("first_name");
+            String lastname = jsonObject.getString("last_name");
+            person = new CarOwner(id,firstname,lastname);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return person;
     }
 }

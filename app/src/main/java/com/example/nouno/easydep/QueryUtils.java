@@ -24,19 +24,19 @@ import java.util.regex.Pattern;
 
 public class QueryUtils {
     public static final String LOCAL_TEST_URL ="http://192.168.1.7/EasyDep/test.php";
-    public static final String LOCAL_LOGIN_URL = "http://192.168.1.7/EasyDep/login.php";
+    public static final String LOCAL_LOGIN_URL = "http://192.168.1.6/EasyDep/login.php";
     public static final String LOCAL_SIGNUP_URL = "http://192.168.1.10/easydep-serveur/signup.php";
     public static final String PUBLIC_SIGNUP_URL = "https://easydep.000webhostapp.com/signup.php";
     public static final String PUBLIC_LOGIN_URL = "https://easydep.000webhostapp.com/login.php";
     public static final String PUBLIC_TEST_URL ="http://easydep.000webhostapp.com/test.php";
     public static final String LOCAL_PASSWORD_FORGOTTEN_URL ="http://192.168.1.10/easydep-serveur/forgotten_password.php";
-    public static final String LOCAL_GET_REPAIR_SERVICES_URL = "http://192.168.1.3/EasyDep/GetRepairServices.php";
+    public static final String LOCAL_GET_REPAIR_SERVICES_URL = "http://192.168.1.6/EasyDep/GetRepairServices.php";
     public static final String PUBLIC_GET_REPAIR_SERVICES_URL = "http://easydep.000webhostapp.com/GetRepairServices.php";
     public static final String GET_PLACE_PREDICTIONS_URL ="https://maps.googleapis.com/maps/api/place/autocomplete/json?";
     public static final String GET_PLACE_POSITION_URL = "https://maps.googleapis.com/maps/api/place/details/json?";
     public static final String CONNECTION_PROBLEM = "connection problem";
     public static final String GET_USER_LOCATION_NAME_URL = "https://maps.googleapis.com/maps/api/geocode/json?&result_type=political&key=AIzaSyAqQHxLWPTvFHDvz5WUwuNAjTa0UuSHbmk&language=fr-FR&";
-    public static final String GET_USER_COMMENTS_LOCAL_URL = "http://192.168.1.3/EasyDep/comment.php";
+    public static final String GET_USER_COMMENTS_LOCAL_URL = "http://192.168.1.6/EasyDep/comment.php";
     // méthode qui envoi une requete et enregistre le résultat dans un String
     // param 1 est le string de l'url de la requete
     // param 2 est la liste des parametres du post

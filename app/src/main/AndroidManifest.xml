@@ -27,7 +27,14 @@
 
         <activity
             android:name=".Login_Activity"
-            android:theme="@style/LoginTheme" />
+            android:theme="@style/LoginTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".Signup1_Activity"
             android:label="Inscription"
@@ -73,11 +80,7 @@
             android:name=".SearchActivity"
             android:label="@string/recherche_depanneur"
             android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".FiltresActivity"

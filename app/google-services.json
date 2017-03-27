@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "454883877617",
+    "firebase_url": "https://easydep-a7c5b.firebaseio.com",
+    "project_id": "easydep-a7c5b",
+    "storage_bucket": "easydep-a7c5b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454883877617:android:8ae7d4ad63be1a86",
+        "android_client_info": {
+          "package_name": "com.example.nouno.easydep"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454883877617-v8ah9lf591rmnh2fnk7hs1hkvve8e9rl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq7gRmzi9W5QczpfHJZNXZR3tpZYmZPSw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

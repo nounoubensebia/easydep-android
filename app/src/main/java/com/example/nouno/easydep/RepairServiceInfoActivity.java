@@ -5,12 +5,14 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -64,8 +66,14 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         repairServiceInfoActivity = this;
-        carOwner = new CarOwner(1,"Noureddine","Bensebia");
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Gson gson = new Gson();
+        String defaultJson = gson.toJson(new CarOwner(1,"Noureddine","Bensebia"));
+
+        String Json = sharedPref.getString("carOwner",defaultJson);
+        carOwner = gson.fromJson(Json,CarOwner.class);
+        Toast.makeText(this,carOwner.getId()+"",Toast.LENGTH_LONG).show();
+
         Bundle bundle = getIntent().getExtras();
         repairService = gson.fromJson(getIntent().getExtras().getString("repairService"),RepairService.class);
         searchPositionJson = bundle.getString("searchPosition");

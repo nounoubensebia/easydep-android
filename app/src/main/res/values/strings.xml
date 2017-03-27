@@ -116,4 +116,5 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="login_failed">Authentification échouée veuillez vérifier les informations saisi</string>
 </resources>
