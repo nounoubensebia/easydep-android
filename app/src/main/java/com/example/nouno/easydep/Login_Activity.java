@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import java.util.LinkedHashMap;
@@ -29,6 +30,8 @@ public class Login_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        checkIfConnected();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -62,6 +65,7 @@ public class Login_Activity extends AppCompatActivity {
 
                 String password = passwordWrapper.getEditText().getText().toString();
                 String email = emailWrapper.getEditText().getText().toString();
+                String token = FirebaseInstanceId.getInstance().getToken();
                 emailWrapper.setErrorEnabled(false);
                 passwordWrapper.setErrorEnabled(false);
                 if (!QueryUtils.validateEmail(email)) {
@@ -76,6 +80,7 @@ public class Login_Activity extends AppCompatActivity {
                     LinkedHashMap<String, String> map = new LinkedHashMap<String, String>(); // liste des parametres du post
                     map.put("email", email);
                     map.put("password", password);
+                    map.put("token",token);
                     LoginTask task = new LoginTask();
                     task.execute(map);
                 }
@@ -98,6 +103,18 @@ public class Login_Activity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+    }
+
+    public void checkIfConnected ()
+    {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (sharedPref.contains("carOwner"))
+        {
+            Intent i = new Intent(this,SearchActivity.class);
+            startActivity(i);
+            finish();
+        }
 
     }
 
@@ -170,6 +187,7 @@ public class Login_Activity extends AppCompatActivity {
         CarOwner carOwner = (CarOwner)Person.fromJson(s);
         Gson gson = new Gson();
         String json = gson.toJson(carOwner,CarOwner.class);
+
         saveUserData(carOwner);
         Intent i = new Intent(getApplicationContext(),SearchActivity.class);
         startActivity(i);

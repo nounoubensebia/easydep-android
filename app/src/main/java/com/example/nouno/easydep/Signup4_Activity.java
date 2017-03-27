@@ -7,6 +7,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,10 +24,13 @@ public class Signup4_Activity extends AppCompatActivity {
     private TextInputLayout passwordWrapper;
     private View upimage;
     private ProgressBar progressBar;
+    private FirebaseInstanceId firebaseInstanceId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup4);
+        firebaseInstanceId = FirebaseInstanceId.getInstance();
+        Log.i("tag",firebaseInstanceId.getToken());
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar4);
         passwordWrapper= (TextInputLayout)findViewById(R.id.password_signup_wrapper);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
@@ -43,11 +48,17 @@ public class Signup4_Activity extends AppCompatActivity {
                 } catch (Exception e) {}
                 Bundle extras = getIntent().getExtras(); // recuperation des info envoyees par l'activite precedente
                 String email = extras.getString("email");
+                String firstname = extras.getString("firstname");
+                String lastname = extras.getString("lastname");
                 String password = passwordWrapper.getEditText().getText().toString();
+                String token = firebaseInstanceId.getToken();
                 if (QueryUtils.validatePassword(password)) {
                     LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
                     map.put("email", email);
                     map.put("password", password);
+                    map.put("firstname",firstname);
+                    map.put("lastname",lastname);
+                    map.put("token",token);
                     SignupTask task = new SignupTask();
                     task.execute(map);//envoi requete d'inscription
                 }

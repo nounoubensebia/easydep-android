@@ -40,6 +40,8 @@ public class Signup2_Activity extends AppCompatActivity {
                 if (QueryUtils.validateName(firstName)&&QueryUtils.validateName(lastName))
                 {
                 Intent i = new Intent(getApplicationContext(),Signup3_Activity.class);
+                    i.putExtra("firstname",firstName);
+                    i.putExtra("lastname",lastName);
                 startActivity(i);
                 }
             }

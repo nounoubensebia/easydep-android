@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class Person {
     private String firstName,lastName;
-    private String email;
+
     private Position position;
     private long id;
 
@@ -27,9 +27,7 @@ public class Person {
         return firstName;
     }
 
-    public String getEmail() {
-        return email;
-    }
+
 
     public String getFullName() {return firstName+" "+lastName;}
 
@@ -49,7 +47,8 @@ public class Person {
             long id = jsonObject.getLong("id");
             String firstname = jsonObject.getString("first_name");
             String lastname = jsonObject.getString("last_name");
-            person = new CarOwner(id,firstname,lastname);
+            String email = jsonObject.getString("email");
+            person = new CarOwner(id,firstname,lastname,email);
         } catch (JSONException e) {
             e.printStackTrace();
         }

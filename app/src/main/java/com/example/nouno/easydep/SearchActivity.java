@@ -1,5 +1,6 @@
 package com.example.nouno.easydep;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,6 +39,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -63,11 +66,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private Button mapRefrechButton;
     private Button noNetworkButton;
     private boolean mapMarked = false;
+    private ProgressDialog logOutDialog;
+    private SearchActivity searchActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-
+        searchActivity = this;
         Gson gson = new Gson();
         String defaultFiltreJson = gson.toJson(new OnlineFiltre());
         String filtreJson = sharedPref.getString("onlineFiltre",defaultFiltreJson);
@@ -236,10 +241,59 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 Intent i3 = new Intent(getApplicationContext(),OfflineSearchActivity.class);
                 startActivity(i3);
                 return true;
+            case R.id.log_out :
+                logOutUser();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+    private void logOutUser()
+    {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Gson gson = new Gson();
+        String json = sharedPref.getString("carOwner",null);
+        CarOwner carOwner = gson.fromJson(json,CarOwner.class);
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("email",carOwner.getEmail());
+        map.put("token", FirebaseInstanceId.getInstance().getToken());
+        LogOutTask logOutTask = new LogOutTask();
+        logOutTask.execute(map);
+    }
+
+    private class LogOutTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+        @Override
+        protected void onPreExecute() {
+           logOutDialog = (ProgressDialog) DialogUtils.buildProgressDialog("Veuillez patienter",searchActivity);
+            logOutDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String s = null;
+            try {
+                s = QueryUtils.makeHttpPostRequest(QueryUtils.LOG_OUT_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return s;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            logOutDialog.dismiss();
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.remove("carOwner");
+            editor.commit();
+            Intent i4 = new Intent(getApplicationContext(),Login_Activity.class);
+            startActivity(i4);
+        }
+    }
+
+
 
     public void searchForRepairServices ()
     {

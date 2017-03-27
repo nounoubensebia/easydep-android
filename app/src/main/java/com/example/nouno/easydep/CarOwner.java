@@ -6,7 +6,19 @@ package com.example.nouno.easydep;
 
 public class CarOwner extends Person {
 
-    public CarOwner(long id,String firstName, String lastName) {
+    private String email;
+
+    public CarOwner(long id,String firstName, String lastName,String email) {
         super(id,firstName,lastName);
+        this.email = email;
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

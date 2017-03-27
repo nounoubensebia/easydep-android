@@ -68,7 +68,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         repairServiceInfoActivity = this;
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Gson gson = new Gson();
-        String defaultJson = gson.toJson(new CarOwner(1,"Noureddine","Bensebia"));
+        String defaultJson = gson.toJson(new CarOwner(1,"Noureddine","Bensebia",null));
 
         String Json = sharedPref.getString("carOwner",defaultJson);
         carOwner = gson.fromJson(Json,CarOwner.class);
@@ -154,13 +154,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         return builder.create();
     }
 
-    private ProgressDialog buildProgressDialog(String msg)
-    {
 
-        ProgressDialog dialog = new ProgressDialog(RepairServiceInfoActivity.this);
-        dialog.setMessage(msg);
-        return dialog;
-    }
 
     @Override
     protected void onResume() {
@@ -393,7 +387,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
         @Override
         protected void onPreExecute() {
-            progressDialog = buildProgressDialog("Suppression du commentaire en cours...");
+            progressDialog = (ProgressDialog)DialogUtils.buildProgressDialog("Suppression du commentaire en cours ...",repairServiceInfoActivity);
             progressDialog.show();
         }
 
@@ -423,7 +417,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
     {
         @Override
         protected void onPreExecute() {
-            progressDialog = buildProgressDialog("Singalisation du commentaire en cours...");
+            progressDialog = (ProgressDialog)DialogUtils.buildProgressDialog("Singalisation du commentaire en cours ...",repairServiceInfoActivity);
             progressDialog.show();
         }
 

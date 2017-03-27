@@ -81,7 +81,7 @@ public class UserComment {
                 String lastName = carOwnerJson.getString("last_name");
                 long id = carOwnerJson.getLong("id");
                 long commentId = jsonObject.getLong("id");
-                CarOwner carOwner = new CarOwner(id,firstName,lastName);
+                CarOwner carOwner = new CarOwner(id,firstName,lastName,null);
                 String commentText = jsonObject.getString("comment_text");
                 long time = jsonObject.getLong("time");
                 Date date = new Date(time*1000);

@@ -26,9 +26,15 @@ public class Signup3_Activity extends AppCompatActivity {
     private LayoutInflater mInflater;
     private ProgressBar progressBar;
     private View upimage;
+    private String firstName;
+    private String lastName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
+        firstName = extras.getString("firstname");
+        lastName = extras.getString("lastname");
         setContentView(R.layout.activity_signup3);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar3);
         emailWrapper= (TextInputLayout)findViewById(R.id.email_signup_wrapper);
@@ -111,6 +117,8 @@ public class Signup3_Activity extends AppCompatActivity {
                upimage.setVisibility(View.VISIBLE);
                Intent i = new Intent(getApplicationContext(),Signup4_Activity.class);
                i.putExtra("email",email);
+               i.putExtra("firstname",firstName);
+               i.putExtra("lastname",lastName);
                startActivity(i);
            }
            else
