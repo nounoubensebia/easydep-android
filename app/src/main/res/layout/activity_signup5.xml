@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/backgroundColor"
+    tools:context="com.example.nouno.easydep.Activities.Signup5_Activity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:drawableTop="@drawable/ic_check_circle_58_8dp"
+        android:text="Inscription terminée"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_horizontal"
+        android:layout_marginRight="16dp"
+        android:text="Vous pouvez maintenent localiser les dépanneurs de maniere simple et efficace."/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/go_button"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        app:srcCompat="@drawable/ic_shortcut_chevron_right"
+        android:layout_margin="16dp"
+        android:layout_gravity="right|bottom"/>
+</android.support.design.widget.CoordinatorLayout>

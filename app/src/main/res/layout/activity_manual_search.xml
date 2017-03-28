@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
     android:orientation="vertical"
-    tools:context="com.example.nouno.easydep.ManualSearchActivity">
+    tools:context="com.example.nouno.easydep.Activities.ManualSearchActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar1"

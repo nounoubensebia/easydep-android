@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.example.nouno.easydep.Data.OfflineFilter;
+import com.example.nouno.easydep.Data.OnlineFiltre;
 import com.google.gson.Gson;
 
 /**
@@ -11,6 +13,33 @@ import com.google.gson.Gson;
  */
 
 public class Utils {
+
+    public static final String OFFLINEFILTER_KEY = "offlineFilter";
+    public static final String ONLINEFILTER_KEY = "onlineFilter";
+
+
+    public static void resetSettings (Context context)
+    {
+        resetFilters(context);
+
+    }
+
+    public static void resetFilters (Context context)
+    {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Gson gson = new Gson();
+        OnlineFiltre onlineFiltre = new OnlineFiltre();
+        OfflineFilter offlineFilter = new OfflineFilter();
+        String json = gson.toJson(onlineFiltre);
+        editor.putString(ONLINEFILTER_KEY,json);
+        json = gson.toJson(offlineFilter);
+        editor.putString(OFFLINEFILTER_KEY,json);
+        editor.commit();
+
+    }
+
+
 
 
 

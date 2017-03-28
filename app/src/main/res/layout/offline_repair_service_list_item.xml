@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/infoLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -49,6 +50,11 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp" />
+    <View
+        android:layout_below="@id/infoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F1F1F1"/>
 
 
 </RelativeLayout>

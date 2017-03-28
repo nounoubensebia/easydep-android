@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/backgroundColor"
-    tools:context="com.example.nouno.easydep.FiltresActivity">
+    tools:context="com.example.nouno.easydep.Activities.FiltresActivity">
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"

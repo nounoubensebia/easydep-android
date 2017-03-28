@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="com.example.nouno.easydep.OfflineSearchActivity">
+    tools:context="com.example.nouno.easydep.Activities.OfflineSearchActivity">
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"

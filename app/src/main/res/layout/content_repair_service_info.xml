@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.nouno.easydep.RepairServiceInfoActivity">
+    tools:context="com.example.nouno.easydep.Activities.RepairServiceInfoActivity">
     <!--tools:showIn="@layout/activity_repair_service_info">-->
     <LinearLayout
         android:layout_width="match_parent"

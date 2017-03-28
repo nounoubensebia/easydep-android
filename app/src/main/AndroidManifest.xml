@@ -26,7 +26,7 @@
             android:value="AIzaSyAmYvO7yTRJbWVCYK1B1Rp3CDOwwictb-c" />
 
         <activity
-            android:name=".Login_Activity"
+            android:name=".Activities.Login_Activity"
             android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,60 +34,57 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".Signup1_Activity"
+            android:name=".Activities.Signup1_Activity"
             android:label="Inscription"
-            android:parentActivityName=".Login_Activity"
+            android:parentActivityName=".Activities.Login_Activity"
             android:theme="@style/SignupTheme" />
         <activity
-            android:name=".Signup2_Activity"
+            android:name=".Activities.Signup2_Activity"
             android:label="Inscription"
-            android:parentActivityName=".Signup1_Activity"
+            android:parentActivityName=".Activities.Signup1_Activity"
             android:theme="@style/SignupTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Signup3_Activity"
+            android:name=".Activities.Signup3_Activity"
             android:label="Inscription"
-            android:parentActivityName=".Signup2_Activity"
+            android:parentActivityName=".Activities.Signup2_Activity"
             android:theme="@style/SignupTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Signup4_Activity"
+            android:name=".Activities.Signup4_Activity"
             android:label="Inscription"
-            android:parentActivityName=".Signup1_Activity"
+            android:parentActivityName=".Activities.Signup1_Activity"
             android:theme="@style/SignupTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".PasswordForgotten1_Activity"
+            android:name=".Activities.PasswordForgotten1_Activity"
             android:label="Mot de passe oublié"
-            android:parentActivityName=".Login_Activity"
+            android:parentActivityName=".Activities.Login_Activity"
             android:theme="@style/SignupTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".PasswordForgotten2_Activity"
+            android:name=".Activities.PasswordForgotten2_Activity"
             android:label="Mot de passe oublié"
-            android:parentActivityName=".PasswordForgotten1_Activity"
+            android:parentActivityName=".Activities.PasswordForgotten1_Activity"
             android:theme="@style/SignupTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".PasswordForgotten3_Actitivity"
+            android:name=".Activities.PasswordForgotten3_Actitivity"
             android:label="Mot de passe oublié"
-            android:parentActivityName=".PasswordForgotten2_Activity"
+            android:parentActivityName=".Activities.PasswordForgotten2_Activity"
             android:theme="@style/SignupTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".Activities.SearchActivity"
             android:label="@string/recherche_depanneur"
-            android:theme="@style/AppTheme">
-
-        </activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
-            android:name=".FiltresActivity"
+            android:name=".Activities.FiltresActivity"
             android:label="Trier et filtrer"
             android:theme="@style/SignupTheme" />
         <activity
-            android:name=".ManualSearchActivity"
+            android:name=".Activities.ManualSearchActivity"
             android:label="Recherche"
             android:theme="@style/SignupTheme">
             <meta-data
@@ -99,34 +96,39 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RepairServiceInfoActivity"
-            android:parentActivityName=".SearchActivity"
+            android:name=".Activities.RepairServiceInfoActivity"
             android:label="@string/title_activity_repair_service_info"
+            android:parentActivityName=".Activities.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AddCommentActivity"
+            android:name=".Activities.AddCommentActivity"
             android:label="Donnez votre avis "
-            android:parentActivityName=".RepairServiceInfoActivity"
+            android:parentActivityName=".Activities.RepairServiceInfoActivity"
             android:theme="@style/CommentTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".OfflineSearchActivity"
+            android:name=".Activities.OfflineSearchActivity"
             android:label="Mode hors ligne"
-            android:theme="@style/AppTheme"></activity>
-        <activity android:name=".OfflineFiltreActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Activities.OfflineFiltreActivity"
             android:label="Trier et filtrer"
-            android:parentActivityName=".OfflineSearchActivity"
-            android:theme="@style/SignupTheme"></activity>
-        <service android:name=".FirebaseInstanceIDservice">
+            android:parentActivityName=".Activities.OfflineSearchActivity"
+            android:theme="@style/SignupTheme" />
+
+        <service android:name=".Services.FirebaseInstanceIDservice">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".FireBaseMessangingService">
+        <service android:name=".Services.FireBaseMessangingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".Activities.Signup5_Activity"
+            android:theme="@style/SignupTheme"></activity>
     </application>
 
 </manifest>
