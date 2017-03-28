@@ -131,7 +131,8 @@
             android:name=".Activities.Signup5_Activity"
             android:theme="@style/SignupTheme" />
         <activity android:name=".Activities.AssistanceRequestActivity" />
-        <activity android:name=".Activities.RequestDimensionsActivity"></activity>
+        <activity android:name=".Activities.RequestDimensionsActivity" />
+        <activity android:name=".Activities.BreakDownDescriptionActivity"></activity>
     </application>
 
 </manifest>
