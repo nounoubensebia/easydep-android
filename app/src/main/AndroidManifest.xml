@@ -78,7 +78,7 @@
         <activity
             android:name=".Activities.SearchActivity"
             android:label="@string/recherche_depanneur"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activities.FiltresActivity"
             android:label="Trier et filtrer"
@@ -127,8 +127,11 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Activities.Signup5_Activity"
-            android:theme="@style/SignupTheme"></activity>
+        <activity
+            android:name=".Activities.Signup5_Activity"
+            android:theme="@style/SignupTheme" />
+        <activity android:name=".Activities.AssistanceRequestActivity" />
+        <activity android:name=".Activities.RequestDimensionsActivity"></activity>
     </application>
 
 </manifest>
