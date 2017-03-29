@@ -25,7 +25,9 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.nouno.easydep.Data.AssistanceRequest;
 import com.example.nouno.easydep.Data.CarOwner;
+import com.example.nouno.easydep.Data.Position;
 import com.example.nouno.easydep.DialogUtils;
 import com.example.nouno.easydep.OnButtonClickListener;
 import com.example.nouno.easydep.QueryUtils;
@@ -93,6 +95,8 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
 
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -191,6 +195,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
     @SuppressLint("NewApi")
     private void displayRepairServiceData ()
     {
+        TextView requestQuotationText;
         TextView toolBarDistanceText;
         TextView toolBarNameText;
         TextView toolbarTimeText;
@@ -247,6 +252,19 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
                 i.putExtra("userComment",json);
                 startActivity(i);
                 }
+            }
+        });
+        requestQuotationText = (TextView)findViewById(R.id.request_quotation);
+        requestQuotationText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Gson gson = new Gson();
+                Position searchPosition = gson.fromJson(searchPositionJson,Position.class);
+                AssistanceRequest assistanceRequest = new AssistanceRequest(false,searchPosition,null,carOwner,repairService);
+                String json = gson.toJson(assistanceRequest);
+                Intent i = new Intent(getApplicationContext(),AssistanceRequestActivity.class);
+                i.putExtra("assistanceRequest",json);
+                startActivity(i);
             }
         });
 

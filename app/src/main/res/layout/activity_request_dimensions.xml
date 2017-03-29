@@ -15,15 +15,24 @@
     android:text="Longeur"
     android:layout_height="wrap_content" />
     <TextView
+        android:id="@+id/length_text"
         android:layout_marginTop="8dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:text="5.5M"
         android:layout_height="wrap_content" />
     <SeekBar
+        android:id="@+id/length_seekbar"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <CheckBox
+        android:id="@+id/length_dont_know"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:text="Je ne sais pas"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
         android:layout_marginTop="16dp"
@@ -34,15 +43,24 @@
         android:text="Tonnage"
         android:layout_height="wrap_content" />
     <TextView
+        android:id="@+id/weight_text"
         android:layout_marginTop="8dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:text="5 Tonnes"
         android:layout_height="wrap_content" />
     <SeekBar
+        android:id="@+id/weight_seekbar"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <CheckBox
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:text="Je ne sais pas"
+        android:id="@+id/weight_dont_know"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

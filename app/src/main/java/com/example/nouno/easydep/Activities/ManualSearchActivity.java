@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.nouno.easydep.Data.AssistanceRequest;
 import com.example.nouno.easydep.Data.Position;
 import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
@@ -130,11 +131,7 @@ public class ManualSearchActivity extends AppCompatActivity implements GoogleApi
 
         @Override
         protected void onPostExecute(Position position) {
-            Gson gson = new Gson();
-            String positionJson = gson.toJson(position);
-            Intent i = new Intent(getApplicationContext(),SearchActivity.class);
-            i.putExtra("position",positionJson);
-            startActivity(i);
+           startAskingActivity(position);
         }
     }
 
@@ -242,13 +239,40 @@ public class ManualSearchActivity extends AppCompatActivity implements GoogleApi
             userPositionLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Gson gson = new Gson();
-                    String positionJson = gson.toJson(position);
-                    Intent i = new Intent(getApplicationContext(),SearchActivity.class);
-                    i.putExtra("position",positionJson);
-                    startActivity(i);
+                    startAskingActivity(position);
                 }
             });
+        }
+    }
+
+    private void startAskingActivity(Position position)
+    {
+        Gson gson = new Gson();
+        String positionJson = gson.toJson(position);
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null)
+        {
+            String json = extras.getString("assistanceRequest");
+            AssistanceRequest assistanceRequest = gson.fromJson(json,AssistanceRequest.class);
+            Intent i = new Intent(getApplicationContext(),AssistanceRequestActivity.class);
+            boolean destination = extras.getBoolean("destination");
+            if (destination)
+            {
+                assistanceRequest.setDestination(position);
+            }
+            else
+            {
+                assistanceRequest.setUserPositon(position);
+            }
+            json = gson.toJson(assistanceRequest);
+            i.putExtra("assistanceRequest",json);
+            startActivity(i);
+        }
+        else
+        {
+        Intent i = new Intent(getApplicationContext(),SearchActivity.class);
+        i.putExtra("position",positionJson);
+        startActivity(i);
         }
     }
 

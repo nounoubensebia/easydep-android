@@ -76,7 +76,7 @@ public class SearchSuggestion {
             JSONObject result = jsonObject.getJSONObject("result");
             JSONObject geometry = result.getJSONObject("geometry");
             JSONObject location = geometry.getJSONObject("location");
-            position = new Position(location.getDouble("lat"),location.getDouble("lng"));
+            position = new Position(primaryDescription+", "+secondaryDescription,location.getDouble("lat"),location.getDouble("lng"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

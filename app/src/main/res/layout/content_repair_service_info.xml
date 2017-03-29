@@ -64,7 +64,7 @@
             android:layout_marginTop="16dp"
             android:background="#F1F1F1" />
         <TextView
-
+            android:id="@+id/request_quotation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
