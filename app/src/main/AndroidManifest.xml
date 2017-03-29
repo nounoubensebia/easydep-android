@@ -134,6 +134,7 @@
             android:theme="@style/AppTheme"
             android:label="Demande de devis"/>
         <activity android:name=".Activities.RequestDimensionsActivity"
+            android:label="Dimensions du véhicules"
             android:theme="@style/AppTheme"/>
         <activity android:name=".Activities.BreakDownDescriptionActivity"></activity>
     </application>

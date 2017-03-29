@@ -6,7 +6,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,6 +41,7 @@ public class QueryUtils {
     public static final String GET_USER_LOCATION_NAME_URL = "https://maps.googleapis.com/maps/api/geocode/json?&result_type=political&key=AIzaSyAqQHxLWPTvFHDvz5WUwuNAjTa0UuSHbmk&language=fr-FR&";
     public static final String GET_USER_COMMENTS_LOCAL_URL = "http://192.168.1.6/EasyDep/comment.php";
     public static final String LOG_OUT_URL = "http://192.168.1.6/EasyDep/logout.php";
+    public static final String SEND_REQUEST_URL = "http://192.168.1.6/EasyDep/send_request.php";
     // méthode qui envoi une requete et enregistre le résultat dans un String
     // param 1 est le string de l'url de la requete
     // param 2 est la liste des parametres du post
@@ -98,6 +102,69 @@ public class QueryUtils {
             }
             return response;
         }
+    }
+
+    public static String makeHttpPostJsonRequest (String urlString,String jsonObject) throws ConnectionProblemException
+    {
+
+        try {
+            jsonObject = new String(jsonObject.getBytes(),"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String response = null;
+        InputStream inputStream=null;
+        HttpURLConnection httpCon=null;
+        try {
+            URL url = new URL(urlString);
+            httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setDoOutput(true);
+            httpCon.setConnectTimeout(15000);
+            httpCon.setReadTimeout(15000);
+            httpCon.setRequestMethod("POST");
+            httpCon.setRequestProperty("Content-Type","application/json; charset=UTF-8");
+            httpCon.connect();
+            OutputStream os = httpCon.getOutputStream();
+            OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
+            osw.write(jsonObject);
+            osw.flush();
+            osw.close();
+            if (httpCon.getResponseCode()==200)
+            {
+                inputStream = httpCon.getInputStream();
+                response=readFromStream(inputStream);
+            }
+            else
+            {
+                throw new ConnectionProblemException("status code != 200");
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (inputStream!=null)
+            {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+
+                throw new ConnectionProblemException("connexion introuvable");
+
+            }
+            if (httpCon!=null)
+            {
+                httpCon.disconnect();
+            }
+            return response;
+        }
+
     }
 
     public static String makeHttpGetRequest(String urlString,Map<String,String> map)

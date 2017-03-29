@@ -2,6 +2,7 @@ package com.example.nouno.easydep.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +12,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.nouno.easydep.Data.AssistanceRequest;
+import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
+import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class AssistanceRequestActivity extends AppCompatActivity {
     private AssistanceRequest assistanceRequest;
@@ -32,6 +36,7 @@ public class AssistanceRequestActivity extends AppCompatActivity {
 
     private void displayInfo (final AssistanceRequest assistanceRequest)
     {
+        View upImage = findViewById(R.id.go_button);
         View positionLayout = findViewById(R.id.positionLayout);
         View destinationLayout = findViewById(R.id.destinationLayout);
         final TextView dimensionsTitle = (TextView)findViewById(R.id.dimensionsTitleText);
@@ -118,6 +123,19 @@ public class AssistanceRequestActivity extends AppCompatActivity {
             }
         });
 
+        upImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.disableHtmlEscaping();
+
+                Gson gson = gsonBuilder.create();
+                String json = gson.toJson(assistanceRequest);
+                SendRequestTask sendRequestTask = new SendRequestTask();
+                sendRequestTask.execute(json);
+            }
+        });
+
     }
 
     private void searchForResults (boolean destination)
@@ -128,6 +146,26 @@ public class AssistanceRequestActivity extends AppCompatActivity {
         i.putExtra("assistanceRequest",json);
         i.putExtra("destination",destination);
         startActivity(i);
+    }
+
+    private class SendRequestTask extends AsyncTask<String,Void,String>
+    {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String s = null;
+            try {
+                s = QueryUtils.makeHttpPostJsonRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return s;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Log.i("TAG222",s);
+        }
     }
 
 }
