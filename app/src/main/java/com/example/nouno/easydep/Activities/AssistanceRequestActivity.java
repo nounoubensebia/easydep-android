@@ -18,6 +18,9 @@ import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class AssistanceRequestActivity extends AppCompatActivity {
     private AssistanceRequest assistanceRequest;
     @Override
@@ -128,7 +131,6 @@ public class AssistanceRequestActivity extends AppCompatActivity {
             public void onClick(View v) {
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.disableHtmlEscaping();
-
                 Gson gson = gsonBuilder.create();
                 String json = gson.toJson(assistanceRequest);
                 SendRequestTask sendRequestTask = new SendRequestTask();

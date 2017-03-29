@@ -27,6 +27,7 @@ public class AssistanceRequest {
         this.destination = destination;
         this.carOwner = carOwner;
         this.repairService = repairService;
+
     }
 
     public AssistanceRequest(boolean vehiculeCanMove, Position userPositon, Position destination, CarOwner carOwner, RepairService repairService, float length, float weight) {
