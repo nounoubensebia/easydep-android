@@ -25,6 +25,20 @@ public class DialogUtils {
         return builder.create();
 
     }
+    public static  Dialog buildClockableInfoDialog (String title, String msg, Context context, final DialogInterface.OnClickListener clickListener)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(msg).setTitle(title);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                clickListener.onClick(dialog,id);
+            }
+        });
+
+        return builder.create();
+
+    }
+
     public static Dialog buildProgressDialog (String msg,Context context)
     {
         ProgressDialog dialog = new ProgressDialog(context);

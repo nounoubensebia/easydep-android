@@ -1,5 +1,8 @@
 package com.example.nouno.easydep.Activities;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -12,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.nouno.easydep.Data.AssistanceRequest;
+import com.example.nouno.easydep.DialogUtils;
 import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
@@ -23,8 +27,11 @@ import org.json.JSONObject;
 
 public class AssistanceRequestActivity extends AppCompatActivity {
     private AssistanceRequest assistanceRequest;
+    private AssistanceRequestActivity assistanceRequestActivity;
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        assistanceRequestActivity = this;
         retrieveData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assistance_request);
@@ -154,6 +161,12 @@ public class AssistanceRequestActivity extends AppCompatActivity {
     {
 
         @Override
+        protected void onPreExecute() {
+            progressDialog = (ProgressDialog)DialogUtils.buildProgressDialog("Envoi de la demande",assistanceRequestActivity);
+            progressDialog.show();
+        }
+
+        @Override
         protected String doInBackground(String... params) {
             String s = null;
             try {
@@ -166,7 +179,16 @@ public class AssistanceRequestActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            Log.i("TAG222",s);
+
+            progressDialog.dismiss();
+            Dialog infoDialog = DialogUtils.buildClockableInfoDialog("", "Votre demande a été envoyée", assistanceRequestActivity, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent i = new Intent(getApplicationContext(),RequestsListActivity.class);
+                    startActivity(i);
+                }
+            });
+            infoDialog.show();
         }
     }
 

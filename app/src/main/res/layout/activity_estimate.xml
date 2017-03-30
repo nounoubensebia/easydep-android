@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.example.nouno.easydep.Activities.EstimateActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/backgroundColor"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:text="Dépanneur"
+            android:textSize="20sp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+
+            android:text="Noureddine Bensbeia"
+            android:layout_height="wrap_content" />
+    <TextView
+        android:textColor="@color/backgroundColor"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:text="Cout estimé de l'intervention"
+        android:textSize="20sp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:id="@+id/price_text"
+        android:text="5000da"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:textColor="@color/backgroundColor"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:text="Délai d'arrivé estimé"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginLeft="16dp"
+        android:id="@+id/durationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10 minutes"/>
+    <TextView
+        android:textColor="@color/backgroundColor"
+        android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Informations supplémentaires"/>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/extra_info_text"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/accept_button"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:text="Accepter Devis"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:textColor="@color/white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/refuse_button"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:text="Refuser Devis"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:textColor="@color/white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

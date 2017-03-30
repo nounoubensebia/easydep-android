@@ -258,18 +258,27 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         requestQuotationText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Gson gson = new Gson();
-                Position searchPosition = gson.fromJson(searchPositionJson,Position.class);
-                AssistanceRequest assistanceRequest = new AssistanceRequest(false,searchPosition,null,carOwner,repairService);
-                String json = gson.toJson(assistanceRequest);
-                Intent i = new Intent(getApplicationContext(),AssistanceRequestActivity.class);
-                i.putExtra("assistanceRequest",json);
-                startActivity(i);
+                LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
+                map.put("carOwnerId",carOwner.getId()+"");
+                map.put("repairServiceId",repairService.getId()+"");
+                CheckRequestExists checkRequestExists = new CheckRequestExists();
+                checkRequestExists.execute(map);
             }
         });
 
 
         getComments();
+    }
+
+    private void startAssistanceRequestActivity ()
+    {
+        Gson gson = new Gson();
+        Position searchPosition = gson.fromJson(searchPositionJson,Position.class);
+        AssistanceRequest assistanceRequest = new AssistanceRequest(false,searchPosition,null,carOwner,repairService);
+        String json = gson.toJson(assistanceRequest);
+        Intent i = new Intent(getApplicationContext(),AssistanceRequestActivity.class);
+        i.putExtra("assistanceRequest",json);
+        startActivity(i);
     }
 
     public void getComments()
@@ -461,6 +470,44 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
                 infoDialog = DialogUtils.buildInfoDialog("Erreur","Vous avez deja signaler ce commentaire",repairServiceInfoActivity);
             }
              infoDialog.show();
+        }
+    }
+
+    private class CheckRequestExists extends AsyncTask<Map<String,String>,Void,String>
+    {
+        @Override
+        protected void onPreExecute() {
+            progressDialog = (ProgressDialog)DialogUtils.buildProgressDialog("Veuillez Patientez",repairServiceInfoActivity);
+            progressDialog.show();
+
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            progressDialog.dismiss();
+            if (s.equals("true"))
+            {
+                Dialog dialog = DialogUtils.buildInfoDialog("Erreur","Vous avez deja envoyé une demande a ce dépanneur",repairServiceInfoActivity);
+                dialog.show();
+            }
+            else
+            {
+                if (s.equals("false"))
+                {
+                    startAssistanceRequestActivity();
+                }
+            }
         }
     }
 

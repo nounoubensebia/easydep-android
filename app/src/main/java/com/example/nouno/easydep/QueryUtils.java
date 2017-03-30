@@ -42,6 +42,7 @@ public class QueryUtils {
     public static final String GET_USER_COMMENTS_LOCAL_URL = "http://192.168.1.6/EasyDep/comment.php";
     public static final String LOG_OUT_URL = "http://192.168.1.6/EasyDep/logout.php";
     public static final String SEND_REQUEST_URL = "http://192.168.1.6/EasyDep/send_request.php";
+    public static final String GET_REQUESTS_URL = "http://192.168.1.6/EasyDep/get_requests.php";
     // méthode qui envoi une requete et enregistre le résultat dans un String
     // param 1 est le string de l'url de la requete
     // param 2 est la liste des parametres du post

@@ -39,6 +39,11 @@ public class RepairService extends Person {
         this.price = price;
     }
 
+    public RepairService (String firstname,String lastname)
+    {
+        super(firstname,lastname);
+    }
+
     public RepairService(long id, String firstName, String lastName, String location, String phoneNumber, float rating, int price) {
         super(id, firstName, lastName);
         this.location = location;
@@ -46,6 +51,8 @@ public class RepairService extends Person {
         this.rating = rating;
         this.price = price;
     }
+
+
 
     public float getRating() {
         return rating;

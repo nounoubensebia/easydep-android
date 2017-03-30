@@ -28,11 +28,7 @@
         <activity
             android:name=".Activities.Login_Activity"
             android:theme="@style/LoginTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Activities.Signup1_Activity"
@@ -130,13 +126,28 @@
         <activity
             android:name=".Activities.Signup5_Activity"
             android:theme="@style/SignupTheme" />
-        <activity android:name=".Activities.AssistanceRequestActivity"
-            android:theme="@style/AppTheme"
-            android:label="Demande de devis"/>
-        <activity android:name=".Activities.RequestDimensionsActivity"
+        <activity
+            android:name=".Activities.AssistanceRequestActivity"
+            android:label="Demande de devis"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Activities.RequestDimensionsActivity"
             android:label="Dimensions du véhicules"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".Activities.BreakDownDescriptionActivity"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Activities.BreakDownDescriptionActivity" />
+        <activity
+            android:name=".Activities.RequestsListActivity"
+            android:label="Mes demandes"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Activities.EstimateActivity"
+            android:label="Devis"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

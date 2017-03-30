@@ -41,6 +41,10 @@ public class AssistanceRequest {
         this.weight = weight;
     }
 
+    public AssistanceRequest(RepairService repairService) {
+        this.repairService = repairService;
+    }
+
     public CarOwner getCarOwner() {
         return carOwner;
     }

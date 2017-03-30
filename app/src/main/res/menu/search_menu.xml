@@ -13,6 +13,8 @@
         android:id="@+id/filtres_menu"/>
     <item android:title="Liste hors connexion"
         android:id="@+id/offline_list"/>
+    <item android:title="Mes demandes"
+        android:id="@+id/my_requests"/>
     <item android:title="Se déconnecter"
         android:id="@+id/log_out"/>
 </menu>

@@ -253,7 +253,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             case R.id.log_out :
                 logOutUser();
                 return true;
+            case R.id.my_requests :
+                Intent i4 = new Intent(getApplicationContext(),RequestsListActivity.class);
+                Gson gson1 =new Gson();
 
+                startActivity(i4);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
