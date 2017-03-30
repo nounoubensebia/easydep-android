@@ -18,7 +18,7 @@ import java.util.Date;
 public class AssistanceRequestListItem extends AssistanceRequest {
     private int status;
     private long time;
-
+    private RequestEstimate requestEstimate;
 
     public static final int STATUS_WAITING_QUOTATION = 0;
     public static final int STATUS_QUOTATION_RECEIVED = 1;
@@ -29,6 +29,13 @@ public class AssistanceRequestListItem extends AssistanceRequest {
         super(repairService);
         this.status = status;
         this.time = time;
+    }
+
+    public AssistanceRequestListItem(RepairService repairService, int status, long time, RequestEstimate requestEstimate) {
+        super(repairService);
+        this.status = status;
+        this.time = time;
+        this.requestEstimate = requestEstimate;
     }
 
     public int getStatus() {
@@ -53,6 +60,14 @@ public class AssistanceRequestListItem extends AssistanceRequest {
         Date date = new Date(time*1000);
         return dateFormat.format(date);
 
+    }
+
+    public RequestEstimate getRequestEstimate() {
+        return requestEstimate;
+    }
+
+    public void setRequestEstimate(RequestEstimate requestEstimate) {
+        this.requestEstimate = requestEstimate;
     }
 
     public static ArrayList<AssistanceRequestListItem> parseJson (String json)

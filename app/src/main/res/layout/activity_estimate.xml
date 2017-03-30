@@ -23,7 +23,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
-
+            android:id="@+id/nameText"
             android:text="Noureddine Bensbeia"
             android:layout_height="wrap_content" />
     <TextView

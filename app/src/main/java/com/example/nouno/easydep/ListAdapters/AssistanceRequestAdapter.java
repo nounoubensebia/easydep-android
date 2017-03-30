@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nouno.easydep.Data.AssistanceRequestListItem;
+import com.example.nouno.easydep.Data.RequestEstimate;
+import com.example.nouno.easydep.OnButtonClickListener;
 import com.example.nouno.easydep.R;
 
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
  */
 
 public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestListItem> {
-
+    private OnButtonClickListener<RequestEstimate> onEstimateClickListner;
 
     public AssistanceRequestAdapter(Context context, ArrayList<AssistanceRequestListItem> list) {
         super(context,0,list);
@@ -31,7 +33,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        AssistanceRequestListItem assistanceRequest = getItem(position);
+        final AssistanceRequestListItem assistanceRequest = getItem(position);
         View item = convertView;
         if (item ==null)
         {
@@ -60,6 +62,14 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                 break;
             case AssistanceRequestListItem.STATUS_QUOTATION_RECEIVED : quotationText.setText("Consulter devis");
                 quotationText.setTextColor(getContext().getResources().getColor(android.R.color.holo_orange_dark));
+                if (onEstimateClickListner!=null) {
+                quotationText.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        onEstimateClickListner.onButtonClick(assistanceRequest.getRequestEstimate());
+                    }
+                });}
                 uncheckCircle(confirmationCircle,confirmationCircleText);
                 makeOrangeCircle(quotationCircle,quotationCircleText);
                 confirmationText.setText("Attente de confirmation");
@@ -95,5 +105,9 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
     {
         circle.setImageDrawable(getContext().getDrawable(R.drawable.orange_circle));
         circleText.setVisibility(View.VISIBLE);
+    }
+
+    public void setOnEstimateClickListner(OnButtonClickListener<RequestEstimate> onEstimateClickListner) {
+        this.onEstimateClickListner = onEstimateClickListner;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.nouno.easydep.Activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -12,7 +13,9 @@ import android.widget.ListView;
 import com.example.nouno.easydep.Data.AssistanceRequestListItem;
 import com.example.nouno.easydep.Data.CarOwner;
 import com.example.nouno.easydep.Data.RepairService;
+import com.example.nouno.easydep.Data.RequestEstimate;
 import com.example.nouno.easydep.ListAdapters.AssistanceRequestAdapter;
+import com.example.nouno.easydep.OnButtonClickListener;
 import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
@@ -69,7 +72,23 @@ public class RequestsListActivity extends AppCompatActivity {
 
     private void populateRequestsList (ArrayList<AssistanceRequestListItem> assistanceRequestListItems)
     {
+        //test
+        RepairService repairService = new RepairService("Bensbeia","Noureddine");
+        assistanceRequestListItems.add(new AssistanceRequestListItem(repairService,AssistanceRequestListItem.STATUS_QUOTATION_RECEIVED,150000,
+                new RequestEstimate(repairService,1000,2000,"")));
+
+        //test
         AssistanceRequestAdapter assistanceRequestAdapter = new AssistanceRequestAdapter(this,assistanceRequestListItems);
+        assistanceRequestAdapter.setOnEstimateClickListner(new OnButtonClickListener<RequestEstimate>() {
+            @Override
+            public void onButtonClick(RequestEstimate requestEstimate) {
+                Gson gson = new Gson();
+                String json = gson.toJson(requestEstimate);
+                Intent i = new Intent(getApplicationContext(),EstimateActivity.class);
+                i.putExtra("requestEstimate",json);
+                startActivity(i);
+            }
+        });
         requestsList.setAdapter(assistanceRequestAdapter);
         requestsList.setDividerHeight(0);
     }
