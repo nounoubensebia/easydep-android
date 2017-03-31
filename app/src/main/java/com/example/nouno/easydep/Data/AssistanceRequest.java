@@ -27,6 +27,11 @@ public class AssistanceRequest {
         this.destination = destination;
         this.carOwner = carOwner;
         this.repairService = repairService;
+        if (length==NOT_HEAVY)
+        {
+            heavy=false;
+        }
+        else heavy = true;
 
     }
 
@@ -39,6 +44,11 @@ public class AssistanceRequest {
         this.repairService = repairService;
         this.length = length;
         this.weight = weight;
+        if (length==NOT_HEAVY)
+        {
+            heavy=false;
+        }
+        else heavy = true;
     }
 
     public AssistanceRequest(RepairService repairService) {

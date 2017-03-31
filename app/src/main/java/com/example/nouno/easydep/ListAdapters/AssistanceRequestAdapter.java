@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.nouno.easydep.Data.AssistanceRequest;
 import com.example.nouno.easydep.Data.AssistanceRequestListItem;
 import com.example.nouno.easydep.Data.RepairService;
 import com.example.nouno.easydep.Data.RequestEstimate;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestListItem> {
     private OnButtonClickListener<RequestEstimate> onEstimateClickListner;
     private OnButtonClickListener<RepairService> onRepairServiceClickListener;
-
+    private OnButtonClickListener<AssistanceRequest> onRequestClickListner;
     public AssistanceRequestAdapter(Context context, ArrayList<AssistanceRequestListItem> list) {
         super(context,0,list);
     }
@@ -50,6 +51,13 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
         TextView confirmationCircleText = (TextView)item.findViewById(R.id.confirmationCircleText);
         TextView confirmationText = (TextView)item.findViewById(R.id.confirmationText);
         TextView cancelText = (TextView)item.findViewById(R.id.cancel_request);
+        TextView requestSentText = (TextView)item.findViewById(R.id.request_sent_text);
+        requestSentText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRequestClickListner.onButtonClick(assistanceRequest);
+            }
+        });
         nameText.setText(assistanceRequest.getRepairService().getFullName());
         nameText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +65,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                 onRepairServiceClickListener.onButtonClick(assistanceRequest.getRepairService());
             }
         });
+
         dateText.setText(assistanceRequest.getTimeString());
         switch (assistanceRequest.getStatus())
         {
@@ -122,5 +131,9 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
 
     public void setOnRepairServiceClickListener(OnButtonClickListener<RepairService> onRepairServiceClickListener) {
         this.onRepairServiceClickListener = onRepairServiceClickListener;
+    }
+
+    public void setOnRequestClickListner(OnButtonClickListener<AssistanceRequest> onRequestClickListner) {
+        this.onRequestClickListner = onRequestClickListner;
     }
 }

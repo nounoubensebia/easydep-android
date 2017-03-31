@@ -29,6 +29,8 @@ public class AssistanceRequestActivity extends AppCompatActivity {
     private AssistanceRequest assistanceRequest;
     private AssistanceRequestActivity assistanceRequestActivity;
     private ProgressDialog progressDialog;
+    private boolean requestSent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         assistanceRequestActivity = this;
@@ -42,6 +44,7 @@ public class AssistanceRequestActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = getIntent().getExtras().getString("assistanceRequest");
         assistanceRequest = gson.fromJson(json,AssistanceRequest.class);
+        requestSent = getIntent().getExtras().getBoolean("requestSent");
      }
 
     private void displayInfo (final AssistanceRequest assistanceRequest)
@@ -61,89 +64,113 @@ public class AssistanceRequestActivity extends AppCompatActivity {
         }
         Switch heavyWeightSwitch = (Switch)findViewById(R.id.heavy_vehicule_switcher);
         Switch vehiculeCanMove = (Switch)findViewById(R.id.vehicule_can_move_switcher);
-        vehiculeCanMove.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                {
-                    assistanceRequest.setVehiculeCanMove(true);
-                }
-                else
-                {
-                    assistanceRequest.setVehiculeCanMove(false);
-                }
-            }
-        });
+
+
         if (assistanceRequest.isHeavy())
         {
             AssistanceRequest heavyAssistanceRequest =assistanceRequest;
             heavyWeightSwitch.setChecked(true);
             dimensionsTitle.setTextColor(Color.parseColor("#000000"));
             dimensionsText.setText(heavyAssistanceRequest.getDimensionsString());
-            dimensionsText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(getApplicationContext(),RequestDimensionsActivity.class);
-                    Gson gson = new Gson();
-                    String json = gson.toJson(assistanceRequest);
-                    i.putExtra("assistanceRequest",json);
-                    startActivity(i);
-                }
-            });
+
         }
         else
         {
             dimensionsText.setText("Non spécifié");
         }
 
-         heavyWeightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-             @Override
-             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                 if (isChecked)
-                 {
-                     assistanceRequest.setHeavy(true);
-                     assistanceRequest.setLength(AssistanceRequest.MIN_LENGTH);
-                     assistanceRequest.setWeight(AssistanceRequest.MIN_WEIGHT);
-                     Gson gson = new Gson();
-                     String json = gson.toJson(assistanceRequest);
-                     Intent intent = new Intent(getApplicationContext(),RequestDimensionsActivity.class);
-                     intent.putExtra("assistanceRequest",json);
-                     startActivity(intent);
-                 }
-                 else
-                 {
-                     assistanceRequest.setHeavy(false);
-                     dimensionsTitle.setTextColor(getResources().getColor(android.R.color.tab_indicator_text));
-                     dimensionsText.setText("Non spécifié");
-                 }
-             }
-         });
 
-        positionLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchForResults(false);
-            }
-        });
 
-        destinationLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchForResults(true);
-            }
-        });
 
-        upImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.disableHtmlEscaping();
-                Gson gson = gsonBuilder.create();
-                String json = gson.toJson(assistanceRequest);
-                SendRequestTask sendRequestTask = new SendRequestTask();
-                sendRequestTask.execute(json);
+
+
+
+        if (!requestSent)
+        {
+            vehiculeCanMove.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked)
+                    {
+                        assistanceRequest.setVehiculeCanMove(true);
+                    }
+                    else
+                    {
+                        assistanceRequest.setVehiculeCanMove(false);
+                    }
+                }
+            });
+            upImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GsonBuilder gsonBuilder = new GsonBuilder();
+                    gsonBuilder.disableHtmlEscaping();
+                    Gson gson = gsonBuilder.create();
+                    String json = gson.toJson(assistanceRequest);
+                    SendRequestTask sendRequestTask = new SendRequestTask();
+                    sendRequestTask.execute(json);
+                }
+            });
+            heavyWeightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked)
+                    {
+                        assistanceRequest.setHeavy(true);
+                        assistanceRequest.setLength(AssistanceRequest.MIN_LENGTH);
+                        assistanceRequest.setWeight(AssistanceRequest.MIN_WEIGHT);
+                        Gson gson = new Gson();
+                        String json = gson.toJson(assistanceRequest);
+                        Intent intent = new Intent(getApplicationContext(),RequestDimensionsActivity.class);
+                        intent.putExtra("assistanceRequest",json);
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        assistanceRequest.setHeavy(false);
+                        dimensionsTitle.setTextColor(getResources().getColor(android.R.color.tab_indicator_text));
+                        dimensionsText.setText("Non spécifié");
+                    }
+                }
+            });
+            positionLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    searchForResults(false);
+                }
+            });
+
+            destinationLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    searchForResults(true);
+                }
+            });
+
+            if (assistanceRequest.isHeavy())
+            {
+                dimensionsText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(getApplicationContext(),RequestDimensionsActivity.class);
+                        Gson gson = new Gson();
+                        String json = gson.toJson(assistanceRequest);
+                        i.putExtra("assistanceRequest",json);
+                        startActivity(i);
+                    }
+                });
             }
-        });
+        }
+        else
+        {
+            upImage.setVisibility(View.GONE);
+            heavyWeightSwitch.setEnabled(false);
+            vehiculeCanMove.setEnabled(false);
+        }
+
+    }
+    private void listenForClicks ()
+    {
 
     }
 

@@ -289,6 +289,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         String json = gson.toJson(assistanceRequest);
         Intent i = new Intent(getApplicationContext(),AssistanceRequestActivity.class);
         i.putExtra("assistanceRequest",json);
+        i.putExtra("requestSent",false);
         startActivity(i);
     }
 

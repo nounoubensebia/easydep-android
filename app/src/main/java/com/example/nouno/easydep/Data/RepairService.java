@@ -199,7 +199,11 @@ public class RepairService extends Person {
             String lastname =jsonObject.getString("last_name");
             String location = jsonObject.getString("location");
             String phoneNumber = jsonObject.getString("phone_number");
-            int price = jsonObject.getInt("price");
+            int price = NO_PRICE;
+            if (!jsonObject.isNull("price"))
+            {
+                price = jsonObject.getInt("price");
+            }
             int av = jsonObject.getInt("available");
             boolean available = true;
             if (av ==0)

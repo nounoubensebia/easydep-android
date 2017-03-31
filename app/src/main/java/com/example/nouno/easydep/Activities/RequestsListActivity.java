@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.example.nouno.easydep.Data.AssistanceRequest;
 import com.example.nouno.easydep.Data.AssistanceRequestListItem;
 import com.example.nouno.easydep.Data.CarOwner;
 import com.example.nouno.easydep.Data.RepairService;
@@ -74,9 +75,9 @@ public class RequestsListActivity extends AppCompatActivity {
     private void populateRequestsList (ArrayList<AssistanceRequestListItem> assistanceRequestListItems)
     {
         //test
-        RepairService repairService = new RepairService("Bensbeia","Noureddine");
-        assistanceRequestListItems.add(0,new AssistanceRequestListItem(repairService,AssistanceRequestListItem.STATUS_QUOTATION_RECEIVED,150000,
-                new RequestEstimate(repairService,1000,2000,"")));
+        //RepairService repairService = new RepairService("Bensbeia","Noureddine");
+        //assistanceRequestListItems.add(0,new AssistanceRequestListItem(repairService,AssistanceRequestListItem.STATUS_QUOTATION_RECEIVED,150000,
+        //        new RequestEstimate(repairService,1000,2000,"")));
 
         //test
         AssistanceRequestAdapter assistanceRequestAdapter = new AssistanceRequestAdapter(this,assistanceRequestListItems);
@@ -96,8 +97,24 @@ public class RequestsListActivity extends AppCompatActivity {
                 getRepairServiceData(repairService);
             }
         });
+        assistanceRequestAdapter.setOnRequestClickListner(new OnButtonClickListener<AssistanceRequest>() {
+            @Override
+            public void onButtonClick(AssistanceRequest assistanceRequest) {
+                showRequest(assistanceRequest);
+            }
+        });
         requestsList.setAdapter(assistanceRequestAdapter);
         requestsList.setDividerHeight(0);
+    }
+
+    private void showRequest(AssistanceRequest assistanceRequest)
+    {
+        Gson gson = new Gson();
+        String json = gson.toJson(assistanceRequest);
+        Intent i = new Intent(this,AssistanceRequestActivity.class);
+        i.putExtra("assistanceRequest",json);
+        i.putExtra("requestSent",true);
+        startActivity(i);
     }
 
     private void getRepairServiceData (RepairService repairService)

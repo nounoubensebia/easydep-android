@@ -1,7 +1,5 @@
 package com.example.nouno.easydep.Data;
 
-import com.google.gson.JsonArray;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,14 +23,12 @@ public class AssistanceRequestListItem extends AssistanceRequest {
     public static final int STATUS_WAITING_CONFIRMATION = 2;
     public static final int STATUS_REQUEST_CONFIRMED = 3;
 
-    public AssistanceRequestListItem(RepairService repairService, int status,long time) {
-        super(repairService);
-        this.status = status;
-        this.time = time;
-    }
 
-    public AssistanceRequestListItem(RepairService repairService, int status, long time, RequestEstimate requestEstimate) {
-        super(repairService);
+
+
+
+    public AssistanceRequestListItem(boolean vehiculeCanMove, Position userPositon, Position destination, CarOwner carOwner, RepairService repairService, float length, float weight, int status, long time, RequestEstimate requestEstimate) {
+        super(vehiculeCanMove, userPositon, destination, carOwner, repairService, length, weight);
         this.status = status;
         this.time = time;
         this.requestEstimate = requestEstimate;
@@ -86,7 +82,22 @@ public class AssistanceRequestListItem extends AssistanceRequest {
                 RepairService repairService =new RepairService(id,firstname,lastname);
                 long time = jsonObject.getLong("time");
                 int status = jsonObject.getInt("status");
-                AssistanceRequestListItem assistanceRequestListItem = new AssistanceRequestListItem(repairService,status,time);
+                String departure = jsonObject.getString("departure");
+                String destination = jsonObject.getString("destination");
+
+                boolean vehiculeCanMove = false;
+                float length = AssistanceRequest.NOT_HEAVY;
+                float weight = AssistanceRequest.NOT_HEAVY;
+                if (jsonObject.getInt("vehicule_can_move")==1)
+                    vehiculeCanMove=true;
+                if (jsonObject.has("length"))
+                length=(float)jsonObject.getDouble("length");
+                if (jsonObject.has("weight"))
+                    weight=(float)jsonObject.getDouble("weight");
+                AssistanceRequestListItem assistanceRequestListItem = new AssistanceRequestListItem(vehiculeCanMove,new Position(departure,-1,-1),new Position(destination,-1,-1),
+                        null,repairService,length,weight,status,time,null);
+                if (destination.equals("null"))
+                    assistanceRequestListItem.setDestination(null);
 
                 if (jsonObject.has("estimate"))
                 {
@@ -102,11 +113,11 @@ public class AssistanceRequestListItem extends AssistanceRequest {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        sortByTime(list);
+        sort(list);
         return list;
 
     }
-    public static void sortByTime (ArrayList<AssistanceRequestListItem> list)
+    public static void sort(ArrayList<AssistanceRequestListItem> list)
     {
         for (int i=0;i<list.size();i++)
         {
@@ -114,7 +125,7 @@ public class AssistanceRequestListItem extends AssistanceRequest {
             for (int j=i+1;j<list.size();j++)
             {
 
-                if (list.get(i).time<list.get(j).time)
+                if ((list.get(i).time<list.get(j).time&&list.get(i).getStatus()==list.get(j).getStatus())||(list.get(i).getStatus()<list.get(j).getStatus()))
                 {
                     AssistanceRequestListItem comment1 = list.get(i);
                     AssistanceRequestListItem comment2 = list.get(j);
