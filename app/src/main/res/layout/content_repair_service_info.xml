@@ -23,15 +23,14 @@
             <TextView
                 android:id="@+id/locationText"
                 android:layout_width="0dp"
-                android:layout_marginLeft="8dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/ic_location_40_8p"
-                android:gravity="center"
                 android:fontFamily="sans-serif-light"
-                android:textColor="@color/backgroundColor"
+                android:gravity="center"
                 android:text="El Mohamadia, Alger"
-                 />
+                android:textColor="@color/backgroundColor" />
 
             <TextView
                 android:id="@+id/availableText"
@@ -47,14 +46,13 @@
                 android:id="@+id/price_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginRight="8dp"
+                android:layout_weight="1"
                 android:drawableTop="@drawable/ic_money_40_8p"
-                android:textColor="@color/backgroundColor"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center"
                 android:text="20da/km"
-                />
+                android:textColor="@color/backgroundColor" />
         </LinearLayout>
 
         <View
@@ -63,6 +61,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
             android:background="#F1F1F1" />
+
         <TextView
             android:id="@+id/request_quotation"
             android:layout_width="wrap_content"
@@ -70,11 +69,11 @@
             android:layout_marginLeft="16dp"
             android:drawableLeft="@drawable/ic_devis_40_8p"
             android:drawablePadding="16dp"
+            android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:text="Demander devis"
-            android:textSize="16sp"
-            android:fontFamily="sans-serif-light"
             android:textColor="@android:color/black"
+            android:textSize="16sp"
             tools:visibility="visible" />
 
 
@@ -86,14 +85,12 @@
             android:drawableLeft="@drawable/ic_local_phone_40_8p"
             android:drawablePadding="16dp"
 
+            android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:text="Appeler"
-            android:fontFamily="sans-serif-light"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             tools:visibility="visible" />
-
-
 
 
         <TextView
@@ -103,16 +100,12 @@
             android:layout_marginLeft="16dp"
             android:drawableLeft="@drawable/ic_add_40_8p"
             android:drawablePadding="16dp"
+            android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:text="Enregister numéro"
-            android:textSize="16sp"
-            android:fontFamily="sans-serif-light"
             android:textColor="@android:color/black"
+            android:textSize="16sp"
             tools:visibility="visible" />
-
-
-
-
 
 
         <View
@@ -121,161 +114,171 @@
             android:layout_marginTop="16dp"
             android:background="#F1F1F1"
             tools:visibility="visible" />
+
         <ProgressBar
             android:id="@+id/progressBar"
-            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:visibility="gone" />
+
         <LinearLayout
-            android:layout_width="match_parent"
             android:id="@+id/comments_layout"
-            android:orientation="vertical"
-            tools:visibility="visible"
-            android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/resume_avis"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Résumé des avis"
-            android:textColor="@android:color/background_dark"
-            android:textSize="16sp" />
-
-        <LinearLayout
-            android:id="@+id/resume_avis_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            tools:visibility="visible">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/rating_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="3,5"
-                    android:textColor="@android:color/holo_orange_dark"
-                    android:textSize="56sp" />
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Note"
-                    android:textColor="@android:color/holo_orange_dark"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/rating_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="32"
-                    android:textColor="@android:color/holo_orange_dark"
-                    android:textSize="56sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Avis"
-                    android:textColor="@android:color/holo_orange_dark"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-
-        </LinearLayout>
             <TextView
-                tools:visibility="gone"
+                android:id="@+id/resume_avis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Résumé des avis"
+                android:textColor="@android:color/background_dark"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:id="@+id/resume_avis_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/rating_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="3,5"
+                        android:textColor="@android:color/holo_orange_dark"
+                        android:textSize="56sp" />
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Note"
+                        android:textColor="@android:color/holo_orange_dark"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/rating_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="32"
+                        android:textColor="@android:color/holo_orange_dark"
+                        android:textSize="56sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Avis"
+                        android:textColor="@android:color/holo_orange_dark"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
                 android:id="@+id/no_ratings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Aucun Avis sur ce dépanneur pour le moment"
                 android:textColor="@android:color/background_dark"
-                android:text="Aucun Avis sur ce dépanneur pour le moment"/>
+                tools:visibility="gone" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="4dp"
-            android:background="#F1F1F1"
-            tools:visibility="visible" />
+            <LinearLayout
+                android:id="@+id/add_comment_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_comment_blue_48_8p" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#F1F1F1"
+                    tools:visibility="visible" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:text="Donner une note et un avis"
-            android:textColor="@android:color/background_dark" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_comment_blue_48_8p" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:text="Racontez votre experience avec ce dépanneur" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:text="Donner une note et un avis"
+                    android:textColor="@android:color/background_dark" />
 
-        <RatingBar
-            android:id="@+id/user_rating_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:text="Racontez votre experience avec ce dépanneur" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="4dp"
-            android:background="#F1F1F1"
-            tools:visibility="visible" />
+                <RatingBar
+                    android:id="@+id/user_rating_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp" />
 
-        <TextView
-            android:id="@+id/resume_avis_avis_utilisateur"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Avis des utilisateurs"
-            android:textColor="@android:color/background_dark"
-            android:textSize="16sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#F1F1F1"
+                    tools:visibility="visible" />
+            </LinearLayout>
 
-        <ListView
-            android:id="@+id/comments_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/resume_avis_avis_utilisateur"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Avis des utilisateurs"
+                android:textColor="@android:color/background_dark"
+                android:textSize="16sp" />
+
+            <ListView
+                android:id="@+id/comments_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </LinearLayout>

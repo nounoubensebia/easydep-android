@@ -81,10 +81,23 @@ public class AssistanceRequestListItem extends AssistanceRequest {
                 JSONObject repairJson = jsonObject.getJSONObject("repair_service");
                 String firstname = repairJson.getString("firstname");
                 String lastname = repairJson.getString("lastname");
-                RepairService repairService =new RepairService(firstname,lastname);
+                long id =repairJson.getLong("id");
+
+                RepairService repairService =new RepairService(id,firstname,lastname);
                 long time = jsonObject.getLong("time");
                 int status = jsonObject.getInt("status");
-                list.add(new AssistanceRequestListItem(repairService,status,time));
+                AssistanceRequestListItem assistanceRequestListItem = new AssistanceRequestListItem(repairService,status,time);
+
+                if (jsonObject.has("estimate"))
+                {
+                    JSONObject estimate = jsonObject.getJSONObject("estimate");
+                    String extraInfo = estimate.getString("comment");
+                    long price = estimate.getLong("price");
+                    long duration = estimate.getLong("duration");
+                    RequestEstimate requestEstimate = new RequestEstimate(repairService,price,duration,extraInfo);
+                    assistanceRequestListItem.setRequestEstimate(requestEstimate);
+                }
+                list.add(assistanceRequestListItem);
             }
         } catch (JSONException e) {
             e.printStackTrace();

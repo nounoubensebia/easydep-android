@@ -14,6 +14,7 @@ import com.example.nouno.easydep.Data.AssistanceRequestListItem;
 import com.example.nouno.easydep.Data.CarOwner;
 import com.example.nouno.easydep.Data.RepairService;
 import com.example.nouno.easydep.Data.RequestEstimate;
+import com.example.nouno.easydep.GetRepairServiceData;
 import com.example.nouno.easydep.ListAdapters.AssistanceRequestAdapter;
 import com.example.nouno.easydep.OnButtonClickListener;
 import com.example.nouno.easydep.QueryUtils;
@@ -74,7 +75,7 @@ public class RequestsListActivity extends AppCompatActivity {
     {
         //test
         RepairService repairService = new RepairService("Bensbeia","Noureddine");
-        assistanceRequestListItems.add(new AssistanceRequestListItem(repairService,AssistanceRequestListItem.STATUS_QUOTATION_RECEIVED,150000,
+        assistanceRequestListItems.add(0,new AssistanceRequestListItem(repairService,AssistanceRequestListItem.STATUS_QUOTATION_RECEIVED,150000,
                 new RequestEstimate(repairService,1000,2000,"")));
 
         //test
@@ -89,8 +90,23 @@ public class RequestsListActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        assistanceRequestAdapter.setOnRepairServiceClickListener(new OnButtonClickListener<RepairService>() {
+            @Override
+            public void onButtonClick(RepairService repairService) {
+                getRepairServiceData(repairService);
+            }
+        });
         requestsList.setAdapter(assistanceRequestAdapter);
         requestsList.setDividerHeight(0);
+    }
+
+    private void getRepairServiceData (RepairService repairService)
+    {
+        long id = repairService.getId();
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("id",id+"");
+        GetRepairServiceData getRepairServiceData = new GetRepairServiceData(this);
+        getRepairServiceData.getRepairServiceData(map);
     }
     private class GetRequestsTask extends AsyncTask<Map<String,String>,Void,String>
     {
@@ -113,13 +129,14 @@ public class RequestsListActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-
             swipeRefreshLayout.setRefreshing(false);
             assistanceRequestListItems = AssistanceRequestListItem.parseJson(s);
             populateRequestsList(assistanceRequestListItems);
             requestsList.setVisibility(View.VISIBLE);
         }
     }
+
+
 
 
 }

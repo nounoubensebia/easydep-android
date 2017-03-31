@@ -22,13 +22,15 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class FireBaseMessangingService extends FirebaseMessagingService {
 
+    public static int number = 0;
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         showNotification(remoteMessage.getData().get("message"));
     }
 
     private void showNotification(String message) {
-        Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        /*Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Intent i = new Intent(this,Login_Activity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -41,9 +43,32 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
                 .setSound(defaultRingtoneUri)
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setContentIntent(pendingIntent);
-
+        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+        String line = "line 2";
+        inboxStyle.setBigContentTitle("Event tracker details:");
+        inboxStyle.addLine(line);
+        builder.setStyle(inboxStyle);
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        number++;
+        manager.notify(number,builder.build());*/
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.cast_ic_notification_small_icon)
+                .setContentTitle("Event tracker")
+                .setContentText("Events received");
+        NotificationCompat.InboxStyle inboxStyle =
+                new NotificationCompat.InboxStyle();
+        String[] events = new String[6];
+// Sets a title for the Inbox in expanded layout
+        inboxStyle.setBigContentTitle("Event tracker details:");
 
-        manager.notify(0,builder.build());
+// Moves events into the expanded layout
+        for (int i=0; i < events.length; i++) {
+
+            inboxStyle.addLine(events[i]);
+        }
+// Moves the expanded layout object into the notification object.
+        mBuilder.setStyle(inboxStyle);
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.notify(number,mBuilder.build());
     }
 }

@@ -36,6 +36,11 @@ public class RequestEstimate {
         return extraInfoString;
     }
 
+    public String getPriceString ()
+    {
+        return estimatedPrice+" Da";
+    }
+
     public String getTimeString ()
     {
         return (estimatedTime/60)+" Minutes";

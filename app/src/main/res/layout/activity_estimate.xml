@@ -8,9 +8,14 @@
 
     tools:context="com.example.nouno.easydep.Activities.EstimateActivity">
     <LinearLayout
+        android:id="@+id/repair_service_layout"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
         <TextView
             android:textColor="@color/backgroundColor"
             android:layout_marginTop="16dp"
@@ -21,14 +26,16 @@
             android:layout_height="wrap_content" />
         <TextView
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
             android:id="@+id/nameText"
             android:text="Noureddine Bensbeia"
             android:layout_height="wrap_content" />
+        </LinearLayout>
     <TextView
         android:textColor="@color/backgroundColor"
-        android:layout_marginTop="16dp"
+
         android:layout_marginLeft="16dp"
         android:layout_width="wrap_content"
         android:text="Cout estimé de l'intervention"
@@ -64,7 +71,7 @@
         android:layout_height="wrap_content"
         android:text="Informations supplémentaires"/>
         <TextView
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/extra_info_text"
             android:layout_width="wrap_content"
             android:layout_marginLeft="16dp"

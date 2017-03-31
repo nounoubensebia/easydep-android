@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nouno.easydep.Data.AssistanceRequestListItem;
+import com.example.nouno.easydep.Data.RepairService;
 import com.example.nouno.easydep.Data.RequestEstimate;
 import com.example.nouno.easydep.OnButtonClickListener;
 import com.example.nouno.easydep.R;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 
 public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestListItem> {
     private OnButtonClickListener<RequestEstimate> onEstimateClickListner;
+    private OnButtonClickListener<RepairService> onRepairServiceClickListener;
 
     public AssistanceRequestAdapter(Context context, ArrayList<AssistanceRequestListItem> list) {
         super(context,0,list);
@@ -49,6 +51,12 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
         TextView confirmationText = (TextView)item.findViewById(R.id.confirmationText);
         TextView cancelText = (TextView)item.findViewById(R.id.cancel_request);
         nameText.setText(assistanceRequest.getRepairService().getFullName());
+        nameText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRepairServiceClickListener.onButtonClick(assistanceRequest.getRepairService());
+            }
+        });
         dateText.setText(assistanceRequest.getTimeString());
         switch (assistanceRequest.getStatus())
         {
@@ -56,6 +64,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                 uncheckCircle(quotationCircle,quotationCircleText);
                 uncheckCircle(confirmationCircle,confirmationCircleText);
                 quotationText.setText("Attente du devis");
+                quotationText.setOnClickListener(null);
                 quotationText.setTextColor(dateText.getTextColors().getDefaultColor());
                 confirmationText.setText("Attente de confirmation");
                 confirmationText.setTextColor(dateText.getTextColors().getDefaultColor());
@@ -109,5 +118,9 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
 
     public void setOnEstimateClickListner(OnButtonClickListener<RequestEstimate> onEstimateClickListner) {
         this.onEstimateClickListner = onEstimateClickListner;
+    }
+
+    public void setOnRepairServiceClickListener(OnButtonClickListener<RepairService> onRepairServiceClickListener) {
+        this.onRepairServiceClickListener = onRepairServiceClickListener;
     }
 }

@@ -88,7 +88,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         displayRepairServiceData();
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         hideTitleText();
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -201,8 +201,6 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         TextView toolbarTimeText;
         final RatingBar ratingBar;
         TextView locationText;
-        //TextView phoneText;
-        //TextView timeText;
         TextView availableText;
         TextView priceText;
         final RatingBar userRatingBar;
@@ -211,8 +209,6 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         toolbarTimeText = (TextView)findViewById(R.id.toolbar_duration_text);
         userRatingBar = (RatingBar)findViewById(R.id.user_rating_bar);
         locationText = (TextView)findViewById(R.id.locationText);
-        //phoneText = (TextView)findViewById(R.id.phone_number_text);
-        //timeText = (TextView)findViewById(R.id.durationText);
         ratingBar = (RatingBar)findViewById(R.id.toolbar_ratingbar);
         availableText = (TextView)findViewById(R.id.availableText);
         priceText = (TextView)findViewById(R.id.price_text);
@@ -254,17 +250,32 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
                 }
             }
         });
-        requestQuotationText = (TextView)findViewById(R.id.request_quotation);
-        requestQuotationText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
-                map.put("carOwnerId",carOwner.getId()+"");
-                map.put("repairServiceId",repairService.getId()+"");
-                CheckRequestExists checkRequestExists = new CheckRequestExists();
-                checkRequestExists.execute(map);
-            }
-        });
+        requestQuotationText = (TextView) findViewById(R.id.request_quotation);
+        if (repairService.getDuration()!=RepairService.NO_DURATION) {
+
+            requestQuotationText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+                    map.put("carOwnerId", carOwner.getId() + "");
+                    map.put("repairServiceId", repairService.getId() + "");
+                    CheckRequestExists checkRequestExists = new CheckRequestExists();
+                    checkRequestExists.execute(map);
+                }
+            });
+
+
+        }
+        else
+        {
+            View addCommentLayout = findViewById(R.id.add_comment_layout);
+            View distanceCircle = findViewById(R.id.distance_circle);
+            distanceCircle.setVisibility(View.GONE);
+            addCommentLayout.setVisibility(View.GONE);
+            requestQuotationText.setVisibility(View.GONE);
+            //toolbarTimeText.setVisibility(View.GONE);
+            toolbarTimeText.setText(repairService.getPhoneNumber());
+        }
 
 
         getComments();

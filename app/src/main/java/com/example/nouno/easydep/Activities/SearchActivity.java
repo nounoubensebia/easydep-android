@@ -616,7 +616,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         protected void onPostExecute(String s) {
             mapRefrechButton.setVisibility(View.VISIBLE);
             recyclerView = (RecyclerView)findViewById(R.id.repair_services_list);
-            repairServices = RepairService.parseJson(s);
+            repairServices = RepairService.parseListJson(s);
             RepairService.applyFiltre(repairServices, onlineFiltre);
            // RepairService.deleteNotAvailable(repairServices);
 

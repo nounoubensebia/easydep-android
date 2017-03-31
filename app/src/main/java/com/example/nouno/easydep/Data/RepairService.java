@@ -25,6 +25,7 @@ public class RepairService extends Person {
     private int price;
     public static final int NO_PRICE = 99999;
     public static final String NO_PRICE_STRING = "Tarifs non communiqués";
+    public static final int NO_DURATION = -1;
 
     public RepairService(long id,String firstName, String lastName, String location, boolean available, int duration, double distance,double latitude,double longitude,float rating,int price,String phoneNumber) {
         super(id,firstName,lastName);
@@ -39,9 +40,26 @@ public class RepairService extends Person {
         this.price = price;
     }
 
-    public RepairService (String firstname,String lastname)
+    public RepairService(long id, String firstName, String lastName, String location, String phoneNumber, boolean available, double latitude, double longitude, float rating, int price) {
+        super(id, firstName, lastName);
+        this.location = location;
+        this.phoneNumber = phoneNumber;
+        this.available = available;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.rating = rating;
+        this.price = price;
+        distance = NO_DURATION;
+        duration = NO_DURATION;
+    }
+
+    public RepairService (String firstname, String lastname)
     {
         super(firstname,lastname);
+    }
+
+    public RepairService(long id, String firstName, String lastName) {
+        super(id, firstName, lastName);
     }
 
     public RepairService(long id, String firstName, String lastName, String location, String phoneNumber, float rating, int price) {
@@ -108,6 +126,8 @@ public class RepairService extends Person {
 
     public String getDistanceString ()
     {
+        if (duration!=NO_DURATION)
+        {
         double distanceInKm = distance/1000;
         NumberFormat nf;
         String s;
@@ -119,7 +139,11 @@ public class RepairService extends Person {
             int dist = (int)distanceInKm;
             s=dist+"";
         }
-        return (s+"KM");
+        return (s+"KM");}
+        else
+        {
+            return (" ");
+        }
     }
     public String getDurationString ()
     {
@@ -129,7 +153,7 @@ public class RepairService extends Person {
         return ("a "+s+" Minutes de route");
 
     }
-    public static ArrayList<RepairService> parseJson  (String jsonString)
+    public static ArrayList<RepairService> parseListJson(String jsonString)
     {   ArrayList<RepairService> repairServices = new ArrayList<>();
         try {
             JSONArray jsonArray= new JSONArray(jsonString);
@@ -163,7 +187,33 @@ public class RepairService extends Person {
         }
         return repairServices;
 
+    }
 
+    public static RepairService parseJson(String jsonString)
+    {
+        RepairService repairService = null;
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            long id = jsonObject.getLong("id");
+            String firstname = jsonObject.getString("first_name");
+            String lastname =jsonObject.getString("last_name");
+            String location = jsonObject.getString("location");
+            String phoneNumber = jsonObject.getString("phone_number");
+            int price = jsonObject.getInt("price");
+            int av = jsonObject.getInt("available");
+            boolean available = true;
+            if (av ==0)
+            {
+                available=false;
+            }
+            float rating = (float)jsonObject.getDouble("rating");
+            double longitude = jsonObject.getDouble("longitude");
+            double latitude = jsonObject.getDouble("latitude");
+            repairService = new RepairService(id,firstname,lastname,location,phoneNumber,available,latitude,longitude,rating,price);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return repairService;
     }
 
     public static void sortByDistance (ArrayList<RepairService> repairServices)
