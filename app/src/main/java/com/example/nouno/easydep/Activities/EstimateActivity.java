@@ -2,19 +2,26 @@ package com.example.nouno.easydep.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.nouno.easydep.Data.AssistanceRequest;
+import com.example.nouno.easydep.Data.AssistanceRequestListItem;
 import com.example.nouno.easydep.Data.CarOwner;
+import com.example.nouno.easydep.Data.OnlineFiltre;
 import com.example.nouno.easydep.Data.RepairService;
 import com.example.nouno.easydep.Data.RequestEstimate;
 import com.example.nouno.easydep.DialogUtils;
 import com.example.nouno.easydep.GetRepairServiceData;
 import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
+import com.example.nouno.easydep.Utils;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
 
@@ -24,6 +31,8 @@ import java.util.Map;
 public class EstimateActivity extends AppCompatActivity {
     private EstimateActivity estimateActivity;
     private RequestEstimate requestEstimate;
+    private long id;
+    private boolean acceptedDemande=false;
     private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,18 +40,36 @@ public class EstimateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         retreiveData();
         setContentView(R.layout.activity_estimate);
+        getEstimate();
         //requestEstimate = new RequestEstimate(new RepairService("Bensebia","Noureddine"),5000,2000,null);
-        displayData();
+        //displayData();
     }
-    private void retreiveData ()
+    private void getEstimate ()
+    {
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("estimate_id",id+"");
+        GetEstimateTask getEstimateTask = new GetEstimateTask();
+        getEstimateTask.execute(map);
+    }
+    /*private void retreiveData ()
     {
         Gson gson = new Gson();
         Bundle extras = getIntent().getExtras();
-        String json = extras.getString("requestEstimate");
-        requestEstimate = gson.fromJson(json,RequestEstimate.class);
+        String json = extras.getString("assistanceRequest");
+
+        assistanceRequest = gson.fromJson(json,AssistanceRequestListItem.class);
+        requestEstimate = assistanceRequest.getRequestEstimate();
+    }*/
+    private void retreiveData ()
+    {
+        Bundle extras = getIntent().getExtras();
+        id = extras.getLong("estimateId");
     }
     private void displayData ()
     {
+        View estimateAcceptedLayout = findViewById(R.id.estimate_accepted);
+        View refuseOtherEstimates = findViewById(R.id.refuse_other_estimates);
+        View buttons = findViewById(R.id.buttons);
         TextView nameText = (TextView)findViewById(R.id.nameText);
         TextView priceText = (TextView)findViewById(R.id.price_text);
         TextView durationText = (TextView)findViewById(R.id.durationText);
@@ -73,7 +100,22 @@ public class EstimateActivity extends AppCompatActivity {
                 getRepairServiceData();
             }
         });
+        if (acceptedDemande==true)
+        {
+            buttons.setVisibility(View.GONE);
+            if (requestEstimate.getStatus()!=AssistanceRequestListItem.STATUS_WAITING_CONFIRMATION)
+            refuseOtherEstimates.setVisibility(View.VISIBLE);
+            else
+                estimateAcceptedLayout.setVisibility(View.VISIBLE);
+
+        }
+        else
+        {
+            buttons.setVisibility(View.VISIBLE);
+        }
     }
+
+
 
     private void getRepairServiceData ()
     {
@@ -82,6 +124,43 @@ public class EstimateActivity extends AppCompatActivity {
         map.put("id",id+"");
         GetRepairServiceData getRepairServiceData = new GetRepairServiceData(this);
         getRepairServiceData.getRepairServiceData(map);
+    }
+
+    private class GetEstimateTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            View root = findViewById(R.id.estimate_layout);
+            root.setVisibility(View.GONE);
+            ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
+            View buttons = findViewById(R.id.buttons);
+            buttons.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response=QueryUtils.makeHttpPostRequest(QueryUtils.GET_REQUESTS_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            requestEstimate = new RequestEstimate();
+            acceptedDemande =  requestEstimate.parseJson(s);
+            View root = findViewById(R.id.estimate_layout);
+
+            root.setVisibility(View.VISIBLE);
+            ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.GONE);
+            displayData();
+        }
     }
 
 }

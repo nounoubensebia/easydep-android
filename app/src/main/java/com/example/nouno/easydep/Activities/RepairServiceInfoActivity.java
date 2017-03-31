@@ -285,7 +285,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
     {
         Gson gson = new Gson();
         Position searchPosition = gson.fromJson(searchPositionJson,Position.class);
-        AssistanceRequest assistanceRequest = new AssistanceRequest(false,searchPosition,null,carOwner,repairService);
+        AssistanceRequest assistanceRequest = new AssistanceRequest(0,false,searchPosition,null,carOwner,repairService);
         String json = gson.toJson(assistanceRequest);
         Intent i = new Intent(getApplicationContext(),AssistanceRequestActivity.class);
         i.putExtra("assistanceRequest",json);

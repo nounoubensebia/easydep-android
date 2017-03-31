@@ -20,6 +20,7 @@ import com.example.nouno.easydep.ListAdapters.AssistanceRequestAdapter;
 import com.example.nouno.easydep.OnButtonClickListener;
 import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
+import com.example.nouno.easydep.Utils;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
 
@@ -81,13 +82,13 @@ public class RequestsListActivity extends AppCompatActivity {
 
         //test
         AssistanceRequestAdapter assistanceRequestAdapter = new AssistanceRequestAdapter(this,assistanceRequestListItems);
-        assistanceRequestAdapter.setOnEstimateClickListner(new OnButtonClickListener<RequestEstimate>() {
+        assistanceRequestAdapter.setOnEstimateClickListner(new OnButtonClickListener<AssistanceRequestListItem>() {
             @Override
-            public void onButtonClick(RequestEstimate requestEstimate) {
-                Gson gson = new Gson();
-                String json = gson.toJson(requestEstimate);
+            public void onButtonClick(AssistanceRequestListItem assistanceRequest) {
+                //Gson gson = new Gson();
+                //String json = gson.toJson(assistanceRequest);
                 Intent i = new Intent(getApplicationContext(),EstimateActivity.class);
-                i.putExtra("requestEstimate",json);
+                i.putExtra("estimateId",assistanceRequest.getId());
                 startActivity(i);
             }
         });
@@ -148,6 +149,7 @@ public class RequestsListActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             swipeRefreshLayout.setRefreshing(false);
             assistanceRequestListItems = AssistanceRequestListItem.parseJson(s);
+
             populateRequestsList(assistanceRequestListItems);
             requestsList.setVisibility(View.VISIBLE);
         }

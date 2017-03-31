@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 
 public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestListItem> {
-    private OnButtonClickListener<RequestEstimate> onEstimateClickListner;
+    private OnButtonClickListener<AssistanceRequestListItem> onEstimateClickListner;
     private OnButtonClickListener<RepairService> onRepairServiceClickListener;
     private OnButtonClickListener<AssistanceRequest> onRequestClickListner;
     public AssistanceRequestAdapter(Context context, ArrayList<AssistanceRequestListItem> list) {
@@ -85,7 +85,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
 
                     @Override
                     public void onClick(View v) {
-                        onEstimateClickListner.onButtonClick(assistanceRequest.getRequestEstimate());
+                        onEstimateClickListner.onButtonClick(assistanceRequest);
                     }
                 });}
                 uncheckCircle(confirmationCircle,confirmationCircleText);
@@ -94,6 +94,14 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                 confirmationText.setTextColor(dateText.getTextColors().getDefaultColor());
                 break;
             case AssistanceRequestListItem.STATUS_WAITING_CONFIRMATION: quotationText.setText("Devis accepté");
+                if (onEstimateClickListner!=null) {
+                    quotationText.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            onEstimateClickListner.onButtonClick(assistanceRequest);
+                        }
+                    });}
                 quotationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
                 checkCircle(quotationCircle,quotationCircleText);
                 uncheckCircle(confirmationCircle,confirmationCircleText);
@@ -125,7 +133,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
         circleText.setVisibility(View.VISIBLE);
     }
 
-    public void setOnEstimateClickListner(OnButtonClickListener<RequestEstimate> onEstimateClickListner) {
+    public void setOnEstimateClickListner(OnButtonClickListener<AssistanceRequestListItem> onEstimateClickListner) {
         this.onEstimateClickListner = onEstimateClickListner;
     }
 

@@ -16,7 +16,7 @@ import java.util.Date;
 public class AssistanceRequestListItem extends AssistanceRequest {
     private int status;
     private long time;
-    private RequestEstimate requestEstimate;
+
 
     public static final int STATUS_WAITING_QUOTATION = 0;
     public static final int STATUS_QUOTATION_RECEIVED = 1;
@@ -27,11 +27,11 @@ public class AssistanceRequestListItem extends AssistanceRequest {
 
 
 
-    public AssistanceRequestListItem(boolean vehiculeCanMove, Position userPositon, Position destination, CarOwner carOwner, RepairService repairService, float length, float weight, int status, long time, RequestEstimate requestEstimate) {
-        super(vehiculeCanMove, userPositon, destination, carOwner, repairService, length, weight);
+    public AssistanceRequestListItem(long id,boolean vehiculeCanMove, Position userPositon, Position destination, CarOwner carOwner, RepairService repairService, float length, float weight, int status, long time) {
+        super(id,vehiculeCanMove, userPositon, destination, carOwner, repairService, length, weight);
         this.status = status;
         this.time = time;
-        this.requestEstimate = requestEstimate;
+
     }
 
     public int getStatus() {
@@ -58,13 +58,7 @@ public class AssistanceRequestListItem extends AssistanceRequest {
 
     }
 
-    public RequestEstimate getRequestEstimate() {
-        return requestEstimate;
-    }
 
-    public void setRequestEstimate(RequestEstimate requestEstimate) {
-        this.requestEstimate = requestEstimate;
-    }
 
     public static ArrayList<AssistanceRequestListItem> parseJson (String json)
     {
@@ -84,7 +78,7 @@ public class AssistanceRequestListItem extends AssistanceRequest {
                 int status = jsonObject.getInt("status");
                 String departure = jsonObject.getString("departure");
                 String destination = jsonObject.getString("destination");
-
+                long id2 = jsonObject.getLong("id");
                 boolean vehiculeCanMove = false;
                 float length = AssistanceRequest.NOT_HEAVY;
                 float weight = AssistanceRequest.NOT_HEAVY;
@@ -94,20 +88,11 @@ public class AssistanceRequestListItem extends AssistanceRequest {
                 length=(float)jsonObject.getDouble("length");
                 if (jsonObject.has("weight"))
                     weight=(float)jsonObject.getDouble("weight");
-                AssistanceRequestListItem assistanceRequestListItem = new AssistanceRequestListItem(vehiculeCanMove,new Position(departure,-1,-1),new Position(destination,-1,-1),
-                        null,repairService,length,weight,status,time,null);
-                if (destination.equals("null"))
+                AssistanceRequestListItem assistanceRequestListItem = new AssistanceRequestListItem(id2,vehiculeCanMove,new Position(departure,-1,-1),new Position(destination,-1,-1),
+                        null,repairService,length,weight,status,time);
+                if (jsonObject.isNull("destination"))
                     assistanceRequestListItem.setDestination(null);
 
-                if (jsonObject.has("estimate"))
-                {
-                    JSONObject estimate = jsonObject.getJSONObject("estimate");
-                    String extraInfo = estimate.getString("comment");
-                    long price = estimate.getLong("price");
-                    long duration = estimate.getLong("duration");
-                    RequestEstimate requestEstimate = new RequestEstimate(repairService,price,duration,extraInfo);
-                    assistanceRequestListItem.setRequestEstimate(requestEstimate);
-                }
                 list.add(assistanceRequestListItem);
             }
         } catch (JSONException e) {
@@ -135,4 +120,7 @@ public class AssistanceRequestListItem extends AssistanceRequest {
             }
         }
     }
+
+
+
 }

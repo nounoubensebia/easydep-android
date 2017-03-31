@@ -5,6 +5,7 @@ package com.example.nouno.easydep.Data;
  */
 
 public class AssistanceRequest {
+    private long id;
     private boolean heavy;
     private boolean vehiculeCanMove;
     private Position userPositon;
@@ -20,13 +21,14 @@ public class AssistanceRequest {
     private float length;
     private float weight;
 
-    public AssistanceRequest(boolean vehiculeCanMove, Position userPositon, Position destination, CarOwner carOwner, RepairService repairService) {
+    public AssistanceRequest(long id,boolean vehiculeCanMove, Position userPositon, Position destination, CarOwner carOwner, RepairService repairService) {
         this.heavy = false;
         this.vehiculeCanMove = vehiculeCanMove;
         this.userPositon = userPositon;
         this.destination = destination;
         this.carOwner = carOwner;
         this.repairService = repairService;
+        this.id=id;
         if (length==NOT_HEAVY)
         {
             heavy=false;
@@ -35,7 +37,8 @@ public class AssistanceRequest {
 
     }
 
-    public AssistanceRequest(boolean vehiculeCanMove, Position userPositon, Position destination, CarOwner carOwner, RepairService repairService, float length, float weight) {
+    public AssistanceRequest(long id,boolean vehiculeCanMove, Position userPositon, Position destination, CarOwner carOwner, RepairService repairService, float length, float weight) {
+        this.id=id;
         this.heavy = true;
         this.vehiculeCanMove = vehiculeCanMove;
         this.userPositon = userPositon;
@@ -150,5 +153,13 @@ public class AssistanceRequest {
         }
 
         return "Longeur : "+getLengthString()+", "+"Poids : "+getWeightString();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

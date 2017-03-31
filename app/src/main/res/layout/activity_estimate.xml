@@ -7,12 +7,14 @@
     android:layout_height="match_parent"
 
     tools:context="com.example.nouno.easydep.Activities.EstimateActivity">
+
     <LinearLayout
-        android:id="@+id/repair_service_layout"
+        android:id="@+id/estimate_layout"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:id="@+id/repair_service_layout"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
@@ -78,7 +80,8 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
-        tools:visibility="gone"
+        android:id="@+id/buttons"
+        tools:visibility="visible"
         android:layout_marginBottom="16dp"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
@@ -117,13 +120,13 @@
             android:layout_marginBottom="16dp"
             android:textColor="@color/white"
             android:layout_centerInParent="true"
-            android:text="Devis deja accepté"
+            android:text="Devis accepté"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
     <RelativeLayout
         android:visibility="gone"
-        android:id="@+id/refuse_other_estimate"
+        android:id="@+id/refuse_other_estimates"
         android:background="@android:color/holo_red_light"
         android:layout_width="match_parent"
         android:layout_gravity="bottom"
@@ -141,6 +144,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </android.support.design.widget.CoordinatorLayout>
