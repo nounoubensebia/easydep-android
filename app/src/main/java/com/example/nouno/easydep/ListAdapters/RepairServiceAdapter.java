@@ -59,12 +59,12 @@ public class RepairServiceAdapter extends RecyclerView.Adapter<RepairServiceAdap
         holder.nameTextView.setText(repairService.getFullName());
         if (repairService.isAvailable())
         {
-            holder.availableTextView.setText("Disponible");
+            holder.availableTextView.setText(repairService.getAvailableString());
         }
         else
         {
             holder.availableTextView.setTextColor(Color.parseColor("#F44336"));
-            holder.availableTextView.setText("Occupé");
+            holder.availableTextView.setText(repairService.getAvailableString());
         }
 
         if (repairService.getPrice()==RepairService.NO_PRICE)

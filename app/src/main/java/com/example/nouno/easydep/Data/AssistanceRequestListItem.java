@@ -16,12 +16,12 @@ import java.util.Date;
 public class AssistanceRequestListItem extends AssistanceRequest {
     private int status;
     private long time;
-
+    private int numberOfPeopleBefore;
 
     public static final int STATUS_WAITING_QUOTATION = 0;
     public static final int STATUS_QUOTATION_RECEIVED = 1;
-    public static final int STATUS_WAITING_CONFIRMATION = 2;
-    public static final int STATUS_REQUEST_CONFIRMED = 3;
+    public static final int STATUS_IN_QUEUE = 2;
+    public static final int STATUS_REPAIR_SERVICE_COMMING = 3;
 
 
 
@@ -31,6 +31,7 @@ public class AssistanceRequestListItem extends AssistanceRequest {
         super(id,vehiculeCanMove, userPositon, destination, carOwner, repairService, length, weight);
         this.status = status;
         this.time = time;
+        numberOfPeopleBefore=0;
 
     }
 
@@ -92,6 +93,10 @@ public class AssistanceRequestListItem extends AssistanceRequest {
                         null,repairService,length,weight,status,time);
                 if (jsonObject.isNull("destination"))
                     assistanceRequestListItem.setDestination(null);
+                if (status==AssistanceRequestListItem.STATUS_IN_QUEUE)
+                {
+                    assistanceRequestListItem.numberOfPeopleBefore = jsonObject.getInt("number_of_people_before");
+                }
 
                 list.add(assistanceRequestListItem);
             }
@@ -121,6 +126,20 @@ public class AssistanceRequestListItem extends AssistanceRequest {
         }
     }
 
+    public int getNumberOfPeopleBefore() {
+        return numberOfPeopleBefore;
+    }
 
+    public void setNumberOfPeopleBefore(int numberOfPeopleBefore) {
+        this.numberOfPeopleBefore = numberOfPeopleBefore;
+    }
+    public String getNumberOfPeopleBeforeString ()
+    {
+            if (numberOfPeopleBefore==1)
+                return "Vous êtes premier en file d'attente";
+        else
+
+            return "Vous êtes "+numberOfPeopleBefore+"éme en file d'attente";
+    }
 
 }

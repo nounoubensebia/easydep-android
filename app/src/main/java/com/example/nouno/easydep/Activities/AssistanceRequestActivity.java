@@ -22,9 +22,6 @@ import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class AssistanceRequestActivity extends AppCompatActivity {
     private AssistanceRequest assistanceRequest;
     private AssistanceRequestActivity assistanceRequestActivity;
@@ -208,7 +205,7 @@ public class AssistanceRequestActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
 
             progressDialog.dismiss();
-            Dialog infoDialog = DialogUtils.buildClockableInfoDialog("", "Votre demande a été envoyée", assistanceRequestActivity, new DialogInterface.OnClickListener() {
+            Dialog infoDialog = DialogUtils.buildClickableInfoDialog("", "Votre demande a été envoyée", assistanceRequestActivity, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Intent i = new Intent(getApplicationContext(),RequestsListActivity.class);

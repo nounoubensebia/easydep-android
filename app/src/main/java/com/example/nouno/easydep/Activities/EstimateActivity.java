@@ -1,6 +1,8 @@
 package com.example.nouno.easydep.Activities;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -8,20 +10,17 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.nouno.easydep.Data.AssistanceRequest;
 import com.example.nouno.easydep.Data.AssistanceRequestListItem;
 import com.example.nouno.easydep.Data.CarOwner;
-import com.example.nouno.easydep.Data.OnlineFiltre;
-import com.example.nouno.easydep.Data.RepairService;
 import com.example.nouno.easydep.Data.RequestEstimate;
 import com.example.nouno.easydep.DialogUtils;
 import com.example.nouno.easydep.GetRepairServiceData;
 import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
-import com.example.nouno.easydep.Utils;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
 
@@ -34,6 +33,7 @@ public class EstimateActivity extends AppCompatActivity {
     private long id;
     private boolean acceptedDemande=false;
     private ProgressDialog progressDialog;
+    private CarOwner carOwner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         estimateActivity=this;
@@ -41,8 +41,7 @@ public class EstimateActivity extends AppCompatActivity {
         retreiveData();
         setContentView(R.layout.activity_estimate);
         getEstimate();
-        //requestEstimate = new RequestEstimate(new RepairService("Bensebia","Noureddine"),5000,2000,null);
-        //displayData();
+
     }
     private void getEstimate ()
     {
@@ -51,19 +50,15 @@ public class EstimateActivity extends AppCompatActivity {
         GetEstimateTask getEstimateTask = new GetEstimateTask();
         getEstimateTask.execute(map);
     }
-    /*private void retreiveData ()
-    {
-        Gson gson = new Gson();
-        Bundle extras = getIntent().getExtras();
-        String json = extras.getString("assistanceRequest");
 
-        assistanceRequest = gson.fromJson(json,AssistanceRequestListItem.class);
-        requestEstimate = assistanceRequest.getRequestEstimate();
-    }*/
     private void retreiveData ()
     {
         Bundle extras = getIntent().getExtras();
         id = extras.getLong("estimateId");
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Gson gson = new Gson();
+        String carOwnerJson = sharedPref.getString("carOwner",null);
+        carOwner = gson.fromJson(carOwnerJson,CarOwner.class);
     }
     private void displayData ()
     {
@@ -103,7 +98,7 @@ public class EstimateActivity extends AppCompatActivity {
         if (acceptedDemande==true)
         {
             buttons.setVisibility(View.GONE);
-            if (requestEstimate.getStatus()!=AssistanceRequestListItem.STATUS_WAITING_CONFIRMATION)
+            if (requestEstimate.getStatus()!=AssistanceRequestListItem.STATUS_IN_QUEUE)
             refuseOtherEstimates.setVisibility(View.VISIBLE);
             else
                 estimateAcceptedLayout.setVisibility(View.VISIBLE);
@@ -112,7 +107,40 @@ public class EstimateActivity extends AppCompatActivity {
         else
         {
             buttons.setVisibility(View.VISIBLE);
+            Button acceptButton = (Button)findViewById(R.id.accept_button);
+            acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
+                    map.put("action",QueryUtils.ACCEPT_ESTIMATE);
+                    map.put("assistance_request_id",id+"");
+                    AcceptEstimateTask acceptEstimateTask = new AcceptEstimateTask();
+                    acceptEstimateTask.execute(map);
+                }
+            });
+            Button refuseButton = (Button)findViewById(R.id.refuse_button);
+            refuseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog confirmationDialog = DialogUtils.buildConfirmationDialog("Confirmation",
+                            "Voulez vous vraiment refuser ce devis ceci va annuler la demande",
+                            estimateActivity, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
+                                    map.put("action",QueryUtils.REFUSE_ESTIMATE);
+                                    map.put("assistance_request_id",id+"");
+                                    RefuseEstimateTask refuseEstimateTask = new RefuseEstimateTask();
+                                    refuseEstimateTask.execute(map);
+                                }
+                            });
+                    confirmationDialog.show();
+
+
+                }
+            });
         }
+
     }
 
 
@@ -162,5 +190,84 @@ public class EstimateActivity extends AppCompatActivity {
             displayData();
         }
     }
+
+    private class AcceptEstimateTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            showProgressDialog();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s.equals("success"))
+            {
+                progressDialog.dismiss();
+                Dialog infoDialog = DialogUtils.buildClickableInfoDialog("Opération terminée", "Devis accepté", estimateActivity,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startRequestsListActivity();
+                            }
+                        });
+                infoDialog.show();
+            }
+        }
+    }
+    private class RefuseEstimateTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            showProgressDialog();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response =QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s.equals("success"))
+            {
+                progressDialog.dismiss();
+                startRequestsListActivity();
+            }
+        }
+    }
+
+
+    private void startRequestsListActivity()
+    {
+
+        Intent i = new Intent(this,RequestsListActivity.class);
+        startActivity(i);
+    }
+    private void showProgressDialog()
+    {
+        progressDialog = (ProgressDialog)DialogUtils.buildProgressDialog("Veuillez patienter",estimateActivity);
+        progressDialog.show();
+    }
+
+
 
 }

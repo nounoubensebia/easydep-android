@@ -223,11 +223,11 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
         if (repairService.isAvailable())
         {
-            availableText.setText("Disponible");
+            availableText.setText(repairService.getAvailableString());
         }
         else
         {
-            availableText.setText("Occupé");
+            availableText.setText(repairService.getAvailableString());
             availableText.setTextColor(Color.parseColor("#F44336"));
             Drawable img = repairServiceInfoActivity.getDrawable(R.drawable.ic_do_not_disturb2_40_8p);
             availableText.setCompoundDrawables(null,img,null,null);

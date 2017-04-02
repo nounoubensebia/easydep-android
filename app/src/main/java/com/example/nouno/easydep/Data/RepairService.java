@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class RepairService extends Person {
     private String location;
     private String phoneNumber;
-
+    private int numberOfPeopleInqueue;
     private boolean available;
     private int duration;
     private double distance;
@@ -27,7 +27,7 @@ public class RepairService extends Person {
     public static final String NO_PRICE_STRING = "Tarifs non communiqués";
     public static final int NO_DURATION = -1;
 
-    public RepairService(long id,String firstName, String lastName, String location, boolean available, int duration, double distance,double latitude,double longitude,float rating,int price,String phoneNumber) {
+    public RepairService(long id,String firstName, String lastName, String location, boolean available, int duration, double distance,double latitude,double longitude,float rating,int price,String phoneNumber,int numberOfPeopleInqueue) {
         super(id,firstName,lastName);
         this.phoneNumber = phoneNumber;
         this.location = location;
@@ -38,9 +38,10 @@ public class RepairService extends Person {
         this.longitude=longitude;
         this.rating = rating;
         this.price = price;
+        this.numberOfPeopleInqueue = numberOfPeopleInqueue;
     }
 
-    public RepairService(long id, String firstName, String lastName, String location, String phoneNumber, boolean available, double latitude, double longitude, float rating, int price) {
+    public RepairService(long id, String firstName, String lastName, String location, String phoneNumber, boolean available, double latitude, double longitude, float rating, int price,int numberOfPeopleInqueue) {
         super(id, firstName, lastName);
         this.location = location;
         this.phoneNumber = phoneNumber;
@@ -49,6 +50,7 @@ public class RepairService extends Person {
         this.longitude = longitude;
         this.rating = rating;
         this.price = price;
+        this.numberOfPeopleInqueue = numberOfPeopleInqueue;
         distance = NO_DURATION;
         duration = NO_DURATION;
     }
@@ -153,6 +155,26 @@ public class RepairService extends Person {
         return ("a "+s+" Minutes de route");
 
     }
+
+    public String getAvailableString ()
+    {
+        if (available)
+        {
+            return "Disponible";
+
+        }
+        else
+        {
+            if (numberOfPeopleInqueue==0)
+            {
+                return "Occupé";
+            }
+            else
+            {
+                return numberOfPeopleInqueue+" Personnes en file d'attente";
+            }
+        }
+    }
     public static ArrayList<RepairService> parseListJson(String jsonString)
     {   ArrayList<RepairService> repairServices = new ArrayList<>();
         try {
@@ -176,8 +198,9 @@ public class RepairService extends Person {
                 {
                     price = jsonObject.getInt("price");
                 }
+                int numberOfPeopleInQueue = jsonObject.getInt("number_of_people_in_queue");
 
-                RepairService repairService = new RepairService(id,firstname,lastname,location,available,duration,distance,latitude,longitude,rating,price,phoneNumber);
+                RepairService repairService = new RepairService(id,firstname,lastname,location,available,duration,distance,latitude,longitude,rating,price,phoneNumber,numberOfPeopleInQueue);
                 repairServices.add(repairService);
             }
         } catch (JSONException e) {
@@ -213,7 +236,8 @@ public class RepairService extends Person {
             float rating = (float)jsonObject.getDouble("rating");
             double longitude = jsonObject.getDouble("longitude");
             double latitude = jsonObject.getDouble("latitude");
-            repairService = new RepairService(id,firstname,lastname,location,phoneNumber,available,latitude,longitude,rating,price);
+            int numberOfPeopleInQueue = jsonObject.getInt("number_of_people_in_queue");
+            repairService = new RepairService(id,firstname,lastname,location,phoneNumber,available,latitude,longitude,rating,price,numberOfPeopleInQueue);
         } catch (JSONException e) {
             e.printStackTrace();
         }

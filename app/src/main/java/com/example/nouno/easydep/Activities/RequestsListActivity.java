@@ -1,5 +1,8 @@
 package com.example.nouno.easydep.Activities;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -15,6 +18,7 @@ import com.example.nouno.easydep.Data.AssistanceRequestListItem;
 import com.example.nouno.easydep.Data.CarOwner;
 import com.example.nouno.easydep.Data.RepairService;
 import com.example.nouno.easydep.Data.RequestEstimate;
+import com.example.nouno.easydep.DialogUtils;
 import com.example.nouno.easydep.GetRepairServiceData;
 import com.example.nouno.easydep.ListAdapters.AssistanceRequestAdapter;
 import com.example.nouno.easydep.OnButtonClickListener;
@@ -32,18 +36,21 @@ public class RequestsListActivity extends AppCompatActivity {
     private ListView requestsList;
     private ArrayList<AssistanceRequestListItem> assistanceRequestListItems;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressDialog progressDialog;
+    private RequestsListActivity requestsListActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requests_list);
         requestsList = (ListView)findViewById(R.id.list);
+        requestsListActivity = this;
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refrech_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,R.color.refresh_progress_2,R.color.refresh_progress_3);
         RepairService repairService = new RepairService(2,"Bensebia","Noureddine","El mohamadia","05987564",2,100);
         RepairService repairService1 = new RepairService(3,"haha","goku","qsd","465564",3,1000);
         //assistanceRequestListItems = new ArrayList<>();
         //assistanceRequestListItems.add(new AssistanceRequestListItem(repairService,AssistanceRequestListItem.STATUS_QUOTATION_RECEIVED,1000));
-        //assistanceRequestListItems.add(new AssistanceRequestListItem(repairService1,AssistanceRequestListItem.STATUS_WAITING_CONFIRMATION,1000));
+        //assistanceRequestListItems.add(new AssistanceRequestListItem(repairService1,AssistanceRequestListItem.STATUS_IN_QUEUE,1000));
         //assistanceRequestListItems.add(new AssistanceRequestListItem(repairService1,AssistanceRequestListItem.STATUS_WAITING_QUOTATION,1000));
         //populateRequestsList(assistanceRequestListItems);
         loadRequestsList();
@@ -75,12 +82,7 @@ public class RequestsListActivity extends AppCompatActivity {
 
     private void populateRequestsList (ArrayList<AssistanceRequestListItem> assistanceRequestListItems)
     {
-        //test
-        //RepairService repairService = new RepairService("Bensbeia","Noureddine");
-        //assistanceRequestListItems.add(0,new AssistanceRequestListItem(repairService,AssistanceRequestListItem.STATUS_QUOTATION_RECEIVED,150000,
-        //        new RequestEstimate(repairService,1000,2000,"")));
 
-        //test
         AssistanceRequestAdapter assistanceRequestAdapter = new AssistanceRequestAdapter(this,assistanceRequestListItems);
         assistanceRequestAdapter.setOnEstimateClickListner(new OnButtonClickListener<AssistanceRequestListItem>() {
             @Override
@@ -104,9 +106,33 @@ public class RequestsListActivity extends AppCompatActivity {
                 showRequest(assistanceRequest);
             }
         });
+        assistanceRequestAdapter.setOnCancelClickListner(new OnButtonClickListener<AssistanceRequest>() {
+            @Override
+            public void onButtonClick(final AssistanceRequest assistanceRequest) {
+                Dialog dialog = DialogUtils.buildConfirmationDialog("Confirmation", "Voulez vous vraiment annuler cette demande ceci" +
+                        "va entrainer la suppression de la demande", requestsListActivity, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        cancelRequest(assistanceRequest);
+                    }
+                });
+                dialog.show();
+            }
+        });
         requestsList.setAdapter(assistanceRequestAdapter);
         requestsList.setDividerHeight(0);
     }
+
+    private void cancelRequest (AssistanceRequest assistanceRequest)
+    {
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("assistance_request_id",assistanceRequest.getId()+"");
+        map.put("action",QueryUtils.CANCEL_REQUEST);
+        CancelRequestTask cancelRequestTask = new CancelRequestTask();
+        cancelRequestTask.execute(map);
+    }
+
+
 
     private void showRequest(AssistanceRequest assistanceRequest)
     {
@@ -152,6 +178,34 @@ public class RequestsListActivity extends AppCompatActivity {
 
             populateRequestsList(assistanceRequestListItems);
             requestsList.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private class CancelRequestTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+        @Override
+        protected void onPreExecute() {
+            progressDialog = (ProgressDialog) DialogUtils.buildProgressDialog("Veuillez patienter",requestsListActivity);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response =QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            progressDialog.dismiss();
+            Dialog infoDialog = DialogUtils.buildInfoDialog("Opération terminée","Demande annulée",requestsListActivity);
+            infoDialog.show();
+            loadRequestsList();
         }
     }
 

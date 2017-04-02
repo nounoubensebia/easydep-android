@@ -25,7 +25,25 @@ public class DialogUtils {
         return builder.create();
 
     }
-    public static  Dialog buildClockableInfoDialog (String title, String msg, Context context, final DialogInterface.OnClickListener clickListener)
+    public static Dialog buildConfirmationDialog (String title, String msg, Context context, final DialogInterface.OnClickListener clickListener)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(msg).setTitle(title);
+        builder.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                clickListener.onClick(dialog,id);
+            }
+        });
+        builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        return builder.create();
+    }
+    public static  Dialog buildClickableInfoDialog(String title, String msg, Context context, final DialogInterface.OnClickListener clickListener)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(msg).setTitle(title);

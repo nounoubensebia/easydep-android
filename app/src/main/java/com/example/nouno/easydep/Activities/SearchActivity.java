@@ -475,13 +475,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
         if (repairService.isAvailable())
         {
-            availableTextView.setText("Disponible");
+            availableTextView.setText(repairService.getAvailableString());
             availableTextView.setTextColor(getResources().getColor(R.color.green));
         }
         else
         {
             availableTextView.setTextColor(Color.parseColor("#F44336"));
-            availableTextView.setText("Occupé");
+            availableTextView.setText(repairService.getAvailableString());
         }
         infoBottomSheet.setOnClickListener(new View.OnClickListener() {
             @Override

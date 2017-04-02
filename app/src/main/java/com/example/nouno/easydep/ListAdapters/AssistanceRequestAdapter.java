@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.example.nouno.easydep.Data.AssistanceRequest;
 import com.example.nouno.easydep.Data.AssistanceRequestListItem;
 import com.example.nouno.easydep.Data.RepairService;
-import com.example.nouno.easydep.Data.RequestEstimate;
 import com.example.nouno.easydep.OnButtonClickListener;
 import com.example.nouno.easydep.R;
 
@@ -28,6 +27,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
     private OnButtonClickListener<AssistanceRequestListItem> onEstimateClickListner;
     private OnButtonClickListener<RepairService> onRepairServiceClickListener;
     private OnButtonClickListener<AssistanceRequest> onRequestClickListner;
+    private OnButtonClickListener<AssistanceRequest> onCancelClickListner;
     public AssistanceRequestAdapter(Context context, ArrayList<AssistanceRequestListItem> list) {
         super(context,0,list);
     }
@@ -58,6 +58,12 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                 onRequestClickListner.onButtonClick(assistanceRequest);
             }
         });
+        cancelText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCancelClickListner.onButtonClick(assistanceRequest);
+            }
+        });
         nameText.setText(assistanceRequest.getRepairService().getFullName());
         nameText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +81,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                 quotationText.setText("Attente du devis");
                 quotationText.setOnClickListener(null);
                 quotationText.setTextColor(dateText.getTextColors().getDefaultColor());
-                confirmationText.setText("Attente de confirmation");
+                confirmationText.setText("Mise en file d'attente");
                 confirmationText.setTextColor(dateText.getTextColors().getDefaultColor());
                 break;
             case AssistanceRequestListItem.STATUS_QUOTATION_RECEIVED : quotationText.setText("Consulter devis");
@@ -90,10 +96,10 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                 });}
                 uncheckCircle(confirmationCircle,confirmationCircleText);
                 makeOrangeCircle(quotationCircle,quotationCircleText);
-                confirmationText.setText("Attente de confirmation");
+                confirmationText.setText("Mise en file d'attente");
                 confirmationText.setTextColor(dateText.getTextColors().getDefaultColor());
                 break;
-            case AssistanceRequestListItem.STATUS_WAITING_CONFIRMATION: quotationText.setText("Devis accepté");
+            case AssistanceRequestListItem.STATUS_IN_QUEUE: quotationText.setText("Devis accepté");
                 if (onEstimateClickListner!=null) {
                     quotationText.setOnClickListener(new View.OnClickListener() {
 
@@ -104,7 +110,8 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                     });}
                 quotationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
                 checkCircle(quotationCircle,quotationCircleText);
-                uncheckCircle(confirmationCircle,confirmationCircleText);
+                confirmationText.setText(assistanceRequest.getNumberOfPeopleBeforeString());
+                makeOrangeCircle(confirmationCircle,confirmationCircleText);
                 break;
 
 
@@ -143,5 +150,9 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
 
     public void setOnRequestClickListner(OnButtonClickListener<AssistanceRequest> onRequestClickListner) {
         this.onRequestClickListner = onRequestClickListner;
+    }
+
+    public void setOnCancelClickListner(OnButtonClickListener<AssistanceRequest> onCancelClickListner) {
+        this.onCancelClickListner = onCancelClickListner;
     }
 }
