@@ -119,8 +119,23 @@ public class RequestsListActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+        assistanceRequestAdapter.setOnDeleteClickListner(new OnButtonClickListener<AssistanceRequest>() {
+            @Override
+            public void onButtonClick(AssistanceRequest assistanceRequest) {
+                deleteRequest(assistanceRequest);
+            }
+        });
         requestsList.setAdapter(assistanceRequestAdapter);
         requestsList.setDividerHeight(0);
+    }
+
+    private void deleteRequest (AssistanceRequest assistanceRequest)
+    {
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("assistance_request_id",assistanceRequest.getId()+"");
+        map.put("action",QueryUtils.DELETE_REQUEST);
+        DeleteRequestTask cancelRequestTask = new DeleteRequestTask();
+        cancelRequestTask.execute(map);
     }
 
     private void cancelRequest (AssistanceRequest assistanceRequest)
@@ -205,6 +220,32 @@ public class RequestsListActivity extends AppCompatActivity {
             progressDialog.dismiss();
             Dialog infoDialog = DialogUtils.buildInfoDialog("Opération terminée","Demande annulée",requestsListActivity);
             infoDialog.show();
+            loadRequestsList();
+        }
+    }
+
+    private class DeleteRequestTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+        @Override
+        protected void onPreExecute() {
+            progressDialog = (ProgressDialog) DialogUtils.buildProgressDialog("Veuillez patienter",requestsListActivity);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String s = null;
+            try {
+                s = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return s;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            progressDialog.dismiss();
             loadRequestsList();
         }
     }

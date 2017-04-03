@@ -22,7 +22,7 @@ public class AssistanceRequestListItem extends AssistanceRequest {
     public static final int STATUS_QUOTATION_RECEIVED = 1;
     public static final int STATUS_IN_QUEUE = 2;
     public static final int STATUS_REPAIR_SERVICE_COMMING = 3;
-
+    public static final int STATUS_REQUEST_REFUSED = -3;
 
 
 

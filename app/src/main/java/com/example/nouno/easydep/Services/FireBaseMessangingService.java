@@ -30,7 +30,7 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
     }
 
     private void showNotification(String message) {
-        /*Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Intent i = new Intent(this,Login_Activity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -50,8 +50,8 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
         builder.setStyle(inboxStyle);
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         number++;
-        manager.notify(number,builder.build());*/
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+        manager.notify(number,builder.build());
+        /*NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.cast_ic_notification_small_icon)
                 .setContentTitle("Event tracker")
                 .setContentText("Events received");
@@ -69,6 +69,6 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
 // Moves the expanded layout object into the notification object.
         mBuilder.setStyle(inboxStyle);
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        manager.notify(number,mBuilder.build());
+        manager.notify(number,mBuilder.build());*/
     }
 }

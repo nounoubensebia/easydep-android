@@ -28,6 +28,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
     private OnButtonClickListener<RepairService> onRepairServiceClickListener;
     private OnButtonClickListener<AssistanceRequest> onRequestClickListner;
     private OnButtonClickListener<AssistanceRequest> onCancelClickListner;
+    private OnButtonClickListener<AssistanceRequest> onDeleteClickListner;
     public AssistanceRequestAdapter(Context context, ArrayList<AssistanceRequestListItem> list) {
         super(context,0,list);
     }
@@ -113,7 +114,25 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                 confirmationText.setText(assistanceRequest.getNumberOfPeopleBeforeString());
                 makeOrangeCircle(confirmationCircle,confirmationCircleText);
                 break;
-
+            case AssistanceRequestListItem.STATUS_REQUEST_REFUSED: quotationText.setText("Demande refusée");
+                quotationText.setTextColor(getContext().getResources().getColor(android.R.color.holo_red_dark));
+                makeRedCircle(quotationCircle,quotationCircleText);
+                confirmationText.setText("Mise en file d'attente");
+                confirmationText.setTextColor(dateText.getTextColors().getDefaultColor());
+                cancelText.setText("Supprimer demande");
+                cancelText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onDeleteClickListner.onButtonClick(assistanceRequest);
+                    }
+                });
+                break;
+            case AssistanceRequestListItem.STATUS_REPAIR_SERVICE_COMMING : quotationText.setText("Devis accepté");
+                quotationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
+                checkCircle(quotationCircle,quotationCircleText);
+                confirmationText.setText("Votre dépanneur arrive !");
+                confirmationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
+                checkCircle(confirmationCircle,confirmationCircleText);
 
         }
         return item;
@@ -140,6 +159,13 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
         circleText.setVisibility(View.VISIBLE);
     }
 
+    @SuppressLint("NewApi")
+    private void makeRedCircle (ImageView circle, TextView circleText)
+    {
+        circleText.setVisibility(View.GONE);
+        circle.setImageDrawable(getContext().getDrawable(R.drawable.ic_refused_30_0));
+    }
+
     public void setOnEstimateClickListner(OnButtonClickListener<AssistanceRequestListItem> onEstimateClickListner) {
         this.onEstimateClickListner = onEstimateClickListner;
     }
@@ -154,5 +180,9 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
 
     public void setOnCancelClickListner(OnButtonClickListener<AssistanceRequest> onCancelClickListner) {
         this.onCancelClickListner = onCancelClickListner;
+    }
+
+    public void setOnDeleteClickListner(OnButtonClickListener<AssistanceRequest> onDeleteClickListner) {
+        this.onDeleteClickListner = onDeleteClickListner;
     }
 }
