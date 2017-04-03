@@ -221,7 +221,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         //timeText.setText(repairService.getDurationString());
         priceText.setText(repairService.getPriceString());
 
-        if (repairService.isAvailable())
+        if (repairService.getStatus()==RepairService.AVAILABLE)
         {
             availableText.setText(repairService.getAvailableString());
         }
@@ -410,6 +410,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         protected void onPostExecute(String s) {
             userComments = UserComment.parseJson(s);
             populateCommentList(userComments);
+
             ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
             progressBar.setVisibility(View.GONE);
             ListView listView = (ListView)findViewById(R.id.comments_list);

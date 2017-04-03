@@ -16,7 +16,7 @@ public class RepairService extends Person {
     private String location;
     private String phoneNumber;
     private int numberOfPeopleInqueue;
-    private boolean available;
+    private int status;
     private int duration;
     private double distance;
     private  double latitude;
@@ -26,12 +26,15 @@ public class RepairService extends Person {
     public static final int NO_PRICE = 99999;
     public static final String NO_PRICE_STRING = "Tarifs non communiqués";
     public static final int NO_DURATION = -1;
+    public static final int NOT_AVAILABLE = 0;
+    public static final int AVAILABLE=1;
+    public static final int INTERVENTION_UNDERWAY = -1;
 
-    public RepairService(long id,String firstName, String lastName, String location, boolean available, int duration, double distance,double latitude,double longitude,float rating,int price,String phoneNumber,int numberOfPeopleInqueue) {
+    public RepairService(long id, String firstName, String lastName, String location, int status, int duration, double distance, double latitude, double longitude, float rating, int price, String phoneNumber, int numberOfPeopleInqueue) {
         super(id,firstName,lastName);
         this.phoneNumber = phoneNumber;
         this.location = location;
-        this.available = available;
+        this.status = status;
         this.duration = duration;
         this.distance = distance;
         this.latitude=latitude;
@@ -41,11 +44,11 @@ public class RepairService extends Person {
         this.numberOfPeopleInqueue = numberOfPeopleInqueue;
     }
 
-    public RepairService(long id, String firstName, String lastName, String location, String phoneNumber, boolean available, double latitude, double longitude, float rating, int price,int numberOfPeopleInqueue) {
+    public RepairService(long id, String firstName, String lastName, String location, String phoneNumber, int status, double latitude, double longitude, float rating, int price, int numberOfPeopleInqueue) {
         super(id, firstName, lastName);
         this.location = location;
         this.phoneNumber = phoneNumber;
-        this.available = available;
+        this.status = status;
         this.latitude = latitude;
         this.longitude = longitude;
         this.rating = rating;
@@ -106,8 +109,8 @@ public class RepairService extends Person {
         }
     }
 
-    public boolean isAvailable() {
-        return available;
+    public int getStatus() {
+        return status;
     }
 
     public int getDuration() {
@@ -158,20 +161,24 @@ public class RepairService extends Person {
 
     public String getAvailableString ()
     {
-        if (available)
+        if (status==AVAILABLE)
         {
             return "Disponible";
 
         }
         else
         {
-            if (numberOfPeopleInqueue==0)
+            if (status == NOT_AVAILABLE)
             {
                 return "Occupé";
             }
             else
             {
+
+                if (numberOfPeopleInqueue>0)
                 return numberOfPeopleInqueue+" Personnes en file d'attente";
+                else
+                    return "Intervention en cours";
             }
         }
     }
@@ -190,7 +197,8 @@ public class RepairService extends Person {
                 int duration = jsonObject.getInt("duration");
                 int distance = jsonObject.getInt("distance");
                 float rating = (float)jsonObject.getDouble("rating");
-                boolean available = jsonObject.getBoolean("available");
+                //boolean available = jsonObject.getBoolean("status");
+                int status = jsonObject.getInt("status");
                 long id = jsonObject.getLong("id");
                 String phoneNumber = jsonObject.getString("phone_number");
                 int price = NO_PRICE;
@@ -200,7 +208,7 @@ public class RepairService extends Person {
                 }
                 int numberOfPeopleInQueue = jsonObject.getInt("number_of_people_in_queue");
 
-                RepairService repairService = new RepairService(id,firstname,lastname,location,available,duration,distance,latitude,longitude,rating,price,phoneNumber,numberOfPeopleInQueue);
+                RepairService repairService = new RepairService(id,firstname,lastname,location,status,duration,distance,latitude,longitude,rating,price,phoneNumber,numberOfPeopleInQueue);
                 repairServices.add(repairService);
             }
         } catch (JSONException e) {
@@ -228,16 +236,12 @@ public class RepairService extends Person {
                 price = jsonObject.getInt("price");
             }
             int av = jsonObject.getInt("available");
-            boolean available = true;
-            if (av ==0)
-            {
-                available=false;
-            }
+
             float rating = (float)jsonObject.getDouble("rating");
             double longitude = jsonObject.getDouble("longitude");
             double latitude = jsonObject.getDouble("latitude");
             int numberOfPeopleInQueue = jsonObject.getInt("number_of_people_in_queue");
-            repairService = new RepairService(id,firstname,lastname,location,phoneNumber,available,latitude,longitude,rating,price,numberOfPeopleInQueue);
+            repairService = new RepairService(id,firstname,lastname,location,phoneNumber,av,latitude,longitude,rating,price,numberOfPeopleInQueue);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -309,7 +313,7 @@ public class RepairService extends Person {
         {
             RepairService repairService = repairServices.get(i);
 
-            if (!repairService.isAvailable())
+            if (repairService.status== INTERVENTION_UNDERWAY ||repairService.status==NOT_AVAILABLE)
             {
                 repairServices.remove(repairService);
                 i--;

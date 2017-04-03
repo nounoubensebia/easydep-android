@@ -57,7 +57,7 @@ public class RepairServiceAdapter extends RecyclerView.Adapter<RepairServiceAdap
         holder.distanceTextView.setText(repairService.getDistanceString());
         holder.durationTextView.setText(repairService.getDurationString());
         holder.nameTextView.setText(repairService.getFullName());
-        if (repairService.isAvailable())
+        if (repairService.getStatus()==RepairService.AVAILABLE)
         {
             holder.availableTextView.setText(repairService.getAvailableString());
         }

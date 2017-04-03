@@ -473,7 +473,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             price.setVisibility(View.VISIBLE);
             price.setText(repairService.getPriceString());
         }
-        if (repairService.isAvailable())
+        if (repairService.getStatus()==RepairService.AVAILABLE)
         {
             availableTextView.setText(repairService.getAvailableString());
             availableTextView.setTextColor(getResources().getColor(R.color.green));
