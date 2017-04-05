@@ -98,7 +98,7 @@ public class RequestsListActivity extends TAMBaseActivity {
         return carOwner;
     }
 
-    private void populateRequestsList (ArrayList<AssistanceRequestListItem> assistanceRequestListItems)
+    private void populateRequestsList (final ArrayList<AssistanceRequestListItem> assistanceRequestListItems)
     {
 
         AssistanceRequestAdapter assistanceRequestAdapter = new AssistanceRequestAdapter(this,assistanceRequestListItems);
@@ -141,6 +141,23 @@ public class RequestsListActivity extends TAMBaseActivity {
             @Override
             public void onButtonClick(AssistanceRequest assistanceRequest) {
                 deleteRequest(assistanceRequest);
+            }
+        });
+
+        assistanceRequestAdapter.setOnQueueClickListner(new OnButtonClickListener<AssistanceRequestListItem>() {
+            @Override
+            public void onButtonClick(AssistanceRequestListItem assistanceRequestListItem) {
+                Intent i = new Intent(getApplicationContext(),QueueActivity.class);
+                if (assistanceRequestListItem.getStatus() == assistanceRequestListItem.STATUS_REPAIR_SERVICE_COMMING)
+                {
+
+                    i.putExtra("position",0);
+                }
+                else
+                {
+                    i.putExtra("postition",assistanceRequestListItem.getNumberOfPeopleBefore());
+                }
+                startActivity(i);
             }
         });
         requestsList.setAdapter(assistanceRequestAdapter);

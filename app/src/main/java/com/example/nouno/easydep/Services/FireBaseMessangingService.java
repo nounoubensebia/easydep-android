@@ -4,6 +4,7 @@ package com.example.nouno.easydep.Services;
  * Created by nouno on 27/03/2017.
  */
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -14,11 +15,13 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.example.nouno.easydep.Activities.EstimateActivity;
 import com.example.nouno.easydep.Activities.Login_Activity;
+import com.example.nouno.easydep.Activities.QueueActivity;
 import com.example.nouno.easydep.Activities.RequestsListActivity;
 import com.example.nouno.easydep.Data.AssistanceRequestListItem;
 import com.example.nouno.easydep.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.yayandroid.theactivitymanager.TheActivityManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,6 +76,12 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
 
     private void showQueueNotification (String message)
     {
+        Activity activity =TheActivityManager.getInstance().getCurrentActivity();
+        if (activity!=null&&activity instanceof QueueActivity)
+        {
+            Intent intent = new Intent("new_position");
+            broadcaster.sendBroadcast(intent);
+        }
         Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Intent i = new Intent(this,RequestsListActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

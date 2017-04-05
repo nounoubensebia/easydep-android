@@ -1,5 +1,10 @@
 package com.example.nouno.easydep.Activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +26,19 @@ public class QueueActivity extends AppCompatActivity {
     private Button button;
     private TextView positionText;
     private View waitText;
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updatePosition();
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,new IntentFilter("new_position"));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +58,8 @@ public class QueueActivity extends AppCompatActivity {
                 updatePosition();
             }
         });
-        //getPosition();
-        position = 4;
+        getPosition();
+        //position = 4;
         setInitialPosition();
     }
 

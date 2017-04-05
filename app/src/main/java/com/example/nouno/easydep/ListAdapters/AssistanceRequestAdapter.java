@@ -29,6 +29,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
     private OnButtonClickListener<AssistanceRequest> onRequestClickListner;
     private OnButtonClickListener<AssistanceRequest> onCancelClickListner;
     private OnButtonClickListener<AssistanceRequest> onDeleteClickListner;
+    private OnButtonClickListener<AssistanceRequestListItem> onQueueClickListner;
     public AssistanceRequestAdapter(Context context, ArrayList<AssistanceRequestListItem> list) {
         super(context,0,list);
     }
@@ -109,6 +110,15 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                             onEstimateClickListner.onButtonClick(assistanceRequest);
                         }
                     });}
+                if (onQueueClickListner!=null)
+                {
+                    confirmationText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onQueueClickListner.onButtonClick(assistanceRequest);
+                        }
+                    });
+                }
                 quotationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
                 checkCircle(quotationCircle,quotationCircleText);
                 confirmationText.setText(assistanceRequest.getNumberOfPeopleBeforeString());
@@ -129,6 +139,15 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                 break;
             case AssistanceRequestListItem.STATUS_REPAIR_SERVICE_COMMING : quotationText.setText("Devis accepté");
                 quotationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
+                if (onQueueClickListner!=null)
+                {
+                    confirmationText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onQueueClickListner.onButtonClick(assistanceRequest);
+                        }
+                    });
+                }
                 checkCircle(quotationCircle,quotationCircleText);
                 confirmationText.setText("Votre dépanneur arrive !");
                 confirmationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
@@ -184,5 +203,9 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
 
     public void setOnDeleteClickListner(OnButtonClickListener<AssistanceRequest> onDeleteClickListner) {
         this.onDeleteClickListner = onDeleteClickListner;
+    }
+
+    public void setOnQueueClickListner(OnButtonClickListener<AssistanceRequestListItem> onQueueClickListner) {
+        this.onQueueClickListner = onQueueClickListner;
     }
 }
