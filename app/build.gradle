@@ -33,6 +33,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:10.2.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.support:multidex:1.0.0'
+    compile 'com.yayandroid:TheActivityManager:1.0.6'
     testCompile 'junit:junit:4.12'
 }
 apply plugin: 'com.google.gms.google-services'

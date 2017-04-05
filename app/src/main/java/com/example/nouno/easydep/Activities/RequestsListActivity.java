@@ -2,11 +2,15 @@ package com.example.nouno.easydep.Activities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,17 +31,31 @@ import com.example.nouno.easydep.R;
 import com.example.nouno.easydep.Utils;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
+import com.yayandroid.theactivitymanager.TAMBaseActivity;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class RequestsListActivity extends AppCompatActivity {
+public class RequestsListActivity extends TAMBaseActivity {
     private ListView requestsList;
     private ArrayList<AssistanceRequestListItem> assistanceRequestListItems;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog progressDialog;
     private RequestsListActivity requestsListActivity;
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            loadRequestsList();
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,new IntentFilter("new_estimate"));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

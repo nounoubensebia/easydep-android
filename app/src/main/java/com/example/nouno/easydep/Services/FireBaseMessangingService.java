@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.example.nouno.easydep.Activities.EstimateActivity;
 import com.example.nouno.easydep.Activities.Login_Activity;
@@ -27,10 +28,16 @@ import org.json.JSONObject;
  */
 
 public class FireBaseMessangingService extends FirebaseMessagingService {
-
+    private LocalBroadcastManager broadcaster;
     public static int number = 0;
     public static final String TITLE_NEW_POSITION_IN_QUEUE = "position_in_queue_changed";
     public static final String TITLE_NEW_ESTIMATE = "new_estimate";
+
+    @Override
+    public void onCreate() {
+       broadcaster = LocalBroadcastManager.getInstance(this);
+    }
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         //showNotification(remoteMessage.getData().get("data"));
@@ -60,7 +67,8 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
         if (number>5)
             number=0;
         manager.notify(number,builder.build());
-
+        Intent intent = new Intent("new_estimate");
+        broadcaster.sendBroadcast(intent);
     }
 
     private void showQueueNotification (String message)
@@ -130,6 +138,7 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
             }
             else
             {
+                if (title.equals(TITLE_NEW_POSITION_IN_QUEUE))
                 showQueueNotification(msg);
             }
         } catch (JSONException e) {

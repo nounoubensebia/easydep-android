@@ -32,6 +32,7 @@ public class AddCommentActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private String searchPositionJson;
     private AddCommentActivity addCommentActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         addCommentActivity = this;
