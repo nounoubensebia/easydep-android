@@ -141,5 +141,13 @@ public class AssistanceRequestListItem extends AssistanceRequest {
 
             return "Vous êtes "+numberOfPeopleBefore+"éme en file d'attente";
     }
+    public static String getPositionString (int position)
+    {
+        if (position==1)
+        return "Vous êtes premier en file d'attente";
+        else
+
+        return "Vous êtes "+position+"éme en file d'attente";
+    }
 
 }
