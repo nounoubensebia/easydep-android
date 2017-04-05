@@ -28,11 +28,7 @@
         <activity
             android:name=".Activities.Login_Activity"
             android:theme="@style/LoginTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Activities.Signup1_Activity"
@@ -143,9 +139,18 @@
             android:name=".Activities.RequestsListActivity"
             android:label="Mes demandes"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.EstimateActivity"
+        <activity
+            android:name=".Activities.EstimateActivity"
             android:label="Devis"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Activities.QueueActivity"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.nouno.easydep.Activities.QueueActivity">
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/wait_text"
+            android:textSize="20sp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/backgroundColor"
+            android:fontFamily="sans-serif-light"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:text="Patientez votre tour arrive"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/position_text"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/backgroundColor"
+            android:layout_width="wrap_content"
+            android:text="Votre position en file d'attente"
+            android:layout_height="wrap_content" />
+        <FrameLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp">
+        <RelativeLayout
+
+            android:id="@+id/position_1"
+            android:layout_marginTop="32dp"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:layout_centerInParent="true"
+            android:layout_width="80dp"
+            android:src="@drawable/circle_orange_light"
+            android:layout_height="80dp" />
+            <TextView
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:text="1"
+                android:textSize="48sp"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:visibility="invisible"
+            android:id="@+id/position_2"
+            android:layout_marginTop="32dp"
+
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="80dp"
+                android:src="@drawable/circle_orange"
+                android:layout_height="80dp" />
+            <TextView
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:text="2"
+                android:textSize="48sp"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:visibility="invisible"
+            android:id="@+id/position_3"
+            android:layout_marginTop="32dp"
+
+           android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="80dp"
+                android:src="@drawable/circle_red_light"
+                android:layout_height="80dp" />
+            <TextView
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:text="3"
+                android:textSize="48sp"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:visibility="invisible"
+            android:id="@+id/position_4"
+            android:layout_marginTop="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="80dp"
+                android:src="@drawable/circle_red_dark"
+                android:layout_height="80dp" />
+            <TextView
+
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:text="4"
+                android:textSize="48sp"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+            <RelativeLayout
+                android:visibility="visible"
+                android:id="@+id/position_0"
+                android:layout_marginTop="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:layout_width="80dp"
+                    android:src="@drawable/ic_check_circle_black_24dp"
+                    android:layout_height="80dp" />
+
+            </RelativeLayout>
+        </FrameLayout>
+        <Button
+            android:visibility="gone"
+            android:id="@+id/advance"
+            android:text="advance"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:layout_gravity="bottom"
+        android:background="@android:color/holo_red_light"
+        android:textColor="@color/white"
+        android:text="Annuler demande"
+        android:layout_width="match_parent"
+        android:paddingTop="16dp"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:paddingBottom="16dp"
+        android:layout_height="wrap_content" />
+
+</android.support.design.widget.CoordinatorLayout>
