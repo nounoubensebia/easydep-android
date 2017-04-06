@@ -33,6 +33,7 @@ import org.json.JSONObject;
 public class FireBaseMessangingService extends FirebaseMessagingService {
     private LocalBroadcastManager broadcaster;
     public static int number = 0;
+    public static int queueId= 100;
     public static final String TITLE_NEW_POSITION_IN_QUEUE = "position_in_queue_changed";
     public static final String TITLE_NEW_ESTIMATE = "new_estimate";
 
@@ -82,6 +83,8 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
             Intent intent = new Intent("new_position");
             broadcaster.sendBroadcast(intent);
         }
+        else
+        {
         Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Intent i = new Intent(this,RequestsListActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -98,8 +101,9 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
 
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        number++;
-        manager.notify(number,builder.build());
+
+        manager.notify(queueId,builder.build());
+        }
 
     }
     private int getPosition (String json)

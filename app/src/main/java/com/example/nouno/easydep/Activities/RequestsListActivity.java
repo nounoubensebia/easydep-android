@@ -150,12 +150,11 @@ public class RequestsListActivity extends TAMBaseActivity {
                 Intent i = new Intent(getApplicationContext(),QueueActivity.class);
                 if (assistanceRequestListItem.getStatus() == assistanceRequestListItem.STATUS_REPAIR_SERVICE_COMMING)
                 {
-
                     i.putExtra("position",0);
                 }
                 else
                 {
-                    i.putExtra("postition",assistanceRequestListItem.getNumberOfPeopleBefore());
+                    i.putExtra("position",assistanceRequestListItem.getNumberOfPeopleBefore());
                 }
                 startActivity(i);
             }

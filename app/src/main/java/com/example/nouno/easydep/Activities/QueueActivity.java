@@ -14,8 +14,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.nouno.easydep.R;
+import com.yayandroid.theactivitymanager.TAMBaseActivity;
 
-public class QueueActivity extends AppCompatActivity {
+public class QueueActivity extends TAMBaseActivity {
 
     private int position=4;
     private View position4;
@@ -67,6 +68,7 @@ public class QueueActivity extends AppCompatActivity {
     {
         Bundle extras = getIntent().getExtras();
         position = extras.getInt("position");
+        //position++;
     }
 
     private void setInitialPosition ()
@@ -89,6 +91,7 @@ public class QueueActivity extends AppCompatActivity {
                 position3.setVisibility(View.INVISIBLE);
                 position2.setVisibility(View.VISIBLE);
                 position1.setVisibility(View.INVISIBLE);
+                positoin0.setVisibility(View.INVISIBLE);
                 break;
             case 1 : position4.setVisibility(View.INVISIBLE);
                 position3.setVisibility(View.INVISIBLE);
@@ -103,6 +106,11 @@ public class QueueActivity extends AppCompatActivity {
                 positoin0.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    private void loadRepairServiceDistanceData ()
+    {
+
     }
 
     private void updatePosition ()

@@ -63,6 +63,9 @@ public class RepairServiceAdapter extends RecyclerView.Adapter<RepairServiceAdap
         }
         else
         {
+            if (repairService.getStatus()==RepairService.INTERVENTION_UNDERWAY)
+                holder.availableTextView.setTextColor(Color.parseColor("#FFFF8800"));
+            else
             holder.availableTextView.setTextColor(Color.parseColor("#F44336"));
             holder.availableTextView.setText(repairService.getAvailableString());
         }

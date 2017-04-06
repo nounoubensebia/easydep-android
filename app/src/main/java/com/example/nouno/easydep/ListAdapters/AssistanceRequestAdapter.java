@@ -2,6 +2,7 @@ package com.example.nouno.easydep.ListAdapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -84,6 +85,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                 quotationText.setOnClickListener(null);
                 quotationText.setTextColor(dateText.getTextColors().getDefaultColor());
                 confirmationText.setText("Mise en file d'attente");
+
                 confirmationText.setTextColor(dateText.getTextColors().getDefaultColor());
                 break;
             case AssistanceRequestListItem.STATUS_QUOTATION_RECEIVED : quotationText.setText("Consulter devis");
@@ -118,6 +120,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                             onQueueClickListner.onButtonClick(assistanceRequest);
                         }
                     });
+                    confirmationText.setTextColor(Color.parseColor("#FFFF8800"));
                 }
                 quotationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
                 checkCircle(quotationCircle,quotationCircleText);
@@ -149,7 +152,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                     });
                 }
                 checkCircle(quotationCircle,quotationCircleText);
-                confirmationText.setText("Votre dépanneur arrive !");
+                confirmationText.setText("Votre dépanneur arrive");
                 confirmationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
                 checkCircle(confirmationCircle,confirmationCircleText);
 

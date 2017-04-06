@@ -55,7 +55,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class SearchActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class SearchActivity extends AppCompatActivity implements OnMapReadyCallback {
     private RecyclerView recyclerView;
     private ArrayList<RepairService> repairServices;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -77,6 +77,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private boolean mapMarked = false;
     private ProgressDialog logOutDialog;
     private SearchActivity searchActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -84,21 +85,21 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         searchActivity = this;
         Gson gson = new Gson();
         String defaultFiltreJson = gson.toJson(new OnlineFiltre());
-        String filtreJson = sharedPref.getString(Utils.ONLINEFILTER_KEY,defaultFiltreJson);
-        onlineFiltre = gson.fromJson(filtreJson,OnlineFiltre.class);
+        String filtreJson = sharedPref.getString(Utils.ONLINEFILTER_KEY, defaultFiltreJson);
+        onlineFiltre = gson.fromJson(filtreJson, OnlineFiltre.class);
         bottomMargin = 416;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        noNetworkButton = (Button)findViewById(R.id.no_network);
+        noNetworkButton = (Button) findViewById(R.id.no_network);
         noNetworkButton.setVisibility(View.GONE);
-        searchProgressBar = (ProgressBar)findViewById(R.id.progressBar);
+        searchProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         searchProgressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.backgroundColor), PorterDuff.Mode.MULTIPLY);
-        mapRefrechButton = (Button)findViewById(R.id.refrech_Button);
+        mapRefrechButton = (Button) findViewById(R.id.refrech_Button);
         repairServices = new ArrayList<>();
-        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refrech_layout);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refrech_layout);
         swipeRefreshLayout.setRefreshing(false);
-        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,R.color.refresh_progress_2,R.color.refresh_progress_3);
-        noRepairServiceFoundTextView = (TextView)findViewById(R.id.no_repair_service_found);
+        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
+        noRepairServiceFoundTextView = (TextView) findViewById(R.id.no_repair_service_found);
         noRepairServiceFoundTextView.setVisibility(View.GONE);
         mapBottomSheet = findViewById(R.id.map_bottom_sheet);
         mapBottomSheetBehavior = BottomSheetBehavior.from(mapBottomSheet);
@@ -113,10 +114,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         infoBottomSheetBehaviour.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                CoordinatorLayout.LayoutParams layoutParams1 = (CoordinatorLayout.LayoutParams)listFab.getLayoutParams();
-                if (newState == BottomSheetBehavior.STATE_EXPANDED)
-                {
-                    layoutParams1.bottomMargin=bottomMargin;
+                CoordinatorLayout.LayoutParams layoutParams1 = (CoordinatorLayout.LayoutParams) listFab.getLayoutParams();
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    layoutParams1.bottomMargin = bottomMargin;
                     enter(listFab);
                 }
             }
@@ -128,19 +128,18 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         });
 
 
-        listFab=findViewById(R.id.listFab);
-        mapFab=findViewById(R.id.mapFab);
+        listFab = findViewById(R.id.listFab);
+        mapFab = findViewById(R.id.mapFab);
         listFab.setVisibility(View.GONE);
         mapFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mapBottomSheetBehavior.getState()==BottomSheetBehavior.STATE_HIDDEN)
-                {
+                if (mapBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
                     mapBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     CoordinatorLayout.LayoutParams maplayoutParams = (CoordinatorLayout.LayoutParams) mapFab.getLayoutParams();
                     CoordinatorLayout.LayoutParams listlayoutParams = (CoordinatorLayout.LayoutParams) listFab.getLayoutParams();
-                    listlayoutParams.bottomMargin=maplayoutParams.bottomMargin;
-                    markCenter(searchPosition,true);
+                    listlayoutParams.bottomMargin = maplayoutParams.bottomMargin;
+                    markCenter(searchPosition, true);
                     moveMapCamera(searchPosition);
                     exit(mapFab);
                     enter(listFab);
@@ -150,8 +149,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         listFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mapBottomSheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED)
-                {
+                if (mapBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                     infoBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
                     mapBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     exit(listFab);
@@ -168,7 +166,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-               searchForRepairServices();
+                searchForRepairServices();
             }
         });
         mapRefrechButton.setOnClickListener(new View.OnClickListener() {
@@ -179,29 +177,23 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         });
         searchButton.setVisibility(View.GONE);
         Bundle extras = getIntent().getExtras();
-        if (extras!=null)
-        {
-            searchPosition = gson.fromJson(extras.getString("position"),Position.class);
+        if (extras != null) {
+            searchPosition = gson.fromJson(extras.getString("position"), Position.class);
             swipeRefreshLayout.setEnabled(true);
             //Toast.makeText(getApplicationContext(),searchPosition.getLatitude()+" "+searchPosition.getLongitude(),Toast.LENGTH_LONG).show();
             searchForRepairServices();
-        }
-        else
-        {
+        } else {
             mapFab.setVisibility(View.GONE);
             swipeRefreshLayout.setEnabled(false);
-            if (isNetworkAvailable())
-            {
-            searchButton.setVisibility(View.VISIBLE);
+            if (isNetworkAvailable()) {
+                searchButton.setVisibility(View.VISIBLE);
 
-            }
-            else
-            {
+            } else {
                 noNetworkButton.setVisibility(View.VISIBLE);
                 noNetworkButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i3 = new Intent(getApplicationContext(),OfflineSearchActivity.class);
+                        Intent i3 = new Intent(getApplicationContext(), OfflineSearchActivity.class);
                         startActivity(i3);
                     }
                 });
@@ -212,7 +204,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View v) {
 
-                Intent i2 = new Intent(getApplicationContext(),ManualSearchActivity.class);
+                Intent i2 = new Intent(getApplicationContext(), ManualSearchActivity.class);
                 startActivity(i2);
             }
         });
@@ -221,7 +213,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search_menu,menu);
+        getMenuInflater().inflate(R.menu.search_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -230,32 +222,33 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.filtres_menu:
-                Intent i = new Intent(getApplicationContext(),FiltresActivity.class);
+                Intent i = new Intent(getApplicationContext(), FiltresActivity.class);
 
                 Gson gson = new Gson();
-                if (searchPosition!=null){
-                String positionString = gson.toJson(searchPosition);
-                i.putExtra("position",positionString);}
+                if (searchPosition != null) {
+                    String positionString = gson.toJson(searchPosition);
+                    i.putExtra("position", positionString);
+                }
                 startActivity(i);
                 return super.onOptionsItemSelected(item);
 
             case R.id.app_bar_search:
-                if (isNetworkAvailable())
-                {
-                Intent i2 = new Intent(getApplicationContext(),ManualSearchActivity.class);
-                startActivity(i2);}
+                if (isNetworkAvailable()) {
+                    Intent i2 = new Intent(getApplicationContext(), ManualSearchActivity.class);
+                    startActivity(i2);
+                }
                 return super.onOptionsItemSelected(item);
-            case R.id.offline_list :
+            case R.id.offline_list:
 
-                Intent i3 = new Intent(getApplicationContext(),OfflineSearchActivity.class);
+                Intent i3 = new Intent(getApplicationContext(), OfflineSearchActivity.class);
                 startActivity(i3);
                 return true;
-            case R.id.log_out :
+            case R.id.log_out:
                 logOutUser();
                 return true;
-            case R.id.my_requests :
-                Intent i4 = new Intent(getApplicationContext(),RequestsListActivity.class);
-                Gson gson1 =new Gson();
+            case R.id.my_requests:
+                Intent i4 = new Intent(getApplicationContext(), RequestsListActivity.class);
+                Gson gson1 = new Gson();
 
                 startActivity(i4);
                 return true;
@@ -263,24 +256,23 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 return super.onOptionsItemSelected(item);
         }
     }
-    private void logOutUser()
-    {
+
+    private void logOutUser() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Gson gson = new Gson();
-        String json = sharedPref.getString("carOwner",null);
-        CarOwner carOwner = gson.fromJson(json,CarOwner.class);
-        LinkedHashMap<String,String> map = new LinkedHashMap<>();
-        map.put("email",carOwner.getEmail());
+        String json = sharedPref.getString("carOwner", null);
+        CarOwner carOwner = gson.fromJson(json, CarOwner.class);
+        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+        map.put("email", carOwner.getEmail());
         map.put("token", FirebaseInstanceId.getInstance().getToken());
         LogOutTask logOutTask = new LogOutTask();
         logOutTask.execute(map);
     }
 
-    private class LogOutTask extends AsyncTask<Map<String,String>,Void,String>
-    {
+    private class LogOutTask extends AsyncTask<Map<String, String>, Void, String> {
         @Override
         protected void onPreExecute() {
-           logOutDialog = (ProgressDialog) DialogUtils.buildProgressDialog("Veuillez patienter",searchActivity);
+            logOutDialog = (ProgressDialog) DialogUtils.buildProgressDialog("Veuillez patienter", searchActivity);
             logOutDialog.show();
         }
 
@@ -288,7 +280,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         protected String doInBackground(Map<String, String>... params) {
             String s = null;
             try {
-                s = QueryUtils.makeHttpPostRequest(QueryUtils.LOG_OUT_URL,params[0]);
+                s = QueryUtils.makeHttpPostRequest(QueryUtils.LOG_OUT_URL, params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -302,28 +294,25 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.remove("carOwner");
             editor.commit();
-            Intent i4 = new Intent(getApplicationContext(),Login_Activity.class);
+            Intent i4 = new Intent(getApplicationContext(), Login_Activity.class);
             startActivity(i4);
         }
     }
 
 
-
-    public void searchForRepairServices ()
-    {
-        LinkedHashMap<String,String> map= new LinkedHashMap<String,String>();
-        map.put("longitude",Double.toString(searchPosition.getLongitude()));
-        map.put("latitude",Double.toString(searchPosition.getLatitude()));
-        map.put("radius", onlineFiltre.getSearchRadius()*1000+"");
+    public void searchForRepairServices() {
+        LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+        map.put("longitude", Double.toString(searchPosition.getLongitude()));
+        map.put("latitude", Double.toString(searchPosition.getLatitude()));
+        map.put("radius", onlineFiltre.getSearchRadius() * 1000 + "");
         SearchTask searchTask = new SearchTask();
         searchTask.execute(map);
 
     }
 
-    public void enter (final View view)
-    {
+    public void enter(final View view) {
         view.setVisibility(View.VISIBLE);
-        final Animation fabEnter = AnimationUtils.loadAnimation(view.getContext(),R.anim.fabenter);
+        final Animation fabEnter = AnimationUtils.loadAnimation(view.getContext(), R.anim.fabenter);
         fabEnter.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -346,9 +335,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
-    public void exit (final View view)
-    {
-        final Animation fabExit = AnimationUtils.loadAnimation(view.getContext(),R.anim.fabexit);
+    public void exit(final View view) {
+        final Animation fabExit = AnimationUtils.loadAnimation(view.getContext(), R.anim.fabexit);
         fabExit.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -369,11 +357,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         view.startAnimation(fabExit);
     }
 
-    public void changeMargin (final View view, final int newMargin)
-    {
+    public void changeMargin(final View view, final int newMargin) {
         //view.setVisibility(View.VISIBLE);
-        final Animation fabExit = AnimationUtils.loadAnimation(view.getContext(),R.anim.fabexit);
-        final Animation fabEnter = AnimationUtils.loadAnimation(view.getContext(),R.anim.fabenter);
+        final Animation fabExit = AnimationUtils.loadAnimation(view.getContext(), R.anim.fabexit);
+        final Animation fabEnter = AnimationUtils.loadAnimation(view.getContext(), R.anim.fabenter);
         fabExit.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -383,7 +370,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onAnimationEnd(Animation animation) {
                 view.setVisibility(View.GONE);
-                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)view.getLayoutParams();
+                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
                 layoutParams.bottomMargin = newMargin;
                 view.setLayoutParams(layoutParams);
                 enter(view);
@@ -396,91 +383,84 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         });
         view.startAnimation(fabExit);
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        map=googleMap;
+        map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.getUiSettings().setMapToolbarEnabled(false);
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
                 infoBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
-                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)mapFab.getLayoutParams();
-                changeMargin(listFab,layoutParams.bottomMargin);
+                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mapFab.getLayoutParams();
+                changeMargin(listFab, layoutParams.bottomMargin);
             }
         });
         //markCenter(new Position(36.708630, 3.212020));
     }
 
-    public void markCenter (Position position,boolean showInfoWindow)
-    {
+    public void markCenter(Position position, boolean showInfoWindow) {
         mapMarked = true;
         Double centerLatitude = position.getLatitude();
         Double centerLongitude = position.getLongitude();
-        LatLng centerauto=new LatLng(centerLatitude,centerLongitude);
+        LatLng centerauto = new LatLng(centerLatitude, centerLongitude);
         Marker marker = map.addMarker(new MarkerOptions().position(centerauto).title("Votre position").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
         if (showInfoWindow)
-        marker.showInfoWindow();
+            marker.showInfoWindow();
         //map.moveCamera((CameraUpdateFactory.newLatLngZoom(centerauto,10)));
     }
 
-    public void moveMapCamera (Position position)
-    {
+    public void moveMapCamera(Position position) {
         Double centerLatitude = position.getLatitude();
         Double centerLongitude = position.getLongitude();
-        LatLng centerauto=new LatLng(centerLatitude,centerLongitude);
-        map.moveCamera((CameraUpdateFactory.newLatLngZoom(centerauto,10)));
+        LatLng centerauto = new LatLng(centerLatitude, centerLongitude);
+        map.moveCamera((CameraUpdateFactory.newLatLngZoom(centerauto, 10)));
     }
 
     @Override
     public void onBackPressed() {
-        if (mapBottomSheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED)
-        {
+        if (mapBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             infoBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
             mapBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             exit(listFab);
             enter(mapFab);
             //markCenter(new Position(36.708630, 3.212020));
-        }
-        else {
-        super.onBackPressed();
+        } else {
+            super.onBackPressed();
         }
     }
 
-    public void populateInfoBottomSheet (final RepairService repairService)
-    {
-        TextView distanceText = (TextView)findViewById(R.id.distanceTextInfo);
-        TextView nameText = (TextView)findViewById(R.id.nameTextInfo);
-        TextView durationTextInfo = (TextView)findViewById(R.id.durationTextInfo);
-        TextView price = (TextView)findViewById(R.id.priceTextInfo);
+    public void populateInfoBottomSheet(final RepairService repairService) {
+        TextView distanceText = (TextView) findViewById(R.id.distanceTextInfo);
+        TextView nameText = (TextView) findViewById(R.id.nameTextInfo);
+        TextView durationTextInfo = (TextView) findViewById(R.id.durationTextInfo);
+        TextView price = (TextView) findViewById(R.id.priceTextInfo);
         distanceText.setText(repairService.getDistanceString());
         nameText.setText(repairService.getFullName());
         durationTextInfo.setText(repairService.getDurationString());
-        RatingBar ratingBar = (RatingBar)findViewById(R.id.infoRatingBar);
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.infoRatingBar);
         ratingBar.setRating(repairService.getRating());
 
-        TextView availableTextView = (TextView)findViewById(R.id.availableTextInfo);
-        if (repairService.getPrice()==RepairService.NO_PRICE)
-        {
+        TextView availableTextView = (TextView) findViewById(R.id.availableTextInfo);
+        if (repairService.getPrice() == RepairService.NO_PRICE) {
             //price.setText("Tarifs non disponible");
             price.setText(repairService.NO_PRICE_STRING);
             //price.setVisibility(View.GONE);
             //bottomMargin = 400;
-        }
-        else
-        {
-            bottomMargin=416;
+        } else {
+            bottomMargin = 416;
             price.setVisibility(View.VISIBLE);
             price.setText(repairService.getPriceString());
         }
-        if (repairService.getStatus()==RepairService.AVAILABLE)
-        {
+        if (repairService.getStatus() == RepairService.AVAILABLE) {
             availableTextView.setText(repairService.getAvailableString());
             availableTextView.setTextColor(getResources().getColor(R.color.green));
-        }
-        else
-        {
-            availableTextView.setTextColor(Color.parseColor("#F44336"));
+        } else {
+            if (repairService.getStatus() == RepairService.INTERVENTION_UNDERWAY)
+                availableTextView.setTextColor(Color.parseColor("#FFFF8800"));
+            else
+                availableTextView.setTextColor(Color.parseColor("#F44336"));
             availableTextView.setText(repairService.getAvailableString());
         }
         infoBottomSheet.setOnClickListener(new View.OnClickListener() {
@@ -489,37 +469,33 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 Gson gson = new Gson();
                 String json = gson.toJson(repairService);
                 String json2 = gson.toJson(searchPosition);
-                Intent i = new Intent(getApplicationContext(),RepairServiceInfoActivity.class);
-                i.putExtra("repairService",json);
-                i.putExtra("searchPosition",json2);
+                Intent i = new Intent(getApplicationContext(), RepairServiceInfoActivity.class);
+                i.putExtra("repairService", json);
+                i.putExtra("searchPosition", json2);
                 startActivity(i);
             }
         });
     }
 
-    public void markRepairServices (ArrayList<RepairService> repairServices)
-    {
+    public void markRepairServices(ArrayList<RepairService> repairServices) {
         mapMarked = true;
-        for (int i=0;i<repairServices.size();i++)
-        {
+        for (int i = 0; i < repairServices.size(); i++) {
             RepairService repairService = repairServices.get(i);
-            LatLng latLng=new LatLng(repairService.getLatitude(),repairService.getLongitude());
-            Marker marker=map.addMarker(new MarkerOptions().position(latLng).title(repairService.getFullName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            LatLng latLng = new LatLng(repairService.getLatitude(), repairService.getLongitude());
+            Marker marker = map.addMarker(new MarkerOptions().position(latLng).title(repairService.getFullName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             marker.setTag(repairService);
         }
         setMapMarkersListeners();
 
     }
-    public void markRepairServices (RepairService selectedRepairService,ArrayList<RepairService> repairServices)
-    {
+
+    public void markRepairServices(RepairService selectedRepairService, ArrayList<RepairService> repairServices) {
         mapMarked = true;
-        for (int i=0;i<repairServices.size();i++)
-        {
+        for (int i = 0; i < repairServices.size(); i++) {
             RepairService repairService = repairServices.get(i);
-            LatLng latLng=new LatLng(repairService.getLatitude(),repairService.getLongitude());
-            Marker marker=map.addMarker(new MarkerOptions().position(latLng).title(repairService.getFullName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-            if (selectedRepairService.equals(repairService))
-            {
+            LatLng latLng = new LatLng(repairService.getLatitude(), repairService.getLongitude());
+            Marker marker = map.addMarker(new MarkerOptions().position(latLng).title(repairService.getFullName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            if (selectedRepairService.equals(repairService)) {
                 marker.showInfoWindow();
             }
             marker.setTag(repairService);
@@ -528,16 +504,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
-    public void setMapMarkersListeners()
-    {
+    public void setMapMarkersListeners() {
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (marker.getTag()!=null)
-                {
-                    populateInfoBottomSheet((RepairService)marker.getTag());
-                    if (infoBottomSheetBehaviour.getState() == BottomSheetBehavior.STATE_HIDDEN)
-                    {
+                if (marker.getTag() != null) {
+                    populateInfoBottomSheet((RepairService) marker.getTag());
+                    if (infoBottomSheetBehaviour.getState() == BottomSheetBehavior.STATE_HIDDEN) {
                         exit(listFab);
                         infoBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_EXPANDED);
                     }
@@ -548,9 +521,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
-    public void exitInfo (final View view)
-    {
-        final Animation fabExit = AnimationUtils.loadAnimation(view.getContext(),R.anim.fabexit);
+    public void exitInfo(final View view) {
+        final Animation fabExit = AnimationUtils.loadAnimation(view.getContext(), R.anim.fabexit);
         fabExit.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -573,25 +545,21 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
-
-
-    private class SearchTask extends AsyncTask<Map<String,String>,Void,String>
-    {
+    private class SearchTask extends AsyncTask<Map<String, String>, Void, String> {
         @Override
         protected void onPreExecute() {
-            if (mapMarked)
-            {
+            if (mapMarked) {
                 map.clear();
                 mapMarked = false;
-                markCenter(searchPosition,false);
+                markCenter(searchPosition, false);
                 infoBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
-                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)mapFab.getLayoutParams();
-                CoordinatorLayout.LayoutParams layoutParams1 = (CoordinatorLayout.LayoutParams)listFab.getLayoutParams();
-                if (layoutParams1.bottomMargin!=layoutParams.bottomMargin)
-                changeMargin(listFab,layoutParams.bottomMargin);
+                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mapFab.getLayoutParams();
+                CoordinatorLayout.LayoutParams layoutParams1 = (CoordinatorLayout.LayoutParams) listFab.getLayoutParams();
+                if (layoutParams1.bottomMargin != layoutParams.bottomMargin)
+                    changeMargin(listFab, layoutParams.bottomMargin);
             }
             mapRefrechButton.setVisibility(View.GONE);
-            recyclerView = (RecyclerView)findViewById(R.id.repair_services_list);
+            recyclerView = (RecyclerView) findViewById(R.id.repair_services_list);
             recyclerView.setVisibility(View.INVISIBLE);
             swipeRefreshLayout.setRefreshing(true);
 
@@ -601,24 +569,23 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         protected String doInBackground(Map<String, String>... params) {
 
 
-
-            String answer=null;
+            String answer = null;
             try {
-                answer = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_GET_REPAIR_SERVICES_URL,params[0]);
+                answer = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_GET_REPAIR_SERVICES_URL, params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
                 return QueryUtils.CONNECTION_PROBLEM;
-               }
+            }
             return answer;
         }
 
         @Override
         protected void onPostExecute(String s) {
             mapRefrechButton.setVisibility(View.VISIBLE);
-            recyclerView = (RecyclerView)findViewById(R.id.repair_services_list);
+            recyclerView = (RecyclerView) findViewById(R.id.repair_services_list);
             repairServices = RepairService.parseListJson(s);
             RepairService.applyFiltre(repairServices, onlineFiltre);
-           // RepairService.deleteNotAvailable(repairServices);
+            // RepairService.deleteNotAvailable(repairServices);
 
             RepairServiceAdapter adapter = new RepairServiceAdapter(repairServices, R.layout.repair_service_list_item);
             adapter.setOnItemClickListner(new OnItemClickListner() {
@@ -626,9 +593,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 public void onItemClick(View v, int position) {
                     RepairService repairService = repairServices.get(position);
                     populateInfoBottomSheet(repairService);
-                    markRepairServices(repairService,repairServices);
-                    LatLng latLng = new LatLng(repairService.getLatitude(),repairService.getLongitude());
-                    map.moveCamera((CameraUpdateFactory.newLatLngZoom(latLng,10)));
+                    markRepairServices(repairService, repairServices);
+                    LatLng latLng = new LatLng(repairService.getLatitude(), repairService.getLongitude());
+                    map.moveCamera((CameraUpdateFactory.newLatLngZoom(latLng, 10)));
                     exitInfo(mapFab);
 
                 }
@@ -641,16 +608,14 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             swipeRefreshLayout.setRefreshing(false);
             markRepairServices(repairServices);
             //moveMapCamera(searchPosition);
-            if (repairServices.size()==0)
-            {
+            if (repairServices.size() == 0) {
                 noRepairServiceFoundTextView.setVisibility(View.VISIBLE);
-            }
-            else
-            {
+            } else {
                 noRepairServiceFoundTextView.setVisibility(View.GONE);
             }
         }
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
