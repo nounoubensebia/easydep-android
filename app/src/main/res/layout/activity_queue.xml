@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.nouno.easydep.Activities.QueueActivity">
     <LinearLayout
+        android:id="@+id/root"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:orientation="vertical"
@@ -34,6 +35,7 @@
             android:text="Votre position en file d'attente"
             android:layout_height="wrap_content" />
         <FrameLayout
+            android:id="@+id/frame_layout"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="150dp">

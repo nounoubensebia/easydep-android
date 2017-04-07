@@ -1,6 +1,7 @@
 package com.example.nouno.easydep.Activities;
 
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,6 +50,8 @@ public class EstimateActivity extends AppCompatActivity {
         map.put("estimate_id",id+"");
         GetEstimateTask getEstimateTask = new GetEstimateTask();
         getEstimateTask.execute(map);
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel((int)id);
     }
 
     private void retreiveData ()
@@ -98,7 +101,7 @@ public class EstimateActivity extends AppCompatActivity {
         if (acceptedDemande==true)
         {
             buttons.setVisibility(View.GONE);
-            if (requestEstimate.getStatus()!=AssistanceRequestListItem.STATUS_IN_QUEUE)
+            if (requestEstimate.getStatus()!=AssistanceRequestListItem.STATUS_IN_QUEUE&&requestEstimate.getStatus()!=AssistanceRequestListItem.STATUS_REPAIR_SERVICE_COMMING)
             refuseOtherEstimates.setVisibility(View.VISIBLE);
             else
                 estimateAcceptedLayout.setVisibility(View.VISIBLE);

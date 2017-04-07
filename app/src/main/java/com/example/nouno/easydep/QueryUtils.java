@@ -47,9 +47,7 @@ public class QueryUtils {
     public static final String REFUSE_ESTIMATE = "refuse_estimate";
     public static final String CANCEL_REQUEST = "cancel_request";
     public static final String DELETE_REQUEST = "delete_request";
-    // méthode qui envoi une requete et enregistre le résultat dans un String
-    // param 1 est le string de l'url de la requete
-    // param 2 est la liste des parametres du post
+    public static final String GET_REPAIR_SERVICE_ETA = "get_repair_service_eta";
 
 
 

@@ -12,23 +12,21 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.example.nouno.easydep.CancelRequest;
 import com.example.nouno.easydep.Data.AssistanceRequest;
 import com.example.nouno.easydep.Data.AssistanceRequestListItem;
 import com.example.nouno.easydep.Data.CarOwner;
 import com.example.nouno.easydep.Data.RepairService;
-import com.example.nouno.easydep.Data.RequestEstimate;
 import com.example.nouno.easydep.DialogUtils;
 import com.example.nouno.easydep.GetRepairServiceData;
 import com.example.nouno.easydep.ListAdapters.AssistanceRequestAdapter;
 import com.example.nouno.easydep.OnButtonClickListener;
 import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
-import com.example.nouno.easydep.Utils;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
 import com.yayandroid.theactivitymanager.TAMBaseActivity;
@@ -81,7 +79,7 @@ public class RequestsListActivity extends TAMBaseActivity {
 
     }
 
-    private void loadRequestsList ()
+    public void loadRequestsList ()
     {
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("carOwnerId",loadUserData().getId()+"");
@@ -127,14 +125,8 @@ public class RequestsListActivity extends TAMBaseActivity {
         assistanceRequestAdapter.setOnCancelClickListner(new OnButtonClickListener<AssistanceRequest>() {
             @Override
             public void onButtonClick(final AssistanceRequest assistanceRequest) {
-                Dialog dialog = DialogUtils.buildConfirmationDialog("Confirmation", "Voulez vous vraiment annuler cette demande ceci" +
-                        "va entrainer la suppression de la demande", requestsListActivity, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        cancelRequest(assistanceRequest);
-                    }
-                });
-                dialog.show();
+               CancelRequest cancelRequest = new CancelRequest(requestsListActivity,requestsListActivity);
+                cancelRequest.cancelRequest(assistanceRequest.getId());
             }
         });
         assistanceRequestAdapter.setOnDeleteClickListner(new OnButtonClickListener<AssistanceRequest>() {
@@ -151,10 +143,12 @@ public class RequestsListActivity extends TAMBaseActivity {
                 if (assistanceRequestListItem.getStatus() == assistanceRequestListItem.STATUS_REPAIR_SERVICE_COMMING)
                 {
                     i.putExtra("position",0);
+                    i.putExtra("assistanceRequestId",assistanceRequestListItem.getId());
                 }
                 else
                 {
                     i.putExtra("position",assistanceRequestListItem.getNumberOfPeopleBefore());
+                    i.putExtra("assistanceRequestId",assistanceRequestListItem.getId());
                 }
                 startActivity(i);
             }
@@ -172,14 +166,7 @@ public class RequestsListActivity extends TAMBaseActivity {
         cancelRequestTask.execute(map);
     }
 
-    private void cancelRequest (AssistanceRequest assistanceRequest)
-    {
-        LinkedHashMap<String,String> map = new LinkedHashMap<>();
-        map.put("assistance_request_id",assistanceRequest.getId()+"");
-        map.put("action",QueryUtils.CANCEL_REQUEST);
-        CancelRequestTask cancelRequestTask = new CancelRequestTask();
-        cancelRequestTask.execute(map);
-    }
+
 
 
 
@@ -230,33 +217,7 @@ public class RequestsListActivity extends TAMBaseActivity {
         }
     }
 
-    private class CancelRequestTask extends AsyncTask<Map<String,String>,Void,String>
-    {
-        @Override
-        protected void onPreExecute() {
-            progressDialog = (ProgressDialog) DialogUtils.buildProgressDialog("Veuillez patienter",requestsListActivity);
-            progressDialog.show();
-        }
 
-        @Override
-        protected String doInBackground(Map<String, String>... params) {
-            String response = null;
-            try {
-                response =QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
-            } catch (ConnectionProblemException e) {
-                e.printStackTrace();
-            }
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            progressDialog.dismiss();
-            Dialog infoDialog = DialogUtils.buildInfoDialog("Opération terminée","Demande annulée",requestsListActivity);
-            infoDialog.show();
-            loadRequestsList();
-        }
-    }
 
     private class DeleteRequestTask extends AsyncTask<Map<String,String>,Void,String>
     {

@@ -150,7 +150,16 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                             onQueueClickListner.onButtonClick(assistanceRequest);
                         }
                     });
+
                 }
+                if (onEstimateClickListner!=null) {
+                    quotationText.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            onEstimateClickListner.onButtonClick(assistanceRequest);
+                        }
+                    });}
                 checkCircle(quotationCircle,quotationCircleText);
                 confirmationText.setText("Votre dépanneur arrive");
                 confirmationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));

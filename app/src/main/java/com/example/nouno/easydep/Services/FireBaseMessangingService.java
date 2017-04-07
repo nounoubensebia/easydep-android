@@ -70,7 +70,7 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
         number++;
         if (number>5)
             number=0;
-        manager.notify(number,builder.build());
+        manager.notify((int)estimate_id,builder.build());
         Intent intent = new Intent("new_estimate");
         broadcaster.sendBroadcast(intent);
     }
