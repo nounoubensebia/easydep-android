@@ -129,6 +129,7 @@ public class QueueActivity extends TAMBaseActivity {
                 position1.setVisibility(View.INVISIBLE);
                 positoin0.setVisibility(View.VISIBLE);
                 root.setVisibility(View.INVISIBLE);
+
                 break;
         }
     }
@@ -155,6 +156,7 @@ public class QueueActivity extends TAMBaseActivity {
                 break;
             case 0 : fadeOut(positionText);updatePositionAnimation(position1,positoin0);
                 replaceText("Votre dépanneur arrive",waitText);
+                break;
         }
     }
 

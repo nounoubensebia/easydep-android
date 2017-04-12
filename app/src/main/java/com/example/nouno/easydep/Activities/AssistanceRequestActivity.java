@@ -75,13 +75,6 @@ public class AssistanceRequestActivity extends AppCompatActivity {
         {
             dimensionsText.setText("Non spécifié");
         }
-
-
-
-
-
-
-
         if (!requestSent)
         {
             vehiculeCanMove.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

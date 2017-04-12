@@ -70,7 +70,7 @@ public class EstimateActivity extends AppCompatActivity {
         View buttons = findViewById(R.id.buttons);
         TextView nameText = (TextView)findViewById(R.id.nameText);
         TextView priceText = (TextView)findViewById(R.id.price_text);
-        TextView durationText = (TextView)findViewById(R.id.durationText);
+
         TextView extraInfoText = (TextView)findViewById(R.id.extra_info_text);
         nameText.setText(requestEstimate.getRepairService().getFullName());
         if (requestEstimate.getEstimatedPrice()==RequestEstimate.NO_PRICE)
@@ -81,15 +81,7 @@ public class EstimateActivity extends AppCompatActivity {
         {
             priceText.setText(requestEstimate.getPriceString());
         }
-        if (requestEstimate.getEstimatedTime()==RequestEstimate.NO_TIME)
-        {
-            durationText.setText("Non spécifié");
-        }
-        else
-        {
 
-            durationText.setText(requestEstimate.getTimeString());
-        }
         extraInfoText.setText(requestEstimate.getExtraInfoString());
         View repairServiceLayout = findViewById(R.id.repair_service_layout);
         repairServiceLayout.setOnClickListener(new View.OnClickListener() {

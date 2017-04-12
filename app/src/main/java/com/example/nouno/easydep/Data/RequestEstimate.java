@@ -10,16 +10,16 @@ import org.json.JSONObject;
 public class RequestEstimate {
     private RepairService repairService;
     private long estimatedPrice;
-    private long estimatedTime;
+
     private String extraInfoString;
     private int status;
     public static final int NO_PRICE = -1;
     public static final int NO_TIME = -1;
 
-    public RequestEstimate(RepairService repairService, long estimatedPrice, long estimatedTime, String extraInfoString,int status) {
+    public RequestEstimate(RepairService repairService, long estimatedPrice, String extraInfoString,int status) {
         this.repairService = repairService;
         this.estimatedPrice = estimatedPrice;
-        this.estimatedTime = estimatedTime;
+
         this.extraInfoString = extraInfoString;
         this.status = status;
     }
@@ -36,9 +36,7 @@ public class RequestEstimate {
         return estimatedPrice;
     }
 
-    public long getEstimatedTime() {
-        return estimatedTime;
-    }
+
 
     public String getExtraInfoString() {
         return extraInfoString;
@@ -49,10 +47,7 @@ public class RequestEstimate {
         return estimatedPrice+" Da";
     }
 
-    public String getTimeString ()
-    {
-        return (estimatedTime/60)+" Minutes";
-    }
+
 
     public boolean parseJson (String json)
     {
@@ -64,7 +59,7 @@ public class RequestEstimate {
                 extra = jsonObject.getString("comment");
             }
             long price = jsonObject.getLong("price");
-            long duration = jsonObject.getLong("duration");
+
             int status = jsonObject.getInt("status");
             JSONObject repairServiceJson = jsonObject.getJSONObject("repair_service");
             long id = repairServiceJson.getLong("id");
@@ -74,7 +69,7 @@ public class RequestEstimate {
             //this = new RequestEstimate(repairService,price,duration,extra,status);
             this.repairService=repairService;
             this.estimatedPrice=price;
-            this.estimatedTime=duration;
+
             this.extraInfoString=extra;
             this.status=status;
             return jsonObject.getBoolean("accepted_demande");

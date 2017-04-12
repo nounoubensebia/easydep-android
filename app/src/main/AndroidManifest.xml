@@ -45,7 +45,7 @@
             android:label="Inscription"
             android:parentActivityName=".Activities.Signup1_Activity"
             android:theme="@style/SignupTheme"
-            android:windowSoftInputMode="adjustResize" />
+             />
         <activity
             android:name=".Activities.Signup3_Activity"
             android:label="Inscription"
