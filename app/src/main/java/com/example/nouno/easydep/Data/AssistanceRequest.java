@@ -29,12 +29,7 @@ public class AssistanceRequest {
         this.carOwner = carOwner;
         this.repairService = repairService;
         this.id=id;
-        if (length==NOT_HEAVY)
-        {
-            heavy=false;
-        }
-        else heavy = true;
-
+        heavy=false;
     }
 
     public AssistanceRequest(long id,boolean vehiculeCanMove, Position userPositon, Position destination, CarOwner carOwner, RepairService repairService, float length, float weight) {

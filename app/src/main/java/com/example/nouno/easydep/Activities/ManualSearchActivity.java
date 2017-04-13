@@ -273,7 +273,9 @@ public class ManualSearchActivity extends AppCompatActivity implements GoogleApi
         Intent i = new Intent(getApplicationContext(),SearchActivity.class);
         i.putExtra("position",positionJson);
         startActivity(i);
+
         }
+        finish();
     }
 
 

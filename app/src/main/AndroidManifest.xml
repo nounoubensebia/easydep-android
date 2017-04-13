@@ -38,23 +38,27 @@
         <activity
             android:name=".Activities.Signup1_Activity"
             android:label="Inscription"
+            android:noHistory="true"
             android:parentActivityName=".Activities.Login_Activity"
             android:theme="@style/SignupTheme" />
         <activity
             android:name=".Activities.Signup2_Activity"
             android:label="Inscription"
+            android:noHistory="true"
             android:parentActivityName=".Activities.Signup1_Activity"
             android:theme="@style/SignupTheme"
              />
         <activity
             android:name=".Activities.Signup3_Activity"
             android:label="Inscription"
+            android:noHistory="true"
             android:parentActivityName=".Activities.Signup2_Activity"
             android:theme="@style/SignupTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Activities.Signup4_Activity"
             android:label="Inscription"
+            android:noHistory="true"
             android:parentActivityName=".Activities.Signup1_Activity"
             android:theme="@style/SignupTheme"
             android:windowSoftInputMode="adjustResize" />
@@ -83,10 +87,12 @@
         <activity
             android:name=".Activities.FiltresActivity"
             android:label="Trier et filtrer"
+            android:noHistory="true"
             android:theme="@style/SignupTheme" />
         <activity
             android:name=".Activities.ManualSearchActivity"
             android:label="Recherche"
+            android:noHistory="true"
             android:theme="@style/SignupTheme">
             <meta-data
                 android:name="android.app.searchable"
@@ -104,6 +110,7 @@
         <activity
             android:name=".Activities.AddCommentActivity"
             android:label="Donnez votre avis "
+            android:noHistory="true"
             android:parentActivityName=".Activities.RepairServiceInfoActivity"
             android:theme="@style/CommentTheme"
             android:windowSoftInputMode="adjustResize" />
@@ -114,6 +121,7 @@
         <activity
             android:name=".Activities.OfflineFiltreActivity"
             android:label="Trier et filtrer"
+            android:noHistory="true"
             android:parentActivityName=".Activities.OfflineSearchActivity"
             android:theme="@style/SignupTheme" />
 
@@ -130,13 +138,16 @@
 
         <activity
             android:name=".Activities.Signup5_Activity"
+            android:noHistory="true"
             android:theme="@style/SignupTheme" />
         <activity
             android:name=".Activities.AssistanceRequestActivity"
+            android:noHistory="true"
             android:label="Demande de devis"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activities.RequestDimensionsActivity"
+            android:noHistory="true"
             android:label="Dimensions du véhicules"
             android:theme="@style/AppTheme" />
         <activity android:name=".Activities.BreakDownDescriptionActivity" />
@@ -147,6 +158,7 @@
         <activity
             android:name=".Activities.EstimateActivity"
             android:label="Devis"
+            android:noHistory="true"
             android:theme="@style/AppTheme" />
         <activity android:name=".Activities.QueueActivity"
             android:label="Ma demande"

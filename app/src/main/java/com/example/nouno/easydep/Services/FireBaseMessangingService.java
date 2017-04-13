@@ -36,7 +36,8 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
     public static int queueId= 100;
     public static final String TITLE_NEW_POSITION_IN_QUEUE = "position_in_queue_changed";
     public static final String TITLE_NEW_ESTIMATE = "new_estimate";
-
+    public static final String TITLE_INTERVENTION_CANCELED = "intervention_canceled";
+    public static final String TITLE_ESTIMATE_REFUSED = "estimate_refused";
     @Override
     public void onCreate() {
        broadcaster = LocalBroadcastManager.getInstance(this);
@@ -106,6 +107,65 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
         }
 
     }
+
+    private void showEstimateRefusedNotification (String message)
+    {
+        Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Intent i = new Intent(this,RequestsListActivity.class);
+        //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        long estimate_id = getEstimateId(message);
+        //i.putExtra("estimateId",estimate_id);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
+        String repairServiceName = getRepairServiceName(message);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setAutoCancel(true)
+                .setContentTitle("Demande refusée")
+                .setContentText(repairServiceName+" a refuser votre demande")
+                .setSound(defaultRingtoneUri)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setContentIntent(pendingIntent);
+
+
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        number++;
+        if (number>5)
+            number=0;
+        manager.notify((int)estimate_id,builder.build());
+        Intent intent = new Intent("new_estimate");
+        broadcaster.sendBroadcast(intent);
+    }
+
+    private void showCanceledNotification ()
+    {
+        Activity activity =TheActivityManager.getInstance().getCurrentActivity();
+        if (activity!=null&&activity instanceof QueueActivity)
+        {
+            Intent intent = new Intent("intervention_canceled");
+            broadcaster.sendBroadcast(intent);
+        }
+        else
+        {
+            Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Intent i = new Intent(this,RequestsListActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                    .setAutoCancel(true)
+                    .setContentTitle("EasyDep")
+                    .setContentText("Intervention annulée par le dépanneur")
+                    .setSound(defaultRingtoneUri)
+                    .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                    .setContentIntent(pendingIntent);
+
+
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            manager.notify(queueId,builder.build());
+        }
+
+    }
     private int getPosition (String json)
     {
         JSONObject jsonObject = null;
@@ -153,6 +213,14 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
             {
                 if (title.equals(TITLE_NEW_POSITION_IN_QUEUE))
                 showQueueNotification(msg);
+            }
+            if (title.equals(TITLE_INTERVENTION_CANCELED))
+            {
+                showCanceledNotification();
+            }
+            if (title.equals(TITLE_ESTIMATE_REFUSED))
+            {
+                showEstimateRefusedNotification(msg);
             }
         } catch (JSONException e) {
             e.printStackTrace();

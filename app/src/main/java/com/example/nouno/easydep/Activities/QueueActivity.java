@@ -30,23 +30,31 @@ public class QueueActivity extends TAMBaseActivity {
     private View position2;
     private View position1;
     private View positoin0;
+    private View requestCanceled;
+    private View currentPosition;
     private Long assistanceRequestId;
     private View root;
     private Button button;
     private TextView positionText;
     private TextView waitText;
     private QueueActivity queueActivity;
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver newPositionBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updatePosition();
         }
     };
-
+    private BroadcastReceiver requestCanceledReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            cancelRequest();
+        }
+    };
     @Override
     protected void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,new IntentFilter("new_position"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(newPositionBroadcastReceiver,new IntentFilter("new_position"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(requestCanceledReceiver,new IntentFilter("intervention_canceled"));
     }
 
     @Override
@@ -61,6 +69,7 @@ public class QueueActivity extends TAMBaseActivity {
         position2 = findViewById(R.id.position_2);
         position1 = findViewById(R.id.position_1);
         positoin0 = findViewById(R.id.position_0);
+        requestCanceled = findViewById(R.id.request_canceled);
         button = (Button)findViewById(R.id.advance);
         positionText = (TextView) findViewById(R.id.position_text);
         waitText = (TextView)findViewById(R.id.wait_text);
@@ -68,14 +77,17 @@ public class QueueActivity extends TAMBaseActivity {
             @Override
             public void onClick(View v) {
 
-                //CancelRequest cancelRequest = new CancelRequest(queueActivity)
+
                 CancelRequest cancelRequest = new CancelRequest(queueActivity);
                 cancelRequest.cancelRequest(assistanceRequestId);
+                //updatePosition();
             }
         });
         getIntentData();
+
         if (position == 0)
         {
+
             loadRepairServiceDistanceData();
         }
 
@@ -100,6 +112,7 @@ public class QueueActivity extends TAMBaseActivity {
                 position2.setVisibility(View.INVISIBLE);
                 position1.setVisibility(View.INVISIBLE);
                 positoin0.setVisibility(View.INVISIBLE);
+                currentPosition = position4;
                 root.setVisibility(View.VISIBLE);
                 break;
             case 3 : position4.setVisibility(View.INVISIBLE);
@@ -107,6 +120,7 @@ public class QueueActivity extends TAMBaseActivity {
                 position2.setVisibility(View.INVISIBLE);
                 position1.setVisibility(View.INVISIBLE);
                 positoin0.setVisibility(View.INVISIBLE);
+                currentPosition = position3;
                 root.setVisibility(View.VISIBLE);
                 break;
             case 2 : position4.setVisibility(View.INVISIBLE);
@@ -114,6 +128,7 @@ public class QueueActivity extends TAMBaseActivity {
                 position2.setVisibility(View.VISIBLE);
                 position1.setVisibility(View.INVISIBLE);
                 positoin0.setVisibility(View.INVISIBLE);
+                currentPosition = position2;
                 root.setVisibility(View.VISIBLE);
                 break;
             case 1 : position4.setVisibility(View.INVISIBLE);
@@ -121,6 +136,7 @@ public class QueueActivity extends TAMBaseActivity {
                 position2.setVisibility(View.INVISIBLE);
                 position1.setVisibility(View.VISIBLE);
                 positoin0.setVisibility(View.INVISIBLE);
+                currentPosition = position1;
                 root.setVisibility(View.VISIBLE);
                 break;
             case 0 :position4.setVisibility(View.INVISIBLE);
@@ -128,8 +144,8 @@ public class QueueActivity extends TAMBaseActivity {
                 position2.setVisibility(View.INVISIBLE);
                 position1.setVisibility(View.INVISIBLE);
                 positoin0.setVisibility(View.VISIBLE);
+                currentPosition = positoin0;
                 root.setVisibility(View.INVISIBLE);
-
                 break;
         }
     }
@@ -149,15 +165,29 @@ public class QueueActivity extends TAMBaseActivity {
         position--;
         switch (position){
             case 3:updatePositionAnimation(position4,position3);
+                currentPosition = position3;
                 break;
             case 2:updatePositionAnimation(position3,position2);
+                currentPosition = position2;
                 break;
             case 1:updatePositionAnimation(position2,position1);
+                currentPosition = position1;
                 break;
-            case 0 : fadeOut(positionText);updatePositionAnimation(position1,positoin0);
-                replaceText("Votre dépanneur arrive",waitText);
+            case 0 : //fadeOut(positionText);//updatePositionAnimation(position1,positoin0);
+                //replaceText("Votre dépanneur arrive",waitText);
+                loadRepairServiceDistanceData();
                 break;
+
         }
+    }
+
+    private void cancelRequest ()
+    {
+        updatePositionAnimation(currentPosition,requestCanceled);
+        replaceText("Intervention annulée par le dépanneur",positionText);
+        fadeOut(waitText);
+        fadeOut(button);
+        //replaceText("Supprimer demande",button);
     }
 
 
@@ -295,7 +325,7 @@ public class QueueActivity extends TAMBaseActivity {
 
         @Override
         protected void onPreExecute() {
-
+            fadeOut(root);
         }
 
         @Override
@@ -314,7 +344,11 @@ public class QueueActivity extends TAMBaseActivity {
 
             String waitTime = "Temps d'arrivée estimé : "+s;
             positionText.setText(waitTime);
-            waitText.setText("Votre dépanneur devra bientot arriver");
+            positionText.setVisibility(View.VISIBLE);
+            setInitialPosition();
+            waitText.setVisibility(View.VISIBLE);
+            waitText.setText("Votre dépanneur devrait bientôt arriver");
+            //updatePositionAnimation(position1,positoin0);
             fadeIn(root);
         }
     }

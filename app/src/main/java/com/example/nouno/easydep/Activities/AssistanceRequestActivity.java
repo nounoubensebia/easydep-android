@@ -56,7 +56,7 @@ public class AssistanceRequestActivity extends AppCompatActivity {
         TextView destinationText = (TextView)findViewById(R.id.destinationText);
         if (assistanceRequest.getDestination()!=null)
         {
-            Log.i("TAG123",assistanceRequest.getDestination().getLocationName());
+            //Log.i("TAG123",assistanceRequest.getDestination().getLocationName());
             destinationText.setText(assistanceRequest.getDestination().getLocationName());
         }
         Switch heavyWeightSwitch = (Switch)findViewById(R.id.heavy_vehicule_switcher);
@@ -73,6 +73,7 @@ public class AssistanceRequestActivity extends AppCompatActivity {
         }
         else
         {
+            heavyWeightSwitch.setChecked(false);
             dimensionsText.setText("Non spécifié");
         }
         if (!requestSent)
@@ -203,6 +204,7 @@ public class AssistanceRequestActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     Intent i = new Intent(getApplicationContext(),RequestsListActivity.class);
                     startActivity(i);
+                    finish();
                 }
             });
             infoDialog.show();

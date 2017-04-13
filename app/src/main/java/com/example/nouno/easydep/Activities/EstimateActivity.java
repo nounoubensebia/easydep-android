@@ -215,6 +215,7 @@ public class EstimateActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 startRequestsListActivity();
+                                finish();
                             }
                         });
                 infoDialog.show();
@@ -246,6 +247,7 @@ public class EstimateActivity extends AppCompatActivity {
             {
                 progressDialog.dismiss();
                 startRequestsListActivity();
+                finish();
             }
         }
     }
@@ -256,6 +258,7 @@ public class EstimateActivity extends AppCompatActivity {
 
         Intent i = new Intent(this,RequestsListActivity.class);
         startActivity(i);
+        finish();
     }
     private void showProgressDialog()
     {

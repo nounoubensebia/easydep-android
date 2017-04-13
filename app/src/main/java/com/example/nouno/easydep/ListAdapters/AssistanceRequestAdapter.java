@@ -164,6 +164,21 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                 confirmationText.setText("Votre dépanneur arrive");
                 confirmationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
                 checkCircle(confirmationCircle,confirmationCircleText);
+                break;
+                case AssistanceRequestListItem.STATUS_INTERVENTION_CANCELED:quotationText.setText("Devis accepté");
+                    quotationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
+                    confirmationText.setText("Intervention annulée");
+                    cancelText.setText("Supprimer demande");
+                    cancelText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onDeleteClickListner.onButtonClick(assistanceRequest);
+                        }
+                    });
+                    confirmationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
+                    checkCircle(quotationCircle,quotationCircleText);
+                    makeRedCircle(confirmationCircle,confirmationCircleText);
+                    break;
 
         }
         return item;

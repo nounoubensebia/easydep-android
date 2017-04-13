@@ -23,7 +23,8 @@ public class AssistanceRequestListItem extends AssistanceRequest {
     public static final int STATUS_IN_QUEUE = 2;
     public static final int STATUS_REPAIR_SERVICE_COMMING = 3;
     public static final int STATUS_REQUEST_REFUSED = -3;
-
+    public static final int STATUS_ESTIMATE_REFUSED = -2;
+    public static final int STATUS_INTERVENTION_CANCELED = -4;
 
 
 
@@ -143,6 +144,8 @@ public class AssistanceRequestListItem extends AssistanceRequest {
     }
     public static String getPositionString (int position)
     {
+        if (position==0)
+        return "Restez sur place votre dépanneur va bientôt arriver";
         if (position==1)
         return "Vous êtes premier en file d'attente";
         else
