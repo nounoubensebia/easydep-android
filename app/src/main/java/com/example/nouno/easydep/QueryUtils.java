@@ -26,23 +26,23 @@ import java.util.regex.Pattern;
  */
 
 public class QueryUtils {
-    public static final String LOCAL_TEST_URL ="http://192.168.1.7/EasyDep/test.php";
-    public static final String LOCAL_LOGIN_URL = "http://192.168.43.215/EasyDep/login.php";
-    public static final String LOCAL_SIGNUP_URL = "http://192.168.43.215/EasyDep/signup.php";
+    public static final String LOCAL_TEST_URL ="http://192.168.1.14/EasyDep/test.php";
+    public static final String LOCAL_LOGIN_URL = "http://192.168.1.14/EasyDep/login.php";
+    public static final String LOCAL_SIGNUP_URL = "http://192.168.1.14/EasyDep/signup.php";
     public static final String PUBLIC_SIGNUP_URL = "https://easydep.000webhostapp.com/signup.php";
     public static final String PUBLIC_LOGIN_URL = "https://easydep.000webhostapp.com/login.php";
     public static final String PUBLIC_TEST_URL ="http://easydep.000webhostapp.com/test.php";
     public static final String LOCAL_PASSWORD_FORGOTTEN_URL ="http://192.168.1.10/easydep-serveur/forgotten_password.php";
-    public static final String LOCAL_GET_REPAIR_SERVICES_URL = "http://192.168.43.215/EasyDep/GetRepairServices.php";
+    public static final String LOCAL_GET_REPAIR_SERVICES_URL = "http://192.168.1.14/EasyDep/GetRepairServices.php";
     public static final String PUBLIC_GET_REPAIR_SERVICES_URL = "http://easydep.000webhostapp.com/GetRepairServices.php";
     public static final String GET_PLACE_PREDICTIONS_URL ="https://maps.googleapis.com/maps/api/place/autocomplete/json?";
     public static final String GET_PLACE_POSITION_URL = "https://maps.googleapis.com/maps/api/place/details/json?";
     public static final String CONNECTION_PROBLEM = "connection problem";
     public static final String GET_USER_LOCATION_NAME_URL = "https://maps.googleapis.com/maps/api/geocode/json?&result_type=political&key=AIzaSyAqQHxLWPTvFHDvz5WUwuNAjTa0UuSHbmk&language=fr-FR&";
-    public static final String GET_USER_COMMENTS_LOCAL_URL = "http://192.168.43.215/EasyDep/comment.php";
-    public static final String LOG_OUT_URL = "http://192.168.43.215/EasyDep/logout.php";
-    public static final String SEND_REQUEST_URL = "http://192.168.43.215/EasyDep/send_request.php";
-    public static final String GET_REQUESTS_URL = "http://192.168.43.215/EasyDep/get_requests.php";
+    public static final String GET_USER_COMMENTS_LOCAL_URL = "http://192.168.1.14/EasyDep/comment.php";
+    public static final String LOG_OUT_URL = "http://192.168.1.14/EasyDep/logout.php";
+    public static final String SEND_REQUEST_URL = "http://192.168.1.14/EasyDep/send_request.php";
+    public static final String GET_REQUESTS_URL = "http://192.168.1.14/EasyDep/get_requests.php";
     public static final String ACCEPT_ESTIMATE = "accept_estimate";
     public static final String REFUSE_ESTIMATE = "refuse_estimate";
     public static final String CANCEL_REQUEST = "cancel_request";

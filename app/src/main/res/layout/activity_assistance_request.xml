@@ -164,21 +164,22 @@
             android:background="#F1F1F1"
             android:layout_height="1dp"/>
         </LinearLayout>
-
-
-
-
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <Button
         android:id="@+id/go_button"
-        android:layout_width="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:layout_margin="16dp"
-        app:backgroundTint="@color/colorBlue"
-        app:fabSize="normal"
-        app:rippleColor="@android:color/white"
-        app:srcCompat="@drawable/ic_send_64_0p" />
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:textAllCaps="false"
+        android:fontFamily="sans-serif"
+        android:text="Envoyer demande"
+        android:textSize="24sp"
+        android:textColor="#FFF"
+        android:background="@color/backgroundColor"/>
 
 </android.support.design.widget.CoordinatorLayout>
