@@ -56,7 +56,7 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        String repairServiceName = getRepairServiceName(message);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setAutoCancel(true)
                 .setContentTitle(title)

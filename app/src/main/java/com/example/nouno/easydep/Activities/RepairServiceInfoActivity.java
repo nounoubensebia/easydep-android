@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
@@ -284,6 +286,31 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
             //toolbarTimeText.setVisibility(View.GONE);
             toolbarTimeText.setText(repairService.getPhoneNumber());
         }
+
+        TextView phoneText = (TextView)findViewById(R.id.phone_number_text);
+        phoneText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:"+repairService.getPhoneNumber()));
+                startActivity(intent);
+            }
+        });
+
+        TextView addContactText = (TextView) findViewById(R.id.add_contact_text);
+        addContactText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_INSERT);
+                intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+
+                intent.putExtra(ContactsContract.Intents.Insert.NAME, repairService.getFullName());
+                intent.putExtra(ContactsContract.Intents.Insert.PHONE, repairService.getPhoneNumber());
+
+
+                startActivity(intent);
+            }
+        });
 
 
         getComments();
