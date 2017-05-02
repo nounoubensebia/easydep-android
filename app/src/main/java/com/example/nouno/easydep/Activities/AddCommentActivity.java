@@ -1,7 +1,9 @@
 package com.example.nouno.easydep.Activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,9 +15,11 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.nouno.easydep.DialogUtils;
 import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
 import com.example.nouno.easydep.Data.UserComment;
+import com.example.nouno.easydep.SnackBarUtils;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
 
@@ -44,7 +48,10 @@ public class AddCommentActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         Gson gson = new Gson();
         userComment = gson.fromJson(extras.getString("userComment"),UserComment.class);
-        searchPositionJson = extras.getString("searchPosition");
+        if (extras.containsKey("searchPosition"))
+        {
+            searchPositionJson = extras.getString("searchPosition");
+        }
         nameText = (TextView)findViewById(R.id.nameText);
         commentWrapper = (TextInputLayout)findViewById(R.id.comment_wrapper);
         ratingBar = (RatingBar)findViewById(R.id.ratingbar);
@@ -53,6 +60,7 @@ public class AddCommentActivity extends AppCompatActivity {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 ratingBar.setRating((int)rating);
+                userComment.setRating((int)ratingBar.getRating());
             }
         });
 
@@ -66,15 +74,23 @@ public class AddCommentActivity extends AppCompatActivity {
                     InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {}
-                LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
-                map.put("carOwnerId",userComment.getCarOwner().getId()+"");
-                map.put("repairServiceId",userComment.getRepairService().getId()+"");
-                map.put("rating",userComment.getRating()+" ");
-                String commentText = commentWrapper.getEditText().getText().toString();
-                map.put("commentText",commentText);
-                map.put("deleteUserComment",0+"");
-                CommentTask commentTask = new CommentTask();
-                commentTask.execute(map);
+                if (ratingBar.getRating()>0)
+                {
+                    LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
+                    map.put("carOwnerId",userComment.getCarOwner().getId()+"");
+                    map.put("repairServiceId",userComment.getRepairService().getId()+"");
+                    map.put("rating",userComment.getRating()+" ");
+                    String commentText = commentWrapper.getEditText().getText().toString();
+                    map.put("commentText",commentText);
+                    map.put("deleteUserComment",0+"");
+                    CommentTask commentTask = new CommentTask();
+                    commentTask.execute(map);
+                }
+                else
+                {
+                    Snackbar snackbar = SnackBarUtils.buildInfoSnackbar("Erreur veuillez entrer une note valide\n",addCommentActivity,upImage);
+                    snackbar.show();
+                }
             }
         });
     }
@@ -139,8 +155,18 @@ public class AddCommentActivity extends AppCompatActivity {
             /*need error handling*/
             String[] strings = s.split("success");
             float rating = Float.parseFloat(strings[1]);
-            restartInfoActivity(rating);
+            if (searchPositionJson!=null)
+                restartInfoActivity(rating);
+            else
+                startSearchActivity();
+
         }
+    }
+
+    private void startSearchActivity()
+    {
+        Intent i = new Intent(getApplicationContext(),SearchActivity.class);
+        startActivity(i);
     }
 
 

@@ -31,6 +31,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
     private OnButtonClickListener<AssistanceRequest> onCancelClickListner;
     private OnButtonClickListener<AssistanceRequest> onDeleteClickListner;
     private OnButtonClickListener<AssistanceRequestListItem> onQueueClickListner;
+    private OnButtonClickListener<AssistanceRequest> onDontShowClickListner;
     public AssistanceRequestAdapter(Context context, ArrayList<AssistanceRequestListItem> list) {
         super(context,0,list);
     }
@@ -179,6 +180,38 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
                     checkCircle(quotationCircle,quotationCircleText);
                     makeRedCircle(confirmationCircle,confirmationCircleText);
                     break;
+                case AssistanceRequestListItem.STATUS_COMPLETED:
+                    quotationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
+                    if (onQueueClickListner!=null)
+                    {
+                        confirmationText.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                onQueueClickListner.onButtonClick(assistanceRequest);
+                            }
+                        });
+
+                    }
+                    if (onEstimateClickListner!=null) {
+                        quotationText.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                onEstimateClickListner.onButtonClick(assistanceRequest);
+                            }
+                        });}
+                    checkCircle(quotationCircle,quotationCircleText);
+                    confirmationText.setText("Intervention terminée");
+                    cancelText.setText("Ne plus afficher demande");
+                    cancelText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onDontShowClickListner.onButtonClick(assistanceRequest);
+                        }
+                    });
+                    confirmationText.setTextColor(getContext().getResources().getColor(android.R.color.background_dark));
+                    checkCircle(confirmationCircle,confirmationCircleText);
+                    break;
 
         }
         return item;
@@ -234,5 +267,9 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequestList
 
     public void setOnQueueClickListner(OnButtonClickListener<AssistanceRequestListItem> onQueueClickListner) {
         this.onQueueClickListner = onQueueClickListner;
+    }
+
+    public void setOnDontShowClickListner(OnButtonClickListener<AssistanceRequest> onDontShowClickListner) {
+        this.onDontShowClickListner = onDontShowClickListner;
     }
 }

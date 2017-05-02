@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.example.nouno.easydep.Activities.RequestsListActivity;
-import com.example.nouno.easydep.Data.AssistanceRequest;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 
 import java.util.LinkedHashMap;
@@ -66,7 +65,7 @@ public class CancelRequest {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response =QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+                response =QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }

@@ -1,5 +1,7 @@
 package com.example.nouno.easydep.Data;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +23,7 @@ public class AssistanceRequestListItem extends AssistanceRequest {
     public static final int STATUS_WAITING_QUOTATION = 0;
     public static final int STATUS_QUOTATION_RECEIVED = 1;
     public static final int STATUS_IN_QUEUE = 2;
+    public static final int STATUS_COMPLETED = 4;
     public static final int STATUS_REPAIR_SERVICE_COMMING = 3;
     public static final int STATUS_REQUEST_REFUSED = -3;
     public static final int STATUS_ESTIMATE_REFUSED = -2;
@@ -151,6 +154,12 @@ public class AssistanceRequestListItem extends AssistanceRequest {
         else
 
         return "Vous êtes "+position+"éme en file d'attente";
+    }
+
+    public String toJson()
+    {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
 }

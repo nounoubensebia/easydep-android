@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.example.nouno.easydep.Data.CarOwner;
 import com.example.nouno.easydep.Data.OfflineFilter;
 import com.example.nouno.easydep.Data.OnlineFiltre;
 import com.google.gson.Gson;
@@ -37,6 +38,15 @@ public class Utils {
         editor.putString(OFFLINEFILTER_KEY,json);
         editor.commit();
 
+    }
+
+    public static  CarOwner getRegistredCarOwner (Context context)
+    {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = sharedPref.getString("carOwner",null);
+        CarOwner carOwner = gson.fromJson(json,CarOwner.class);
+        return carOwner;
     }
 
 

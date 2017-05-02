@@ -366,8 +366,15 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
             String s;
             nf = new DecimalFormat("0.#");
             s = nf.format(repairService.getRating());
-        ratingText.setText(s);
-        ratingNumber.setText(comments.size()+"");
+            ratingText.setText(s);
+            ratingNumber.setText(comments.size()+"");
+            if (UserComment.checkIfUserAlreadyCommented(userComments))
+            {
+                TextView evaluateText = (TextView)findViewById(R.id.evaluate_text);
+                evaluateText.setText("Vous avez déjà évalué ce dépanneur");
+                TextView opinionText = (TextView)findViewById(R.id.tell_us_about_repair_service_text);
+                opinionText.setText("reévaluer ce dépanneur");
+            }
         }
         else
         {
@@ -534,7 +541,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }

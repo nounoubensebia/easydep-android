@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -188,7 +187,7 @@ public class AssistanceRequestActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String s = null;
             try {
-                s = QueryUtils.makeHttpPostJsonRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+                s = QueryUtils.makeHttpPostJsonRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -210,5 +209,7 @@ public class AssistanceRequestActivity extends AppCompatActivity {
             infoDialog.show();
         }
     }
+
+
 
 }

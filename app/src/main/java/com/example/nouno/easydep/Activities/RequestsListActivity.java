@@ -62,13 +62,6 @@ public class RequestsListActivity extends TAMBaseActivity {
         requestsListActivity = this;
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refrech_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,R.color.refresh_progress_2,R.color.refresh_progress_3);
-        RepairService repairService = new RepairService(2,"Bensebia","Noureddine","El mohamadia","05987564",2,100);
-        RepairService repairService1 = new RepairService(3,"haha","goku","qsd","465564",3,1000);
-        //assistanceRequestListItems = new ArrayList<>();
-        //assistanceRequestListItems.add(new AssistanceRequestListItem(repairService,AssistanceRequestListItem.STATUS_QUOTATION_RECEIVED,1000));
-        //assistanceRequestListItems.add(new AssistanceRequestListItem(repairService1,AssistanceRequestListItem.STATUS_IN_QUEUE,1000));
-        //assistanceRequestListItems.add(new AssistanceRequestListItem(repairService1,AssistanceRequestListItem.STATUS_WAITING_QUOTATION,1000));
-        //populateRequestsList(assistanceRequestListItems);
         loadRequestsList();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -125,13 +118,27 @@ public class RequestsListActivity extends TAMBaseActivity {
         assistanceRequestAdapter.setOnCancelClickListner(new OnButtonClickListener<AssistanceRequest>() {
             @Override
             public void onButtonClick(final AssistanceRequest assistanceRequest) {
-               CancelRequest cancelRequest = new CancelRequest(requestsListActivity,requestsListActivity);
+
+                CancelRequest cancelRequest = new CancelRequest(requestsListActivity,requestsListActivity);
                 cancelRequest.cancelRequest(assistanceRequest.getId());
+
+            }
+        });
+        assistanceRequestAdapter.setOnDontShowClickListner(new OnButtonClickListener<AssistanceRequest>() {
+            @Override
+            public void onButtonClick(AssistanceRequest assistanceRequest) {
+                DontShowRequestTask dontShowRequestTask = new DontShowRequestTask();
+                LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
+                map.put("action","change_status");
+                map.put("assistance_request_id",assistanceRequest.getId()+"");
+                map.put("status",5+"");
+                dontShowRequestTask.execute(map);
             }
         });
         assistanceRequestAdapter.setOnDeleteClickListner(new OnButtonClickListener<AssistanceRequest>() {
             @Override
             public void onButtonClick(AssistanceRequest assistanceRequest) {
+
                 deleteRequest(assistanceRequest);
             }
         });
@@ -143,12 +150,17 @@ public class RequestsListActivity extends TAMBaseActivity {
                 if (assistanceRequestListItem.getStatus() == assistanceRequestListItem.STATUS_REPAIR_SERVICE_COMMING)
                 {
                     i.putExtra("position",0);
-                    i.putExtra("assistanceRequestId",assistanceRequestListItem.getId());
+                    i.putExtra("assistanceRequest",assistanceRequestListItem.toJson());
                 }
-                else
+                if (assistanceRequestListItem.getStatus() == assistanceRequestListItem.STATUS_IN_QUEUE)
                 {
                     i.putExtra("position",assistanceRequestListItem.getNumberOfPeopleBefore());
-                    i.putExtra("assistanceRequestId",assistanceRequestListItem.getId());
+                    i.putExtra("assistanceRequest",assistanceRequestListItem.toJson());
+                }
+                if (assistanceRequestListItem.getStatus() == assistanceRequestListItem.STATUS_COMPLETED)
+                {
+                    i.putExtra("position",-2);
+                    i.putExtra("assistanceRequest",assistanceRequestListItem.toJson());
                 }
                 startActivity(i);
             }
@@ -231,7 +243,7 @@ public class RequestsListActivity extends TAMBaseActivity {
         protected String doInBackground(Map<String, String>... params) {
             String s = null;
             try {
-                s = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+                s = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -242,6 +254,48 @@ public class RequestsListActivity extends TAMBaseActivity {
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
             loadRequestsList();
+        }
+    }
+
+    private class DontShowRequestTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = (ProgressDialog) DialogUtils.buildProgressDialog("Veuillez patienter...",requestsListActivity);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s.equals("success"))
+            {
+                progressDialog.dismiss();
+                Dialog dialog = DialogUtils.buildClickableInfoDialog("Opération terminée", "Cette demande ne sera plus affichée", requestsListActivity, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(getApplicationContext(),RequestsListActivity.class);
+                        startActivity(i);
+                    }
+                });
+                dialog.show();
+                progressDialog.dismiss();
+            }
+            else
+            {
+
+            }
         }
     }
 

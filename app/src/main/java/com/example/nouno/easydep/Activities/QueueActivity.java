@@ -1,22 +1,32 @@
 package com.example.nouno.easydep.Activities;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.nouno.easydep.CancelRequest;
+import com.example.nouno.easydep.Data.AssistanceRequestListItem;
+import com.example.nouno.easydep.Data.UserComment;
+import com.example.nouno.easydep.DialogUtils;
 import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
+import com.example.nouno.easydep.Utils;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
+import com.google.gson.Gson;
 import com.yayandroid.theactivitymanager.TAMBaseActivity;
 
 import java.util.LinkedHashMap;
@@ -32,11 +42,14 @@ public class QueueActivity extends TAMBaseActivity {
     private View positoin0;
     private View requestCanceled;
     private View currentPosition;
-    private Long assistanceRequestId;
+    private AssistanceRequestListItem assistanceRequest;
     private View root;
     private Button button;
+    private Button evaluateButton;
     private TextView positionText;
     private TextView waitText;
+    private ProgressDialog progressDialog;
+
     private QueueActivity queueActivity;
     private BroadcastReceiver newPositionBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -70,17 +83,25 @@ public class QueueActivity extends TAMBaseActivity {
         position1 = findViewById(R.id.position_1);
         positoin0 = findViewById(R.id.position_0);
         requestCanceled = findViewById(R.id.request_canceled);
+        evaluateButton=(Button)findViewById(R.id.evaluate_repair_service);
         button = (Button)findViewById(R.id.advance);
         positionText = (TextView) findViewById(R.id.position_text);
         waitText = (TextView)findViewById(R.id.wait_text);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                CancelRequest cancelRequest = new CancelRequest(queueActivity);
-                cancelRequest.cancelRequest(assistanceRequestId);
+                if (position!=-2)
+                {
+                    CancelRequest cancelRequest = new CancelRequest(queueActivity);
+                    cancelRequest.cancelRequest(assistanceRequest.getId());
+                }
                 //updatePosition();
+            }
+        });
+        evaluateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                evaluateRepairService();
             }
         });
         getIntentData();
@@ -94,11 +115,23 @@ public class QueueActivity extends TAMBaseActivity {
         setInitialPosition();
     }
 
+    private void evaluateRepairService ()
+    {
+        UserComment userComment = new UserComment(Utils.getRegistredCarOwner(getApplicationContext()),assistanceRequest.getRepairService(),0);
+        Intent i = new Intent(getApplicationContext(),AddCommentActivity.class);
+        i.putExtra("userComment",userComment.toJson());
+        startActivity(i);
+        finish();
+    }
+
+
+
     private void getIntentData()
     {
         Bundle extras = getIntent().getExtras();
         position = extras.getInt("position");
-        assistanceRequestId = extras.getLong("assistanceRequestId");
+        Gson gson = new Gson();
+        assistanceRequest = gson.fromJson(extras.getString("assistanceRequest"),AssistanceRequestListItem.class);
         //position++;
     }
 
@@ -107,6 +140,29 @@ public class QueueActivity extends TAMBaseActivity {
 
         switch (position)
         {
+            case -2 : position4.setVisibility(View.INVISIBLE);
+                position3.setVisibility(View.INVISIBLE);
+                position2.setVisibility(View.INVISIBLE);
+                position1.setVisibility(View.INVISIBLE);
+                positoin0.setVisibility(View.VISIBLE);
+                waitText.setText("Intervention terminée");
+                positionText.setVisibility(View.GONE);
+                currentPosition = positoin0;
+                root.setVisibility(View.VISIBLE);
+                evaluateButton.setVisibility(View.VISIBLE);
+                button.setText("Ne plus afficher demande");
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DontShowRequestTask dontShowRequestTask = new DontShowRequestTask();
+                        LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
+                        map.put("action","change_status");
+                        map.put("assistance_request_id",assistanceRequest.getId()+"");
+                        map.put("status",5+"");
+                        dontShowRequestTask.execute(map);
+                    }
+                });
+                break;
             case 4 : position4.setVisibility(View.VISIBLE);
                 position3.setVisibility(View.INVISIBLE);
                 position2.setVisibility(View.INVISIBLE);
@@ -155,7 +211,7 @@ public class QueueActivity extends TAMBaseActivity {
 
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("action",QueryUtils.GET_REPAIR_SERVICE_ETA);
-        map.put("assistance_request_id",assistanceRequestId+"");
+        map.put("assistance_request_id",assistanceRequest.getId()+"");
         LoadDurationTask loadDurationTask = new LoadDurationTask();
         loadDurationTask.execute(map);
     }
@@ -164,6 +220,7 @@ public class QueueActivity extends TAMBaseActivity {
     {
         position--;
         switch (position){
+
             case 3:updatePositionAnimation(position4,position3);
                 currentPosition = position3;
                 break;
@@ -177,7 +234,21 @@ public class QueueActivity extends TAMBaseActivity {
                 //replaceText("Votre dépanneur arrive",waitText);
                 loadRepairServiceDistanceData();
                 break;
-
+            case -1 : fadeOut(positionText);replaceText("Intervention terminée",waitText);
+                replaceText("Ne plus afficher demande",button);
+                fadeIn(evaluateButton);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DontShowRequestTask dontShowRequestTask = new DontShowRequestTask();
+                        LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
+                        map.put("action","change_status");
+                        map.put("assistance_request_id",assistanceRequest.getId()+"");
+                        map.put("status",5+"");
+                        dontShowRequestTask.execute(map);
+                    }
+                });
+                break;
         }
     }
 
@@ -332,7 +403,7 @@ public class QueueActivity extends TAMBaseActivity {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -352,4 +423,47 @@ public class QueueActivity extends TAMBaseActivity {
             fadeIn(root);
         }
     }
+
+    private class DontShowRequestTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = (ProgressDialog) DialogUtils.buildProgressDialog("Veuillez patienter...",queueActivity);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s.equals("success"))
+            {
+                progressDialog.dismiss();
+                Dialog dialog = DialogUtils.buildClickableInfoDialog("Opération terminée", "Cette demande ne sera plus affichée", queueActivity, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(getApplicationContext(),RequestsListActivity.class);
+                        startActivity(i);
+                    }
+                });
+                dialog.show();
+                progressDialog.dismiss();
+            }
+            else
+            {
+
+            }
+        }
+    }
+
 }

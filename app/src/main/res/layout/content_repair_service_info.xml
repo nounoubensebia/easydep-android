@@ -235,6 +235,7 @@
                     android:src="@drawable/ic_comment_blue_48_8p" />
 
                 <TextView
+                    android:id="@+id/evaluate_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -243,6 +244,7 @@
                     android:textColor="@android:color/background_dark" />
 
                 <TextView
+                    android:id="@+id/tell_us_about_repair_service_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

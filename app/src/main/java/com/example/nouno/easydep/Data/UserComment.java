@@ -1,5 +1,7 @@
 package com.example.nouno.easydep.Data;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,6 +58,10 @@ public class UserComment {
         return rating;
     }
 
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
     public String getComment() {
         return comment;
     }
@@ -97,6 +103,16 @@ public class UserComment {
         return userComments;
     }
 
+    public static boolean checkIfUserAlreadyCommented (ArrayList<UserComment> userComments)
+    {
+        for (int i=0;i<userComments.size();i++)
+        {
+            if (userComments.get(i).isFromConnectedUser())
+                return true;
+        }
+        return false;
+    }
+
     public static void sortByTime(ArrayList<UserComment> comments)
     {
         for (int i=0;i<comments.size();i++)
@@ -115,5 +131,10 @@ public class UserComment {
             }
         }
 
+    }
+    public String toJson ()
+    {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

@@ -153,6 +153,17 @@
             </RelativeLayout>
         </FrameLayout>
         <Button
+            android:visibility="gone"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:id="@+id/evaluate_repair_service"
+            android:text="Evaluer dépanneur"
+            android:fontFamily="sans-serif-light"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:textColor="@android:color/holo_orange_dark"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
             android:visibility="visible"
             android:backgroundTint="@android:color/holo_red_light"
             android:id="@+id/advance"

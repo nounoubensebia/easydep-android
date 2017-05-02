@@ -37,6 +37,7 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
     public static final String TITLE_NEW_ESTIMATE = "new_estimate";
     public static final String TITLE_INTERVENTION_CANCELED = "intervention_canceled";
     public static final String TITLE_ESTIMATE_REFUSED = "estimate_refused";
+    public static final String TITLE_INTERVENTION_COMPLETED = "intervention_completed";
 
     @Override
     public void onCreate() {
