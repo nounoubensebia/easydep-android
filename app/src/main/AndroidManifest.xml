@@ -36,30 +36,24 @@
 
         </activity>
         <activity
-            android:name=".Activities.Signup1_Activity"
+            android:name=".Activities.Signup1Activity"
             android:label="Inscription"
             android:noHistory="true"
             android:parentActivityName=".Activities.Login_Activity"
-            android:theme="@style/SignupTheme" />
-        <activity
-            android:name=".Activities.Signup2_Activity"
-            android:label="Inscription"
-            android:noHistory="true"
-            android:parentActivityName=".Activities.Signup1_Activity"
             android:theme="@style/SignupTheme"
              />
         <activity
-            android:name=".Activities.Signup3_Activity"
+            android:name=".Activities.Signup2Activity"
             android:label="Inscription"
             android:noHistory="true"
-            android:parentActivityName=".Activities.Signup2_Activity"
+            android:parentActivityName=".Activities.Signup1Activity"
             android:theme="@style/SignupTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Activities.Signup4_Activity"
+            android:name=".Activities.Signup3Activity"
             android:label="Inscription"
             android:noHistory="true"
-            android:parentActivityName=".Activities.Signup1_Activity"
+            android:parentActivityName=".Activities.Signup1Activity"
             android:theme="@style/SignupTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -137,7 +131,7 @@
         </service>
 
         <activity
-            android:name=".Activities.Signup5_Activity"
+            android:name=".Activities.Signup4Activity"
             android:noHistory="true"
             android:theme="@style/SignupTheme" />
         <activity

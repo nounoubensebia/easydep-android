@@ -20,7 +20,7 @@ import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Signup3_Activity extends AppCompatActivity {
+public class Signup2Activity extends AppCompatActivity {
     private TextInputLayout emailWrapper;
     private LayoutInflater mInflater;
     private ProgressBar progressBar;
@@ -114,7 +114,7 @@ public class Signup3_Activity extends AppCompatActivity {
                String email = emailWrapper.getEditText().getText().toString();
                progressBar.setVisibility(View.GONE);
                upimage.setVisibility(View.VISIBLE);
-               Intent i = new Intent(getApplicationContext(),Signup4_Activity.class);
+               Intent i = new Intent(getApplicationContext(),Signup3Activity.class);
                i.putExtra("email",email);
                i.putExtra("firstname",firstName);
                i.putExtra("lastname",lastName);

@@ -76,7 +76,7 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
         Intent i = new Intent(this, EstimateActivity.class);
         long estimate_id = getEstimateId(message);
         i.putExtra("estimateId", estimate_id);
-        Intent intent = new Intent("new_estimate");
+        Intent intent = new Intent("update_requests_list");
         broadcaster.sendBroadcast(intent);
         String repairServiceName = getRepairServiceName(message);
         showNotification("Nouveau devis", repairServiceName + " Vous a envoyé un devis", (int) estimate_id, i);
@@ -94,6 +94,26 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
             showNotification("EasyDep", AssistanceRequestListItem.getPositionString(position), queueId, i);
         }
 
+    }
+
+    private void showInterventionCompletedNotification (String message)
+    {
+        Intent i = new Intent(this,RequestsListActivity.class);
+        Activity activity = TheActivityManager.getInstance().getCurrentActivity();
+
+        if (activity!=null&&activity instanceof QueueActivity)
+        {
+            Intent intent = new Intent("intervention_completed");
+            broadcaster.sendBroadcast(intent);
+        }
+        else
+        {
+            Intent intent = new Intent(this,RequestsListActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            showNotification("Intervention terminée","Le dépanneur a indiqué le fin de l'intervention",queueId,intent);
+        }
+        Intent intent = new Intent("update_requests_list");
+        broadcaster.sendBroadcast(intent);
     }
 
     private void showEstimateRefusedNotification(String message) {
@@ -184,6 +204,11 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
             if (title.equals(TITLE_ESTIMATE_REFUSED)) {
                 showEstimateRefusedNotification(msg);
             }
+            if (title.equals(TITLE_INTERVENTION_COMPLETED))
+            {
+                showInterventionCompletedNotification(msg);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

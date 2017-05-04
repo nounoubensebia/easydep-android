@@ -26,7 +26,7 @@ import com.google.gson.Gson;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Signup4_Activity extends AppCompatActivity {
+public class Signup3Activity extends AppCompatActivity {
     private TextInputLayout passwordWrapper;
     private View upimage;
     private ProgressBar progressBar;
@@ -119,7 +119,7 @@ public class Signup4_Activity extends AppCompatActivity {
                 carOwner.setId(id);
                 saveUserData(carOwner);
                 Utils.resetSettings(getApplicationContext());
-                Intent i = new Intent(getApplicationContext(),Signup5_Activity.class);
+                Intent i = new Intent(getApplicationContext(),Signup4Activity.class);
                 startActivity(i);
             }
 

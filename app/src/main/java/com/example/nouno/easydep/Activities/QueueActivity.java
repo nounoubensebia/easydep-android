@@ -1,6 +1,7 @@
 package com.example.nouno.easydep.Activities;
 
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,6 +25,7 @@ import com.example.nouno.easydep.Data.UserComment;
 import com.example.nouno.easydep.DialogUtils;
 import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
+import com.example.nouno.easydep.Services.FireBaseMessangingService;
 import com.example.nouno.easydep.Utils;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
@@ -63,15 +65,26 @@ public class QueueActivity extends TAMBaseActivity {
             cancelRequest();
         }
     };
+    private BroadcastReceiver interventionCompletedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            position = -1;
+            updatePosition();
+        }
+    };
+
     @Override
     protected void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver(newPositionBroadcastReceiver,new IntentFilter("new_position"));
         LocalBroadcastManager.getInstance(this).registerReceiver(requestCanceledReceiver,new IntentFilter("intervention_canceled"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(interventionCompletedReceiver,new IntentFilter("intervention_completed"));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(FireBaseMessangingService.queueId);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queue);
         queueActivity=this;
@@ -234,8 +247,11 @@ public class QueueActivity extends TAMBaseActivity {
                 //replaceText("Votre dépanneur arrive",waitText);
                 loadRepairServiceDistanceData();
                 break;
-            case -1 : fadeOut(positionText);replaceText("Intervention terminée",waitText);
+            case -2 : fadeOut(positionText);
+                replaceText("Intervention terminée",waitText);
                 replaceText("Ne plus afficher demande",button);
+                waitText.setText("Intervention terminée");
+                positionText.setVisibility(View.GONE);
                 fadeIn(evaluateButton);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -48,10 +48,12 @@ public class RequestsListActivity extends TAMBaseActivity {
         }
     };
 
+
     @Override
     protected void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,new IntentFilter("new_estimate"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,new IntentFilter("update_requests_list"));
+
     }
 
     @Override

@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.example.nouno.easydep.R;
 
-public class Signup5_Activity extends AppCompatActivity {
+public class Signup4Activity extends AppCompatActivity {
     private View goButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

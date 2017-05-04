@@ -10,7 +10,7 @@ import android.view.View;
 import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
 
-public class Signup2_Activity extends AppCompatActivity {
+public class Signup1Activity extends AppCompatActivity {
     TextInputLayout firstNameWrapper;
     TextInputLayout lastNameWrapper;
     @Override
@@ -42,7 +42,7 @@ public class Signup2_Activity extends AppCompatActivity {
 
                 if (QueryUtils.validateName(firstName)&&QueryUtils.validateName(lastName))
                 {
-                Intent i = new Intent(getApplicationContext(),Signup3_Activity.class);
+                Intent i = new Intent(getApplicationContext(),Signup2Activity.class);
                     i.putExtra("firstname",firstName);
                     i.putExtra("lastname",lastName);
                 startActivity(i);

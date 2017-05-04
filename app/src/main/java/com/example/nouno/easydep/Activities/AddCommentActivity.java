@@ -1,6 +1,7 @@
 package com.example.nouno.easydep.Activities;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
@@ -158,7 +159,17 @@ public class AddCommentActivity extends AppCompatActivity {
             if (searchPositionJson!=null)
                 restartInfoActivity(rating);
             else
-                startSearchActivity();
+            {
+
+                Dialog dialog = DialogUtils.buildClickableInfoDialog("Commentaire ajouté", "Votre avis nous intéresse merci de votre coopération", addCommentActivity,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startSearchActivity();
+                            }
+                        });
+                dialog.show();
+            }
 
         }
     }

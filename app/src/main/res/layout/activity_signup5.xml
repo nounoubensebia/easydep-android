@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
 
     android:background="@color/backgroundColor"
-    tools:context="com.example.nouno.easydep.Activities.Signup5_Activity">
+    tools:context="com.example.nouno.easydep.Activities.Signup4Activity">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
