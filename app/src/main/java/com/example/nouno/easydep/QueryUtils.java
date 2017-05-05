@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  */
 
 public class QueryUtils {
-    public static final String PATH ="http://192.168.1.12/EasyDep/";
+    public static final String PATH ="http://192.168.1.4/EasyDep/";
     public static final String LOCAL_TEST_URL ="http://192.168.1.5/EasyDep/test.php";
     public static final String LOCAL_LOGIN_URL = PATH+"login.php";
     public static final String LOCAL_SIGNUP_URL = PATH+"signup.php";

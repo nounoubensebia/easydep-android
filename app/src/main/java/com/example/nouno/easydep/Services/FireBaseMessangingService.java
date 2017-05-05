@@ -38,7 +38,7 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
     public static final String TITLE_INTERVENTION_CANCELED = "intervention_canceled";
     public static final String TITLE_ESTIMATE_REFUSED = "estimate_refused";
     public static final String TITLE_INTERVENTION_COMPLETED = "intervention_completed";
-
+    public static final String TITLE_REPAIR_SERVICE_LOCATION_CHANGED = "repair_service_position_changed";
     @Override
     public void onCreate() {
         broadcaster = LocalBroadcastManager.getInstance(this);
@@ -188,6 +188,12 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
         return null;
     }
 
+    private void showRepairServicePositionChangedNotification ()
+    {
+        Intent i = new Intent("repair_service_position_changed");
+        broadcaster.sendBroadcast(i);
+    }
+
     private void handleMessage(String msg) {
         try {
             JSONObject jsonObject = new JSONObject(msg);
@@ -207,6 +213,10 @@ public class FireBaseMessangingService extends FirebaseMessagingService {
             if (title.equals(TITLE_INTERVENTION_COMPLETED))
             {
                 showInterventionCompletedNotification(msg);
+            }
+            if (title.equals(TITLE_REPAIR_SERVICE_LOCATION_CHANGED))
+            {
+                showRepairServicePositionChangedNotification();
             }
 
         } catch (JSONException e) {

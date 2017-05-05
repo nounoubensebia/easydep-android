@@ -72,6 +72,12 @@ public class QueueActivity extends TAMBaseActivity {
             updatePosition();
         }
     };
+    private BroadcastReceiver newLocationBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            loadRepairServiceDistanceData();
+        }
+    };
 
     @Override
     protected void onStart() {
@@ -79,6 +85,7 @@ public class QueueActivity extends TAMBaseActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(newPositionBroadcastReceiver,new IntentFilter("new_position"));
         LocalBroadcastManager.getInstance(this).registerReceiver(requestCanceledReceiver,new IntentFilter("intervention_canceled"));
         LocalBroadcastManager.getInstance(this).registerReceiver(interventionCompletedReceiver,new IntentFilter("intervention_completed"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(newLocationBroadcastReceiver,new IntentFilter("repair_service_position_changed"));
     }
 
     @Override
