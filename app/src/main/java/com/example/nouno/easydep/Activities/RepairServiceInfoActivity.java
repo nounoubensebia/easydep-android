@@ -219,8 +219,6 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         ratingBar.setRating(repairService.getRating());
         toolbarTimeText.setText(repairService.getDurationString());
         locationText.setText(repairService.getLocation());
-        //phoneText.setText(repairService.getPhoneNumber());
-        //timeText.setText(repairService.getDurationString());
         priceText.setText(repairService.getPriceString());
 
         if (repairService.getStatus()==RepairService.AVAILABLE)
@@ -283,7 +281,6 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
             distanceCircle.setVisibility(View.GONE);
             addCommentLayout.setVisibility(View.GONE);
             requestQuotationText.setVisibility(View.GONE);
-            //toolbarTimeText.setVisibility(View.GONE);
             toolbarTimeText.setText(repairService.getPhoneNumber());
         }
 

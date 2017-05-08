@@ -36,7 +36,7 @@
             android:layout_marginLeft="16dp"
             android:textSize="16sp"
             android:layout_width="wrap_content"
-            android:text="Poids lourd"
+            android:text="Véhicule lourd"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/heavy_vehicule_switcher"
             android:layout_alignBottom="@id/heavy_vehicule_switcher"

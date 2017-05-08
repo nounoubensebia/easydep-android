@@ -71,7 +71,7 @@
             android:drawablePadding="16dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:text="Demander devis"
+            android:text="Demander intervention"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             tools:visibility="visible" />

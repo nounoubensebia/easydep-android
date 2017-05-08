@@ -137,7 +137,7 @@
         <activity
             android:name=".Activities.AssistanceRequestActivity"
             android:noHistory="true"
-            android:label="Demande de devis"
+            android:label="Demander intervention"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activities.RequestDimensionsActivity"
