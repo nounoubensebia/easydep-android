@@ -96,10 +96,10 @@ public class QueryUtils {
     {
         if (getTokens(context)!=null)
         {
-            httpURLConnection.setRequestProperty("Access-Token",getTokens(context).getAccessToken());
+            httpURLConnection.setRequestProperty("access-token",getTokens(context).getAccessToken());
             if (getTokens(context).accessTokenExpired())
             {
-                httpURLConnection.setRequestProperty("Refresh-Token",getTokens(context).getRefreshToken());
+                httpURLConnection.setRequestProperty("refresh-token",getTokens(context).getRefreshToken());
             }
         }
     }
