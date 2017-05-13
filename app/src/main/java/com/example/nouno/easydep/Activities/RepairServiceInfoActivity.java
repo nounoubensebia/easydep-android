@@ -70,9 +70,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         repairServiceInfoActivity = this;
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Gson gson = new Gson();
-        String defaultJson = gson.toJson(new CarOwner(1,"Noureddine","Bensebia",null));
-
-        String Json = sharedPref.getString("carOwner",defaultJson);
+        String Json = sharedPref.getString("carOwner",null);
         carOwner = gson.fromJson(Json,CarOwner.class);
 
 
@@ -438,7 +436,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0],getApplicationContext());
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -473,7 +471,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0],getApplicationContext());
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -502,7 +500,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         protected String doInBackground(Map<String, String>... params) {
             String resonse = null;
             try {
-                resonse = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
+                resonse = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0],getApplicationContext());
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -538,7 +536,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0],getApplicationContext());
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }

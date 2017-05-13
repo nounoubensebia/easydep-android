@@ -16,6 +16,7 @@
         android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+
         android:label="@string/app_name"
         android:supportsRtl="true">
         <meta-data
@@ -40,8 +41,7 @@
             android:label="Inscription"
             android:noHistory="true"
             android:parentActivityName=".Activities.Login_Activity"
-            android:theme="@style/SignupTheme"
-             />
+            android:theme="@style/SignupTheme" />
         <activity
             android:name=".Activities.Signup2Activity"
             android:label="Inscription"
@@ -136,13 +136,13 @@
             android:theme="@style/SignupTheme" />
         <activity
             android:name=".Activities.AssistanceRequestActivity"
-            android:noHistory="true"
             android:label="Demander intervention"
+            android:noHistory="true"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activities.RequestDimensionsActivity"
-            android:noHistory="true"
             android:label="Dimensions du véhicules"
+            android:noHistory="true"
             android:theme="@style/AppTheme" />
         <activity android:name=".Activities.BreakDownDescriptionActivity" />
         <activity
@@ -154,9 +154,13 @@
             android:label="Devis"
             android:noHistory="true"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.QueueActivity"
+        <activity
+            android:name=".Activities.QueueActivity"
             android:label="Ma demande"
             android:theme="@style/AppTheme">
+
+        </activity>
+        <activity android:name=".Activities.TokenTestActivity" android:theme="@style/AppTheme">
 
         </activity>
     </application>

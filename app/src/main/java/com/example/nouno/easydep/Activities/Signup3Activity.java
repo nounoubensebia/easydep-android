@@ -16,12 +16,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.nouno.easydep.Data.CarOwner;
+import com.example.nouno.easydep.Data.Tokens;
 import com.example.nouno.easydep.QueryUtils;
 import com.example.nouno.easydep.R;
 import com.example.nouno.easydep.Utils;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -57,7 +61,7 @@ public class Signup3Activity extends AppCompatActivity {
                 String email = extras.getString("email");
                 String firstname = extras.getString("firstname");
                 String lastname = extras.getString("lastname");
-                carOwner = new CarOwner(-1,firstname,lastname,email);
+                carOwner = new CarOwner(-1,firstname,lastname,email,null);
                 String password = passwordWrapper.getEditText().getText().toString();
                 String token = firebaseInstanceId.getToken();
 
@@ -90,7 +94,7 @@ public class Signup3Activity extends AppCompatActivity {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_SIGNUP_URL,params[0]);
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_SIGNUP_URL,params[0],getApplicationContext());
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();response =QueryUtils.CONNECTION_PROBLEM;
             }
@@ -113,18 +117,26 @@ public class Signup3Activity extends AppCompatActivity {
             }
             else
             {
-                String[] tab = s.split("id :");
-                long id = Long.parseLong(tab[1]);
-                Log.i("TAG","id = "+id);
-                carOwner.setId(id);
-                saveUserData(carOwner);
-                Utils.resetSettings(getApplicationContext());
-                Intent i = new Intent(getApplicationContext(),Signup4Activity.class);
-                startActivity(i);
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    long id = jsonObject.getLong("id");
+                    String refreshToken = jsonObject.getString("refresh_token");
+                    String accessToken = jsonObject.getString("access_token");
+                    carOwner.setId(id);
+                    carOwner.setTokens(new Tokens(accessToken,refreshToken));
+                    saveUserData(carOwner);
+                    Utils.resetSettings(getApplicationContext());
+                    Intent i = new Intent(getApplicationContext(),Signup4Activity.class);
+                    startActivity(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
         }
     }
+
+
 
     private void saveUserData (CarOwner carOwner)
     {

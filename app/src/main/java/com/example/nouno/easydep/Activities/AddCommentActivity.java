@@ -144,7 +144,7 @@ public class AddCommentActivity extends AppCompatActivity {
         protected String doInBackground(Map<String, String>... params) {
            String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0],getApplicationContext());
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }

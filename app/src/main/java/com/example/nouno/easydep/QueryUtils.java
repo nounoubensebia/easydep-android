@@ -1,6 +1,14 @@
 package com.example.nouno.easydep;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.example.nouno.easydep.Data.CarOwner;
+import com.example.nouno.easydep.Data.Tokens;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,7 +34,7 @@ import java.util.regex.Pattern;
  */
 
 public class QueryUtils {
-    public static final String PATH ="http://192.168.1.4/EasyDep/";
+    public static final String PATH ="http://192.168.1.7/EasyDep/";
     public static final String LOCAL_TEST_URL ="http://192.168.1.5/EasyDep/test.php";
     public static final String LOCAL_LOGIN_URL = PATH+"login.php";
     public static final String LOCAL_SIGNUP_URL = PATH+"signup.php";
@@ -51,9 +59,53 @@ public class QueryUtils {
     public static final String GET_REPAIR_SERVICE_ETA = "get_repair_service_eta";
 
 
+    private static CarOwner getCarOwner (Context context)
+    {
+        CarOwner carOwner = null;
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        Gson gson = new Gson();
+        if (sharedPref.contains("carOwner"))
+        {
+            CarOwner carOwner1 = new CarOwner(12,"aaa","qsdqsd","qsdqsdqsd",null);
+            String Json = sharedPref.getString("carOwner","qsdqsd");
+            carOwner = gson.fromJson(Json,CarOwner.class);
+        }
+        return carOwner;
+    }
+    private static Tokens getTokens(Context context)
+    {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        if (sharedPref.contains("carOwner"))
+        return getCarOwner(context).getTokens();
+        else
+            return null;
+    }
+
+    private static void receiveNewAccessToken(HttpURLConnection httpURLConnection,Context context)
+    {
+        httpURLConnection.getHeaderField("refresh-token");
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(getCarOwner(context));
+        editor.putString("carOwner",json);
+        editor.commit();
+    }
+
+    private static void sendTokens (HttpURLConnection httpURLConnection,Context context)
+    {
+        if (getTokens(context)!=null)
+        {
+            httpURLConnection.setRequestProperty("Access-Token",getTokens(context).getAccessToken());
+            if (getTokens(context).accessTokenExpired())
+            {
+                httpURLConnection.setRequestProperty("Refresh-Token",getTokens(context).getRefreshToken());
+            }
+        }
+    }
 
 
-    public static String makeHttpPostRequest (String urlString,Map<String,String> parameters) throws ConnectionProblemException
+    public static String makeHttpPostRequest (String urlString,Map<String,String> parameters,Context context) throws ConnectionProblemException
     {   String response = null;
         InputStream inputStream=null;
         HttpURLConnection urlConnection=null;
@@ -65,6 +117,8 @@ public class QueryUtils {
             urlConnection.setReadTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            //urlConnection.setRequestProperty("Access-Token","token");
+            sendTokens(urlConnection,context);
             String postParameters = buildParametersString(parameters);
             urlConnection.setFixedLengthStreamingMode(postParameters.getBytes().length);
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
@@ -73,6 +127,11 @@ public class QueryUtils {
             urlConnection.connect();
             if (urlConnection.getResponseCode()==200)
             {
+                if (getTokens(context)!=null)
+                {
+                if (getTokens(context).accessTokenExpired())
+                    receiveNewAccessToken(urlConnection,context);
+                }
                 inputStream = urlConnection.getInputStream();
                 response=readFromStream(inputStream);
             }
@@ -108,7 +167,7 @@ public class QueryUtils {
         }
     }
 
-    public static String makeHttpPostJsonRequest (String urlString,String jsonObject) throws ConnectionProblemException
+    public static String makeHttpPostJsonRequest (String urlString,String jsonObject,Context context) throws ConnectionProblemException
     {
 
         try {
@@ -127,6 +186,7 @@ public class QueryUtils {
             httpCon.setReadTimeout(15000);
             httpCon.setRequestMethod("POST");
             httpCon.setRequestProperty("Content-Type","application/json; charset=UTF-8");
+            sendTokens(httpCon,context);
             httpCon.connect();
             OutputStream os = httpCon.getOutputStream();
             OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
@@ -135,6 +195,11 @@ public class QueryUtils {
             osw.close();
             if (httpCon.getResponseCode()==200)
             {
+                if (getTokens(context)!=null)
+                {
+                if (getTokens(context).accessTokenExpired())
+                    receiveNewAccessToken(httpCon,context);
+                }
                 inputStream = httpCon.getInputStream();
                 response=readFromStream(inputStream);
             }
@@ -190,6 +255,7 @@ public class QueryUtils {
             urlConnection.setReadTimeout(15000);
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("GET");
+
             urlConnection.connect();
             if (urlConnection.getResponseCode()==200){
                 inputStream=urlConnection.getInputStream();

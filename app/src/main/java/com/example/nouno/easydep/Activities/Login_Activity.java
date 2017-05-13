@@ -116,7 +116,7 @@ public class Login_Activity extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPref.contains("carOwner"))
         {
-            Intent i = new Intent(this,SearchActivity.class);
+            Intent i = new Intent(this,TokenTestActivity.class);
             startActivity(i);
             finish();
         }
@@ -140,7 +140,7 @@ public class Login_Activity extends AppCompatActivity {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_LOGIN_URL, params[0]);
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_LOGIN_URL, params[0],getApplicationContext());
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
                 response = QueryUtils.CONNECTION_PROBLEM;
@@ -195,7 +195,7 @@ public class Login_Activity extends AppCompatActivity {
 
         saveUserData(carOwner);
         Utils.resetSettings(getApplicationContext());
-        Intent i = new Intent(getApplicationContext(),SearchActivity.class);
+        Intent i = new Intent(getApplicationContext(),TokenTestActivity.class);
         startActivity(i);
     }
     private void saveUserData (CarOwner carOwner)

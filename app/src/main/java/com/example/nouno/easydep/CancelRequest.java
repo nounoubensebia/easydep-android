@@ -65,7 +65,7 @@ public class CancelRequest {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response =QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
+                response =QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0],context.getApplicationContext());
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }

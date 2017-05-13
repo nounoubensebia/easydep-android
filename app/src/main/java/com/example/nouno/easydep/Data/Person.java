@@ -57,7 +57,10 @@ public class Person {
             String firstname = jsonObject.getString("first_name");
             String lastname = jsonObject.getString("last_name");
             String email = jsonObject.getString("email");
-            person = new CarOwner(id,firstname,lastname,email);
+            String refreshToken = jsonObject.getString("refresh_token");
+            String accessToken = jsonObject.getString("access_token");
+            Tokens tokens = new Tokens(accessToken,refreshToken);
+            person = new CarOwner(id,firstname,lastname,email,tokens);
         } catch (JSONException e) {
             e.printStackTrace();
         }

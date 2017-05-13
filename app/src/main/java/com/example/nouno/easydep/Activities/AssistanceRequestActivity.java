@@ -187,7 +187,7 @@ public class AssistanceRequestActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String s = null;
             try {
-                s = QueryUtils.makeHttpPostJsonRequest(QueryUtils.REQUESTS_URL,params[0]);
+                s = QueryUtils.makeHttpPostJsonRequest(QueryUtils.REQUESTS_URL,params[0],getApplicationContext());
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
