@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -116,7 +117,7 @@ public class Login_Activity extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPref.contains("carOwner"))
         {
-            Intent i = new Intent(this,TokenTestActivity.class);
+            Intent i = new Intent(this,SearchActivity.class);
             startActivity(i);
             finish();
         }
@@ -195,7 +196,7 @@ public class Login_Activity extends AppCompatActivity {
 
         saveUserData(carOwner);
         Utils.resetSettings(getApplicationContext());
-        Intent i = new Intent(getApplicationContext(),TokenTestActivity.class);
+        Intent i = new Intent(getApplicationContext(),SearchActivity.class);
         startActivity(i);
     }
     private void saveUserData (CarOwner carOwner)
