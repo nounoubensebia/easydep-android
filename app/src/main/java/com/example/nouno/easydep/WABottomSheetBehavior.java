@@ -18,6 +18,7 @@ public class WABottomSheetBehavior<V extends View> extends BottomSheetBehavior<V
      */
     public WABottomSheetBehavior() {
         super();
+        mAllowUserDragging = false;
     }
 
     /**
@@ -28,6 +29,7 @@ public class WABottomSheetBehavior<V extends View> extends BottomSheetBehavior<V
      */
     public WABottomSheetBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mAllowUserDragging = false;
     }
 
     public void setAllowUserDragging(boolean allowUserDragging) {
@@ -40,5 +42,9 @@ public class WABottomSheetBehavior<V extends View> extends BottomSheetBehavior<V
             return false;
         }
         return super.onInterceptTouchEvent(parent, child, event);
+    }
+    @Override
+    public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
+        return false;
     }
 }

@@ -39,6 +39,7 @@ import com.example.nouno.easydep.R;
 import com.example.nouno.easydep.Data.RepairService;
 import com.example.nouno.easydep.ListAdapters.RepairServiceAdapter;
 import com.example.nouno.easydep.Utils;
+import com.example.nouno.easydep.WABottomSheetBehavior;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
