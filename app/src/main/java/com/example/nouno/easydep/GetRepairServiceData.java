@@ -41,7 +41,7 @@ public class GetRepairServiceData {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_GET_REPAIR_SERVICES_URL,params[0],context.getApplicationContext());
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_GET_REPAIR_SERVICES_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }

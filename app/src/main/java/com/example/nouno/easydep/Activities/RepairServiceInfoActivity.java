@@ -436,7 +436,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0],getApplicationContext());
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -471,7 +471,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0],getApplicationContext());
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -500,7 +500,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         protected String doInBackground(Map<String, String>... params) {
             String resonse = null;
             try {
-                resonse = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0],getApplicationContext());
+                resonse = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -536,7 +536,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0],getApplicationContext());
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }

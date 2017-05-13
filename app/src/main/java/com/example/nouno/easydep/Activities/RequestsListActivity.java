@@ -214,7 +214,7 @@ public class RequestsListActivity extends TAMBaseActivity {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_REQUESTS_URL,params[0],getApplicationContext());
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -245,7 +245,7 @@ public class RequestsListActivity extends TAMBaseActivity {
         protected String doInBackground(Map<String, String>... params) {
             String s = null;
             try {
-                s = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0],getApplicationContext());
+                s = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -272,7 +272,7 @@ public class RequestsListActivity extends TAMBaseActivity {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0],getApplicationContext());
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }

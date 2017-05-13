@@ -59,10 +59,10 @@ public class QueryUtils {
     public static final String GET_REPAIR_SERVICE_ETA = "get_repair_service_eta";
 
 
-    private static CarOwner getCarOwner (Context context)
+    private static CarOwner getCarOwner ()
     {
         CarOwner carOwner = null;
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(App.getContext().getApplicationContext());
         Gson gson = new Gson();
         if (sharedPref.contains("carOwner"))
         {
@@ -72,40 +72,40 @@ public class QueryUtils {
         }
         return carOwner;
     }
-    private static Tokens getTokens(Context context)
+    private static Tokens getTokens()
     {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(App.getContext().getApplicationContext());
         if (sharedPref.contains("carOwner"))
-        return getCarOwner(context).getTokens();
+        return getCarOwner().getTokens();
         else
             return null;
     }
 
-    private static void receiveNewAccessToken(HttpURLConnection httpURLConnection,Context context)
+    private static void receiveNewAccessToken(HttpURLConnection httpURLConnection)
     {
         httpURLConnection.getHeaderField("refresh-token");
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(App.getContext().getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(getCarOwner(context));
+        String json = gson.toJson(getCarOwner());
         editor.putString("carOwner",json);
         editor.commit();
     }
 
-    private static void sendTokens (HttpURLConnection httpURLConnection,Context context)
+    private static void sendTokens (HttpURLConnection httpURLConnection)
     {
-        if (getTokens(context)!=null)
+        if (getTokens()!=null)
         {
-            httpURLConnection.setRequestProperty("access-token",getTokens(context).getAccessToken());
-            if (getTokens(context).accessTokenExpired())
+            httpURLConnection.setRequestProperty("access-token",getTokens().getAccessToken());
+            if (getTokens().accessTokenExpired())
             {
-                httpURLConnection.setRequestProperty("refresh-token",getTokens(context).getRefreshToken());
+                httpURLConnection.setRequestProperty("refresh-token",getTokens().getRefreshToken());
             }
         }
     }
 
 
-    public static String makeHttpPostRequest (String urlString,Map<String,String> parameters,Context context) throws ConnectionProblemException
+    public static String makeHttpPostRequest (String urlString,Map<String,String> parameters) throws ConnectionProblemException
     {   String response = null;
         InputStream inputStream=null;
         HttpURLConnection urlConnection=null;
@@ -117,8 +117,7 @@ public class QueryUtils {
             urlConnection.setReadTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
-            //urlConnection.setRequestProperty("Access-Token","token");
-            sendTokens(urlConnection,context);
+            sendTokens(urlConnection);
             String postParameters = buildParametersString(parameters);
             urlConnection.setFixedLengthStreamingMode(postParameters.getBytes().length);
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
@@ -127,10 +126,10 @@ public class QueryUtils {
             urlConnection.connect();
             if (urlConnection.getResponseCode()==200)
             {
-                if (getTokens(context)!=null)
+                if (getTokens()!=null)
                 {
-                if (getTokens(context).accessTokenExpired())
-                    receiveNewAccessToken(urlConnection,context);
+                if (getTokens().accessTokenExpired())
+                    receiveNewAccessToken(urlConnection);
                 }
                 inputStream = urlConnection.getInputStream();
                 response=readFromStream(inputStream);
@@ -186,7 +185,7 @@ public class QueryUtils {
             httpCon.setReadTimeout(15000);
             httpCon.setRequestMethod("POST");
             httpCon.setRequestProperty("Content-Type","application/json; charset=UTF-8");
-            sendTokens(httpCon,context);
+            sendTokens(httpCon);
             httpCon.connect();
             OutputStream os = httpCon.getOutputStream();
             OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
@@ -195,10 +194,10 @@ public class QueryUtils {
             osw.close();
             if (httpCon.getResponseCode()==200)
             {
-                if (getTokens(context)!=null)
+                if (getTokens()!=null)
                 {
-                if (getTokens(context).accessTokenExpired())
-                    receiveNewAccessToken(httpCon,context);
+                if (getTokens().accessTokenExpired())
+                    receiveNewAccessToken(httpCon);
                 }
                 inputStream = httpCon.getInputStream();
                 response=readFromStream(inputStream);

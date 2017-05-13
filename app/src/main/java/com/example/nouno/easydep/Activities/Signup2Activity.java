@@ -91,7 +91,7 @@ public class Signup2Activity extends AppCompatActivity {
            String response;
 
            try {
-               response=QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_SIGNUP_URL,params[0],getApplicationContext());
+               response=QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_SIGNUP_URL,params[0]);
                if (response.equals("false"))
                {
                    return "Email not found";

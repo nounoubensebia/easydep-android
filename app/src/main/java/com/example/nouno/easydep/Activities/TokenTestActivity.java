@@ -41,7 +41,7 @@ public class TokenTestActivity extends AppCompatActivity {
         protected String doInBackground(Void... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest("http://192.168.1.7/EasyDep/security_tokens_utils.php",new LinkedHashMap<String, String>(),getApplicationContext());
+                response = QueryUtils.makeHttpPostRequest("http://192.168.1.7/EasyDep/security_tokens_utils.php",new LinkedHashMap<String, String>());
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
                 response = QueryUtils.CONNECTION_PROBLEM;

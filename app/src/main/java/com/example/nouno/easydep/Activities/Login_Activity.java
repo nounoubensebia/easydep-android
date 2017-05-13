@@ -140,7 +140,7 @@ public class Login_Activity extends AppCompatActivity {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_LOGIN_URL, params[0],getApplicationContext());
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_LOGIN_URL, params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
                 response = QueryUtils.CONNECTION_PROBLEM;

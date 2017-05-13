@@ -426,7 +426,7 @@ public class QueueActivity extends TAMBaseActivity {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0],getApplicationContext());
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -460,7 +460,7 @@ public class QueueActivity extends TAMBaseActivity {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0],getApplicationContext());
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }

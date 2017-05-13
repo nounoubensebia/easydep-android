@@ -280,7 +280,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         protected String doInBackground(Map<String, String>... params) {
             String s = null;
             try {
-                s = QueryUtils.makeHttpPostRequest(QueryUtils.LOG_OUT_URL, params[0],getApplicationContext());
+                s = QueryUtils.makeHttpPostRequest(QueryUtils.LOG_OUT_URL, params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -571,7 +571,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
             String answer = null;
             try {
-                answer = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_GET_REPAIR_SERVICES_URL, params[0],getApplicationContext());
+                answer = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_GET_REPAIR_SERVICES_URL, params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
                 return QueryUtils.CONNECTION_PROBLEM;
