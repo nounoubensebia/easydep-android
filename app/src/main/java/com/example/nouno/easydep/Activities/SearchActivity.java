@@ -253,6 +253,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
                 startActivity(i4);
                 return true;
+            case R.id.my_account:
+                Intent i5 = new Intent(getApplicationContext(),MyAccountActivity.class);
+                startActivity(i5);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -49,7 +49,15 @@ public class Utils {
         return carOwner;
     }
 
-
+    public static void saveCarOwner (CarOwner carOwner,Context context)
+    {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(carOwner);
+        editor.putString("carOwner",json);
+        editor.commit();
+    }
 
 
 

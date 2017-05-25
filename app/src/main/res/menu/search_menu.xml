@@ -17,4 +17,6 @@
         android:id="@+id/my_requests"/>
     <item android:title="Se déconnecter"
         android:id="@+id/log_out"/>
+    <item android:title="Mon Compte"
+        android:id="@+id/my_account"/>
 </menu>
