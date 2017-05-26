@@ -117,6 +117,7 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="login_failed">Authentification échouée veuillez vérifier les informations saisi</string>
+    <string name="error_connection_toast">Erreur connexion au serveur échouée</string>
     <string-array name="wilaya">
         <item>Alger</item>
         <item>Annaba</item>

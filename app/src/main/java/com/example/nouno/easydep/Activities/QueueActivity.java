@@ -18,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nouno.easydep.CancelRequest;
 import com.example.nouno.easydep.Data.AssistanceRequestListItem;
@@ -429,21 +430,24 @@ public class QueueActivity extends TAMBaseActivity {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
-
-            String waitTime = "Temps d'arrivée estimé : "+s;
-            positionText.setText(waitTime);
-            positionText.setVisibility(View.VISIBLE);
-            setInitialPosition();
-            waitText.setVisibility(View.VISIBLE);
-            waitText.setText("Votre dépanneur devrait bientôt arriver");
-            //updatePositionAnimation(position1,positoin0);
-            fadeIn(root);
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                String waitTime = "Temps d'arrivée estimé : "+s;
+                positionText.setText(waitTime);
+                positionText.setVisibility(View.VISIBLE);
+                setInitialPosition();
+                waitText.setVisibility(View.VISIBLE);
+                waitText.setText("Votre dépanneur devrait bientôt arriver");
+                //updatePositionAnimation(position1,positoin0);
+                fadeIn(root);
+            }
         }
     }
 
@@ -463,6 +467,7 @@ public class QueueActivity extends TAMBaseActivity {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -484,7 +489,8 @@ public class QueueActivity extends TAMBaseActivity {
             }
             else
             {
-
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
             }
         }
     }

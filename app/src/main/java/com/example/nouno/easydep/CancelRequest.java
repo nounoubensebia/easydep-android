@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.example.nouno.easydep.Activities.RequestsListActivity;
 import com.example.nouno.easydep.exceptions.ConnectionProblemException;
@@ -68,12 +69,15 @@ public class CancelRequest {
                 response =QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
             progressDialog.dismiss();
             Dialog infoDialog = DialogUtils.buildInfoDialog("Opération terminée","Demande annulée",context);
             infoDialog.show();
@@ -83,6 +87,12 @@ public class CancelRequest {
             {
                 Intent i = new Intent(context.getApplicationContext(),RequestsListActivity.class);
                 context.startActivity(i);
+            }
+            }
+            else
+            {
+                progressDialog.dismiss();
+                Toast.makeText(context.getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
             }
         }
     }

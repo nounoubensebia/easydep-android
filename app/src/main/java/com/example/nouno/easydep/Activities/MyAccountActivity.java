@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nouno.easydep.Data.CarOwner;
 import com.example.nouno.easydep.Data.Tokens;
@@ -67,6 +68,7 @@ public class MyAccountActivity extends AppCompatActivity {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.ChANGE_PASSWORDçURL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -74,24 +76,31 @@ public class MyAccountActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
-            if (s.equals("failed")) {
-                Dialog dialog = DialogUtils.buildInfoDialog("Erreur", "Mot de passe actuel incorrect", myAccountActivity);
-                dialog.show();
-            } else {
-                try {
-                    CarOwner carOwner = Utils.getRegistredCarOwner(myAccountActivity);
-                    JSONObject jsonObject = new JSONObject(s);
-                    String refreshToken = jsonObject.getString("refresh_token");
-                    String accessToken = jsonObject.getString("access_token");
-                    Tokens tokens = new Tokens(accessToken, refreshToken);
-                    carOwner.setTokens(tokens);
-                    Utils.saveCarOwner(carOwner,myAccountActivity);
-                    Dialog dialog = DialogUtils.buildInfoDialog("Mot de passe changé", "Votre mot de passe a été mis a jour", myAccountActivity);
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                if (s.equals("failed")) {
+                    Dialog dialog = DialogUtils.buildInfoDialog("Erreur", "Mot de passe actuel incorrect", myAccountActivity);
                     dialog.show();
+                } else {
+                    try {
+                        CarOwner carOwner = Utils.getRegistredCarOwner(myAccountActivity);
+                        JSONObject jsonObject = new JSONObject(s);
+                        String refreshToken = jsonObject.getString("refresh_token");
+                        String accessToken = jsonObject.getString("access_token");
+                        Tokens tokens = new Tokens(accessToken, refreshToken);
+                        carOwner.setTokens(tokens);
+                        Utils.saveCarOwner(carOwner,myAccountActivity);
+                        Dialog dialog = DialogUtils.buildInfoDialog("Mot de passe changé", "Votre mot de passe a été mis a jour", myAccountActivity);
+                        dialog.show();
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
             }
 
         }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nouno.easydep.Data.AssistanceRequestListItem;
 import com.example.nouno.easydep.Data.CarOwner;
@@ -169,20 +170,27 @@ public class EstimateActivity extends AppCompatActivity {
                 response=QueryUtils.makeHttpPostRequest(QueryUtils.GET_REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            requestEstimate = new RequestEstimate();
-            acceptedDemande =  requestEstimate.parseJson(s);
-            View root = findViewById(R.id.estimate_layout);
-
-            root.setVisibility(View.VISIBLE);
             ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
             progressBar.setVisibility(View.GONE);
-            displayData();
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                requestEstimate = new RequestEstimate();
+                acceptedDemande =  requestEstimate.parseJson(s);
+                View root = findViewById(R.id.estimate_layout);
+                root.setVisibility(View.VISIBLE);
+                displayData();
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -201,6 +209,7 @@ public class EstimateActivity extends AppCompatActivity {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -220,6 +229,11 @@ public class EstimateActivity extends AppCompatActivity {
                         });
                 infoDialog.show();
             }
+            else
+            {
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
+            }
         }
     }
     private class RefuseEstimateTask extends AsyncTask<Map<String,String>,Void,String>
@@ -237,6 +251,7 @@ public class EstimateActivity extends AppCompatActivity {
                 response =QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -248,6 +263,11 @@ public class EstimateActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 startRequestsListActivity();
                 finish();
+            }
+            else
+            {
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
             }
         }
     }

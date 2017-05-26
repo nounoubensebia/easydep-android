@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nouno.easydep.Data.AssistanceRequest;
 import com.example.nouno.easydep.Data.CarOwner;
@@ -438,6 +439,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
             try {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
             } catch (ConnectionProblemException e) {
+                response = QueryUtils.CONNECTION_PROBLEM;
                 e.printStackTrace();
             }
             return response;
@@ -445,15 +447,22 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
 
         @Override
         protected void onPostExecute(String s) {
-            userComments = UserComment.parseJson(s);
-            populateCommentList(userComments);
-
-            ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.GONE);
-            ListView listView = (ListView)findViewById(R.id.comments_list);
-            listView.setVisibility(View.VISIBLE);
-            View commentsLayout = findViewById(R.id.comments_layout);
-            commentsLayout.setVisibility(View.VISIBLE);
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                userComments = UserComment.parseJson(s);
+                populateCommentList(userComments);
+                ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
+                progressBar.setVisibility(View.GONE);
+                ListView listView = (ListView)findViewById(R.id.comments_list);
+                listView.setVisibility(View.VISIBLE);
+                View commentsLayout = findViewById(R.id.comments_layout);
+                commentsLayout.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(),"Connexion au serveur échouée",Toast.LENGTH_LONG).show();
+                onBackPressed();
+            }
         }
     }
 
@@ -474,16 +483,25 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                response =QueryUtils.CONNECTION_PROBLEM;
             }
-            return null;
+            return response;
         }
         @Override
         protected void onPostExecute(String s) {
-            progressDialog.dismiss();
-            Dialog dialog = DialogUtils.buildInfoDialog("Commentaire supprimé","Votre commentaire a été supprimé",repairServiceInfoActivity);
-            dialog.show();
-            getComments();
-            displayRepairServiceData();
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                progressDialog.dismiss();
+                Dialog dialog = DialogUtils.buildInfoDialog("Commentaire supprimé","Votre commentaire a été supprimé",repairServiceInfoActivity);
+                dialog.show();
+                getComments();
+                displayRepairServiceData();
+            }
+            else
+            {
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
+            }
 
         }
     }
@@ -503,6 +521,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
                 resonse = QueryUtils.makeHttpPostRequest(QueryUtils.GET_USER_COMMENTS_LOCAL_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return resonse;
         }
@@ -511,15 +530,22 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
             Dialog infoDialog;
-            if (s.equals("success"))
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
             {
-                infoDialog = DialogUtils.buildInfoDialog("Commentaire signalé","Merci de votre coopération",repairServiceInfoActivity);
+                if (s.equals("success"))
+                {
+                    infoDialog = DialogUtils.buildInfoDialog("Commentaire signalé","Merci de votre coopération",repairServiceInfoActivity);
+                }
+                else
+                {
+                    infoDialog = DialogUtils.buildInfoDialog("Erreur","Vous avez deja signaler ce commentaire",repairServiceInfoActivity);
+                }
+                 infoDialog.show();
             }
             else
             {
-                infoDialog = DialogUtils.buildInfoDialog("Erreur","Vous avez deja signaler ce commentaire",repairServiceInfoActivity);
+                Toast.makeText(getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
             }
-             infoDialog.show();
         }
     }
 
@@ -539,6 +565,7 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -546,17 +573,24 @@ public class RepairServiceInfoActivity extends AppCompatActivity implements OnMa
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
-            if (s.equals("true"))
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
             {
-                Dialog dialog = DialogUtils.buildInfoDialog("Erreur","Vous avez deja envoyé une demande a ce dépanneur",repairServiceInfoActivity);
-                dialog.show();
+                if (s.equals("true"))
+                {
+                    Dialog dialog = DialogUtils.buildInfoDialog("Erreur","Vous avez deja envoyé une demande a ce dépanneur",repairServiceInfoActivity);
+                    dialog.show();
+                }
+                else
+                {
+                    if (s.equals("false"))
+                    {
+                        startAssistanceRequestActivity();
+                    }
+                }
             }
             else
             {
-                if (s.equals("false"))
-                {
-                    startAssistanceRequestActivity();
-                }
+                Toast.makeText(getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
             }
         }
     }

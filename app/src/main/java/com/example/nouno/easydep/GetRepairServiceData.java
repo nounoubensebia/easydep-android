@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.example.nouno.easydep.Activities.RepairServiceInfoActivity;
 import com.example.nouno.easydep.Data.RepairService;
@@ -44,6 +45,8 @@ public class GetRepairServiceData {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_GET_REPAIR_SERVICES_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
+
             }
             return response;
         }
@@ -51,8 +54,15 @@ public class GetRepairServiceData {
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
             RepairService repairService = RepairService.parseJson(s);
             startInfoActivity(repairService);
+            }
+            else
+            {
+                Toast.makeText(context.getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
+            }
         }
 
     }

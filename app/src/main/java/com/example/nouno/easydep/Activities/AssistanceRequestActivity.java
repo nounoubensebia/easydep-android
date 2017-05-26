@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nouno.easydep.Data.AssistanceRequest;
 import com.example.nouno.easydep.DialogUtils;
@@ -185,11 +186,12 @@ public class AssistanceRequestActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String s = null;
+            String s = "";
             try {
                 s = QueryUtils.makeHttpPostJsonRequest(QueryUtils.REQUESTS_URL,params[0],getApplicationContext());
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return s;
         }
@@ -198,6 +200,7 @@ public class AssistanceRequestActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
 
             progressDialog.dismiss();
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM)){
             Dialog infoDialog = DialogUtils.buildClickableInfoDialog("", "Votre demande a été envoyée", assistanceRequestActivity, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -206,7 +209,11 @@ public class AssistanceRequestActivity extends AppCompatActivity {
                     finish();
                 }
             });
-            infoDialog.show();
+            infoDialog.show();}
+            else
+            {
+                Toast.makeText(getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
+            }
         }
     }
 

@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nouno.easydep.Data.CarOwner;
 import com.example.nouno.easydep.Data.DBConnection;
@@ -289,6 +290,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             try {
                 s = QueryUtils.makeHttpPostRequest(QueryUtils.LOG_OUT_URL, params[0]);
             } catch (ConnectionProblemException e) {
+                s=QueryUtils.CONNECTION_PROBLEM;
                 e.printStackTrace();
             }
             return s;
@@ -296,13 +298,21 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
         @Override
         protected void onPostExecute(String s) {
-            logOutDialog.dismiss();
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.remove("carOwner");
-            editor.commit();
-            Intent i4 = new Intent(getApplicationContext(), Login_Activity.class);
-            startActivity(i4);
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                logOutDialog.dismiss();
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.remove("carOwner");
+                editor.commit();
+                Intent i4 = new Intent(getApplicationContext(), Login_Activity.class);
+                startActivity(i4);
+            }
+            else
+            {
+                logOutDialog.dismiss();
+                Toast.makeText(getApplicationContext(),"Connexion au serveur échouée",Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -595,37 +605,45 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
         @Override
         protected void onPostExecute(String s) {
-            mapRefrechButton.setVisibility(View.VISIBLE);
-            recyclerView = (RecyclerView) findViewById(R.id.repair_services_list);
-            repairServices = RepairService.parseListJson(s);
-            RepairService.applyFiltre(repairServices, onlineFiltre);
-            // RepairService.deleteNotAvailable(repairServices);
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                mapRefrechButton.setVisibility(View.VISIBLE);
+                recyclerView = (RecyclerView) findViewById(R.id.repair_services_list);
+                repairServices = RepairService.parseListJson(s);
+                RepairService.applyFiltre(repairServices, onlineFiltre);
+                // RepairService.deleteNotAvailable(repairServices);
 
-            RepairServiceAdapter adapter = new RepairServiceAdapter(repairServices, R.layout.repair_service_list_item);
-            adapter.setOnItemClickListner(new OnItemClickListner() {
-                @Override
-                public void onItemClick(View v, int position) {
-                    RepairService repairService = repairServices.get(position);
-                    populateInfoBottomSheet(repairService);
-                    markRepairServices(repairService, repairServices);
-                    LatLng latLng = new LatLng(repairService.getLatitude(), repairService.getLongitude());
-                    map.moveCamera((CameraUpdateFactory.newLatLngZoom(latLng, 10)));
-                    exitInfo(mapFab);
+                RepairServiceAdapter adapter = new RepairServiceAdapter(repairServices, R.layout.repair_service_list_item);
+                adapter.setOnItemClickListner(new OnItemClickListner() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        RepairService repairService = repairServices.get(position);
+                        populateInfoBottomSheet(repairService);
+                        markRepairServices(repairService, repairServices);
+                        LatLng latLng = new LatLng(repairService.getLatitude(), repairService.getLongitude());
+                        map.moveCamera((CameraUpdateFactory.newLatLngZoom(latLng, 10)));
+                        exitInfo(mapFab);
 
+                    }
+                });
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(adapter);
+                recyclerView.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
+                markRepairServices(repairServices);
+                //moveMapCamera(searchPosition);
+                if (repairServices.size() == 0) {
+                    noRepairServiceFoundTextView.setVisibility(View.VISIBLE);
+                } else {
+                    noRepairServiceFoundTextView.setVisibility(View.GONE);
                 }
-            });
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-            recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(adapter);
-            recyclerView.setVisibility(View.VISIBLE);
-            swipeRefreshLayout.setRefreshing(false);
-            markRepairServices(repairServices);
-            //moveMapCamera(searchPosition);
-            if (repairServices.size() == 0) {
-                noRepairServiceFoundTextView.setVisibility(View.VISIBLE);
-            } else {
-                noRepairServiceFoundTextView.setVisibility(View.GONE);
+            }
+            else
+            {
+                swipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(getApplicationContext(),"Connexion au serveur échouée",Toast.LENGTH_LONG).show();
             }
         }
     }

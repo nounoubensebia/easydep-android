@@ -15,6 +15,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.nouno.easydep.CancelRequest;
 import com.example.nouno.easydep.Data.AssistanceRequest;
@@ -212,11 +213,12 @@ public class RequestsListActivity extends TAMBaseActivity {
 
         @Override
         protected String doInBackground(Map<String, String>... params) {
-            String response = null;
+            String response = "";
             try {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -224,10 +226,16 @@ public class RequestsListActivity extends TAMBaseActivity {
         @Override
         protected void onPostExecute(String s) {
             swipeRefreshLayout.setRefreshing(false);
-            assistanceRequestListItems = AssistanceRequestListItem.parseJson(s);
-
-            populateRequestsList(assistanceRequestListItems);
-            requestsList.setVisibility(View.VISIBLE);
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                assistanceRequestListItems = AssistanceRequestListItem.parseJson(s);
+                populateRequestsList(assistanceRequestListItems);
+                requestsList.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -243,11 +251,12 @@ public class RequestsListActivity extends TAMBaseActivity {
 
         @Override
         protected String doInBackground(Map<String, String>... params) {
-            String s = null;
+            String s = "";
             try {
                 s = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return s;
         }
@@ -255,7 +264,14 @@ public class RequestsListActivity extends TAMBaseActivity {
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
-            loadRequestsList();
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                loadRequestsList();
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -275,6 +291,7 @@ public class RequestsListActivity extends TAMBaseActivity {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -296,7 +313,8 @@ public class RequestsListActivity extends TAMBaseActivity {
             }
             else
             {
-
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), R.string.error_connection_toast,Toast.LENGTH_LONG).show();
             }
         }
     }
