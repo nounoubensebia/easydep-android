@@ -48,7 +48,8 @@
                 android:textSize="16sp" />
             <TextView
                 android:id="@+id/locationText"
-                android:layout_width="wrap_content"
+                android:layout_width="180dp"
+                android:maxLines="2"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:text="El Mohamadia,Alger"/>

@@ -30,6 +30,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.nouno.easydep.Data.CarOwner;
+import com.example.nouno.easydep.Data.DBConnection;
+import com.example.nouno.easydep.Data.OfflineRepairService;
 import com.example.nouno.easydep.DialogUtils;
 import com.example.nouno.easydep.OnItemClickListner;
 import com.example.nouno.easydep.Data.OnlineFiltre;
@@ -577,6 +579,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             String answer = null;
             try {
                 answer = QueryUtils.makeHttpPostRequest(QueryUtils.LOCAL_GET_REPAIR_SERVICES_URL, params[0]);
+                LinkedHashMap<String,String> map = new LinkedHashMap<>();
+                map.put("action","get_offline_repair_services");
+                String answer2 = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,map);
+                ArrayList<OfflineRepairService> offlineRepairServices = OfflineRepairService.parseJson(answer2);
+                DBConnection db = new DBConnection(searchActivity);
+                db.deleteFromDepanneur();
+                db.InsetToDB(offlineRepairServices);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
                 return QueryUtils.CONNECTION_PROBLEM;

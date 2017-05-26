@@ -20,7 +20,13 @@ public class Tokens {
     public boolean accessTokenExpired()
     {
         JWT jwt = new JWT(accessToken);
-        return jwt.isExpired(Calendar.getInstance().get(Calendar.SECOND));
+        long time = jwt.getExpiresAt().getTime();
+        long time2 = System.currentTimeMillis()+3600000;
+        long offset = time2-time;
+        if (offset>0)
+            return true;
+        else
+            return false;
     }
 
     public String getAccessToken() {

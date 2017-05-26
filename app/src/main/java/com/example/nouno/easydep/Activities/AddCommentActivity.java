@@ -161,14 +161,22 @@ public class AddCommentActivity extends AppCompatActivity {
             else
             {
 
-                Dialog dialog = DialogUtils.buildClickableInfoDialog("Commentaire ajouté", "Votre avis nous intéresse merci de votre coopération", addCommentActivity,
+                /*Dialog dialog = DialogUtils.buildClickableInfoDialog("Commentaire ajouté", "Votre avis nous intéresse merci de votre coopération", addCommentActivity,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 startSearchActivity();
                             }
                         });
-                dialog.show();
+                dialog.show();*/
+                userComment.getRepairService().setRating(rating);
+                Intent i = new Intent(getApplicationContext(),RepairServiceInfoActivity.class);
+                Gson gson = new Gson();
+                String json = gson.toJson(userComment.getRepairService());
+                i.putExtra("repairService",json);
+                i.putExtra("commentAdded",true);
+                startActivity(i);
+                finish();
             }
 
         }

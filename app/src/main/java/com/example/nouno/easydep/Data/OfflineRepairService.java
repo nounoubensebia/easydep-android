@@ -1,5 +1,9 @@
 package com.example.nouno.easydep.Data;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import static com.example.nouno.easydep.Data.OfflineFilter.SORT_BY_LOCATION;
@@ -174,5 +178,35 @@ public class OfflineRepairService extends Person {
             }
         }
         return filteredList;
+    }
+
+    public static ArrayList<OfflineRepairService> parseJson (String json)
+    {
+        ArrayList<OfflineRepairService> list = new ArrayList<>();
+        try {
+            JSONArray jsonArray = new JSONArray(json);
+            for (int i=0;i<jsonArray.length();i++)
+            {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String firstname = jsonObject.getString("first_name");
+            String lastname = jsonObject.getString("last_name");
+            String phoneNumber = jsonObject.getString("phone_number");
+            int price;
+            if (jsonObject.isNull("price"))
+            {
+                price = NO_PRICE;
+            }
+            else
+            {
+                price = jsonObject.getInt("price");
+            }
+            float rating = (float)jsonObject.getDouble("rating");
+            String locationname = jsonObject.getString("location_name");
+            OfflineRepairService offlineRepairService = new OfflineRepairService(-1,firstname,lastname,locationname,phoneNumber,rating,price);
+            list.add(offlineRepairService);}
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

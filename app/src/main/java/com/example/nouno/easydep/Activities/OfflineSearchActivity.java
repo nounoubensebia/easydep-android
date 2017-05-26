@@ -35,16 +35,16 @@ public class OfflineSearchActivity extends AppCompatActivity {
         offlineFilter = gson.fromJson(filtreJson,OfflineFilter.class);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offline_search);
-        repairServices = new ArrayList<>();
+        /*repairServices = new ArrayList<>();
         repairServices.add(new OfflineRepairService(1, "Test", "El Harrache", "Alger", "0549958428", 1, RepairService.NO_PRICE));
         repairServices.add(new OfflineRepairService(2, "Hind", "Birkhadem", "Mostaganem", "0549958428", 3, 50));
         repairServices.add(new OfflineRepairService(3, "Bensaber", "Kouba", "Chlef", "0549958428", 1, RepairService.NO_PRICE));
         repairServices.add(new OfflineRepairService(4, "Abri", "Kenza", "Oran", "0549958428", 5, RepairService.NO_PRICE));
         repairServices.add(new OfflineRepairService(5, "Test", "Biskra", "Biskra", "0549958428", 0, 50));
-        repairServices.add(new OfflineRepairService(3, "Test", "Bejaia", "Bejaia", "0549958428", 4, 80));
+        repairServices.add(new OfflineRepairService(3, "Test", "Bejaia", "Bejaia", "0549958428", 4, 80));*/
         DBConnection db = new DBConnection(this);
-        db.deleteFromDepanneur();
-        db.InsetToDB(repairServices);
+        /*db.deleteFromDepanneur();
+        db.InsetToDB(repairServices);*/
         repairServices = db.getAllrecords();
         OfflineRepairService.applyFilter(repairServices, offlineFilter);
         populateRepairServicesList(repairServices);
