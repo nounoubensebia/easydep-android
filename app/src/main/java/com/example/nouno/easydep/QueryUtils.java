@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  */
 
 public class QueryUtils {
-    public static final String PATH ="http://192.168.1.8/EasyDep/";
+    public static final String PATH ="http://192.168.1.8/easydep/";
     public static final String LOCAL_TEST_URL ="http://192.168.1.5/EasyDep/test.php";
     public static final String LOCAL_LOGIN_URL = PATH+"login.php";
     public static final String ChANGE_PASSWORDçURL =PATH+"repair_service_account_api.php";

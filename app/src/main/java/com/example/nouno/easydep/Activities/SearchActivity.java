@@ -570,10 +570,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 mapMarked = false;
                 markCenter(searchPosition, false);
                 infoBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_HIDDEN);
+                if (repairServices!=null&&repairServices.size()==0)
+                {
                 CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mapFab.getLayoutParams();
                 CoordinatorLayout.LayoutParams layoutParams1 = (CoordinatorLayout.LayoutParams) listFab.getLayoutParams();
                 if (layoutParams1.bottomMargin != layoutParams.bottomMargin)
-                    changeMargin(listFab, layoutParams.bottomMargin);
+                    changeMargin(listFab, layoutParams.bottomMargin);}
             }
             mapRefrechButton.setVisibility(View.GONE);
             recyclerView = (RecyclerView) findViewById(R.id.repair_services_list);
